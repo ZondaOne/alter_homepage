@@ -1,33 +1,79 @@
 "use client";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SoftwareLogo from "./SoftwareLogo";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Hero() {
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+
+    // Timeline secuencial de entrada
+    const tl = gsap.timeline();
+
+    tl.from(".hero-h1", {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+    })
+      .from(
+        ".hero-subtitle",
+        {
+          y: 30,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        "-=0.5"
+      )
+      .from(
+        ".hero-buttons",
+        {
+          y: 20,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.4"
+      );
+
+    // Animación de gradiente en el span
+    gsap.to(".hero-gradient-text", {
+      backgroundPosition: "200% 50%",
+      repeat: -1,
+      yoyo: true,
+      duration: 6,
+      ease: "power1.inOut",
+    });
+
+    // Efecto parallax para SoftwareLogo
+    gsap.to(".hero-logo", {
+      y: -50,
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+  }, []);
+
   return (
-    <div className="relative h-screen overflow-hidden hero-gradient">
-      {/* Content */}
+    <div ref={heroRef} className="relative h-screen overflow-hidden hero-gradient">
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
-        {/* Left side content */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20"
-        >
-          <h1 className="m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+        <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20">
+          <h1 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             Your idea
             <br />
             deserves
             <br />
-            <motion.span
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+            <span
+              className="hero-gradient-text"
               style={{
                 background:
                   "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
@@ -38,29 +84,19 @@ export default function Hero() {
               }}
             >
               better code
-            </motion.span>
+            </span>
           </h1>
 
-          <p className="text-lg sm:text-xl lg:text-xl text-gray-600 max-w-lg mt-6 sm:mt-8 font-light leading-relaxed">
-            Small team. Big ideas. We build software that people 
-            actually want to use.
+          <p className="hero-subtitle text-lg sm:text-xl lg:text-xl text-gray-600 max-w-lg mt-6 sm:mt-8 font-light leading-relaxed">
+            Small team. Big ideas. We build software that people actually want to use.
           </p>
 
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
-            >
+          <div className="hero-buttons flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
+            <button className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
               Work with us
-            </motion.button>
+            </button>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="text-gray-700 text-sm font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
-            >
+            <button className="text-gray-700 text-sm font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group">
               See what we've made
               <svg
                 width="14"
@@ -77,14 +113,12 @@ export default function Hero() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </motion.button>
+            </button>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right side: Lottie animation (hidden on mobile and small tablets) */}
         <div className="relative h-full hidden lg:block">
-          <div className="w-full h-full object-cover">
-            {/* Client component to render the Lottie animation */}
+          <div className="w-full h-full object-cover hero-logo">
             <SoftwareLogo scale={0.8} />
           </div>
         </div>
