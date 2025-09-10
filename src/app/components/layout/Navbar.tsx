@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, MessageCircle, Globe, User } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import Logo from "../Logo";
 
 const Navbar: React.FC = () => {
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
               <div className="w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out [&>*]:!text-[color:var(--color-accent)] [&>*]:!fill-[color:var(--color-accent)] [&>*]:!stroke-[color:var(--color-accent)]">
                 <Logo />
               </div>
-              <span className="text-base font-semibold text-[color:var(--foreground)] tracking-[0.01em]">
+              <span className="text-base font-semibold text-[color:var(--foreground)] tracking-[0.01em] font-aware-bold">
                 ZONDA
               </span>
             </button>
@@ -181,22 +181,13 @@ const Navbar: React.FC = () => {
 
           <div className="hidden lg:flex items-center gap-4">
             <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
-              <Search size={18} />
-            </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
-              <MessageCircle size={18} />
-            </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
               <Globe size={18} />
             </button>
             <button
               className="btn-accent py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ease-in-out"
               onClick={() => navigateToSection("contact")}
             >
-              Contact Sales
-            </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
-              <User size={18} />
+              Work with us
             </button>
           </div>
 
@@ -254,7 +245,7 @@ const Navbar: React.FC = () => {
                     className="btn-accent py-2.5 px-3.5 rounded-sm text-[15px] cursor-pointer"
                     onClick={() => navigateToSection("contact")}
                   >
-                    Contact Sales
+                    Work with us
                   </button>
                 </div>
               </div>

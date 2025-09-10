@@ -47,6 +47,7 @@
 
   --font-sans: var(--font-source-sans, ui-sans-serif, system-ui, sans-serif);
   --font-display: var(--font-crimson, ui-serif, Georgia, serif);
+  --font-aware-bold: var(--font-aware-bold, ui-sans-serif, system-ui, sans-serif);
 }
 
 /* Utility classes that use the design tokens above */
@@ -119,6 +120,10 @@ html, body {
 
 .font-body {
   font-family: var(--font-sans);
+}
+
+.font-aware-bold {
+  font-family: var(--font-aware-bold);
 }
 
 

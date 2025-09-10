@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Crimson_Text, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -18,6 +19,12 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
+const awareBold = localFont({
+  src: "./fonts/AwareBold.ttf",
+  variable: "--font-aware-bold",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Zonda Consulting",
   description: "Boutique consultancy landing page",
@@ -31,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${crimsonText.variable} ${sourceSans.variable} antialiased bg-background text-foreground`}
+        className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
       >
         {/* Navbar fija arriba */}
         <Navbar />
