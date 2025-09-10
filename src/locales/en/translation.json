@@ -19,6 +19,10 @@
   "heroButtonSee": "See what we've made",
   "gradientText": "We build <1>brands that matter</1>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.",
   "gradientCTA": "<0>Contact us</0>",
+  "galleryTitleLine1": "Our latest",
+  "galleryTitleHighlight": "creations",
+  "gallerySubtitle": "Explore our portfolio of web applications that solve real problems with elegant design and powerful technology.",
+  "galleryButtonVisit": "Visit",
   "languages": {
     "en": "English",
     "es": "Spanish",
