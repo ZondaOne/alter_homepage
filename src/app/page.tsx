@@ -1,10 +1,13 @@
 import Hero from "./components/Hero";
 import GradientSection from "./components/GradientSection";
+
 export default function HomePage() {
   return (
-    <main>
+    <>
       <Hero />
-      <GradientSection />
-    </main>
+      <main className="relative z-10">
+        <GradientSection />
+      </main>
+    </>
   );
 }

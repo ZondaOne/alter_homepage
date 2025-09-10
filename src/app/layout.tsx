@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Crimson_Text, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const crimsonText = Crimson_Text({
+  variable: "--font-crimson",
   subsets: ["latin"],
+  weight: ["400", "600"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,13 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${crimsonText.variable} ${sourceSans.variable} antialiased bg-background text-foreground`}
       >
         {/* Navbar fija arriba */}
         <Navbar />
 
-        {/* Wrapper que compensa la altura de la nav */}
-        <main className="pt-[5rem]">{children}</main>
+        {/* Main content without top padding for hero */}
+        <main>{children}</main>
          
         <Footer />
       </body>
