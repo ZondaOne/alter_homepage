@@ -57,7 +57,7 @@ const GridGallerySection = () => {
 
   return (
     <div 
-      className="relative w-full py-20 md:py-32 px-5 md:px-8 min-h-screen overflow-hidden"
+      className="relative w-full py-20 md:py-32 px-5 md:px-8 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #fafafa 0%, #ffffff 25%, #fef7f0 50%, #ffffff 75%, #f9fafb 100%)'
       }}
@@ -79,35 +79,52 @@ const GridGallerySection = () => {
         
         {/* Floating tech symbols */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute text-orange-500/10 font-mono text-xs animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${4 + Math.random() * 3}s`
-              }}
-            >
-              {['<>', '/>', '{}', '[]', '()', 'fn', 'AI', 'ML'][Math.floor(Math.random() * 8)]}
-            </div>
-          ))}
+          {[...Array(15)].map((_, i) => {
+            const positions = [
+              { left: 10, top: 20 }, { left: 85, top: 15 }, { left: 25, top: 80 },
+              { left: 70, top: 75 }, { left: 45, top: 10 }, { left: 15, top: 60 },
+              { left: 80, top: 40 }, { left: 35, top: 85 }, { left: 60, top: 25 },
+              { left: 90, top: 70 }, { left: 5, top: 45 }, { left: 75, top: 90 },
+              { left: 50, top: 5 }, { left: 20, top: 35 }, { left: 95, top: 55 }
+            ];
+            const symbols = ['<>', '/>', '{}', '[]', '()', 'fn', 'AI', 'ML'];
+            return (
+              <div
+                key={i}
+                className="absolute text-orange-500/10 font-mono text-xs animate-float"
+                style={{
+                  left: `${positions[i]?.left || 50}%`,
+                  top: `${positions[i]?.top || 50}%`,
+                  animationDelay: `${i * 0.3}s`,
+                  animationDuration: `${4 + (i % 3)}s`
+                }}
+              >
+                {symbols[i % symbols.length]}
+              </div>
+            );
+          })}
         </div>
 
         {/* Orange accent particles */}
         <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`particle-${i}`}
-              className="absolute w-1 h-1 bg-orange-400 rounded-full animate-pulse opacity-20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-              }}
-            />
-          ))}
+          {[...Array(8)].map((_, i) => {
+            const particlePositions = [
+              { left: 15, top: 25 }, { left: 75, top: 65 }, { left: 30, top: 80 },
+              { left: 85, top: 20 }, { left: 50, top: 15 }, { left: 10, top: 70 },
+              { left: 65, top: 85 }, { left: 90, top: 45 }
+            ];
+            return (
+              <div
+                key={`particle-${i}`}
+                className="absolute w-1 h-1 bg-orange-400 rounded-full animate-pulse opacity-20"
+                style={{
+                  left: `${particlePositions[i]?.left || 50}%`,
+                  top: `${particlePositions[i]?.top || 50}%`,
+                  animationDelay: `${i * 0.4}s`,
+                }}
+              />
+            );
+          })}
         </div>
       </div>
       
