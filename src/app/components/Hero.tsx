@@ -1,14 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
+import SoftwareLogo from "./SoftwareLogo";
 
 export default function Hero() {
   return (
-    <div
-      className="relative h-[calc(100vh-5rem)] overflow-hidden"
-      style={{
-        backgroundColor: "#fff",
-      }}
-    >
+  <div className="relative h-[calc(100vh-5rem)] overflow-hidden hero-gradient">
       {/* Content */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[50%_50%] h-full">
         {/* Left side content */}
@@ -85,13 +81,12 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Right side image - occupying full gray area */}
-          <div className="relative h-full">
-          <img
-            src="https://i.imgur.com/jlsyzoe.png"
-            alt="Vertical mockup"
-            className="w-full h-full object-cover"
-          />
+        {/* Right side: Lottie animation (Software.json in public/) */}
+        <div className="relative h-full">
+          <div className="w-full h-full object-cover">
+            {/* Client component to render the Lottie animation */}
+            <SoftwareLogo scale={0.8} />
+          </div>
         </div>
       </div>
     </div>

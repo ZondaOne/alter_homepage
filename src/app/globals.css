@@ -4,11 +4,36 @@
    Variables de Tema
    ======================= */
 :root {
+  /* Base neutral tokens */
   --background: #ffffff;
   --foreground: #1a1a1a;
   --muted: #6b7280;
   --border: #e5e7eb;
-  --accent: #f97316;
+
+  /* Accent palette (primary orange and secondary red) */
+  --accent-1-100: #fff5ef;
+  --accent-1-300: #ffcfb3;
+  --accent-1-500: #ffb380;
+  --accent-1-700: #ff914d; /* primary: #FF914D */
+  --accent-1-900: #cc6f3b;
+
+  --accent-2-100: #fff2f2;
+  --accent-2-300: #ffbebe;
+  --accent-2-500: #ff7a7a;
+  --accent-2-700: #ff3131; /* secondary: #FF3131 */
+  --accent-2-900: #cc2626;
+
+  /* Combined semantic tokens */
+  --color-accent: var(--accent-1-700);
+  --color-accent-variant: var(--accent-2-700);
+  --color-accent-gradient: linear-gradient(90deg, var(--accent-1-700), var(--accent-2-700));
+  --color-accent-foreground: #ffffff;
+
+  /* Cream / warm neutrals */
+  --cream-50: #fffaf5;
+  --cream-100: #fff4e6;
+  --cream-200: #ffecd6;
+  --cream-foreground: #1a1a1a;
 }
 
 
@@ -23,6 +48,51 @@
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
   --font-mono: var(--font-geist-mono, ui-monospace, monospace);
 }
+
+/* Utility classes that use the design tokens above */
+.accent-gradient {
+  background-image: var(--color-accent-gradient);
+}
+
+.hover-accent:hover {
+  color: var(--color-accent) !important;
+}
+
+.btn-accent {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  transition: background-color 180ms ease-in-out, color 180ms ease-in-out;
+}
+.btn-accent:hover {
+  background: var(--color-accent-variant);
+}
+
+.bg-cream {
+  background: var(--cream-100);
+  color: var(--cream-foreground);
+}
+
+/* Subtle hero background gradient (short, bottom-to-top) */
+.hero-gradient {
+  position: relative;
+  background-color: var(--background);
+}
+.hero-gradient::after {
+  /* Short gradient from bottom going up ~18% of the section */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18%;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(255,145,77,0.12) 0%, rgba(255,49,49,0.08) 45%, rgba(255,255,255,0) 100%);
+  /* Use palette tokens when supported (fallback above) */
+  background-image: linear-gradient(0deg, var(--accent-1-700) 0%, var(--accent-2-700) 45%);
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+}
+
 
 
 

@@ -56,10 +56,10 @@ const Navbar: React.FC = () => {
               onClick={() => navigateToSection("home")}
               className="flex flex-row items-center gap-2 bg-none border-none py-2 px-3 cursor-pointer transition-all duration-300 ease-in-out"
             >
-              <div className="w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out [&>*]:!text-black [&>*]:!fill-black [&>*]:!stroke-black">
+              <div className="w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out [&>*]:!text-[color:var(--color-accent)] [&>*]:!fill-[color:var(--color-accent)] [&>*]:!stroke-[color:var(--color-accent)]">
                 <Logo />
               </div>
-              <span className="text-base font-semibold text-black tracking-[0.01em]">
+              <span className="text-base font-semibold text-[color:var(--foreground)] tracking-[0.01em]">
                 ZONDA
               </span>
             </button>
@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => handleDropdownToggle("products")}
-                  className="relative text-[15px] font-normal bg-none border-none cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-blue-600 flex items-center gap-1"
+                  className="relative text-[15px] font-normal bg-none border-none cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)] flex items-center gap-1"
                 >
                   Products
                   <svg
@@ -94,19 +94,19 @@ const Navbar: React.FC = () => {
                     >
                       <button
                         onClick={() => navigateToSection("products")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         All Products
                       </button>
                       <button
                         onClick={() => navigateToSection("solutions")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         Solutions
                       </button>
                       <button
                         onClick={() => navigateToSection("services")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         Services
                       </button>
@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
 
               <button
                 onClick={() => navigateToSection("consulting")}
-                className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-blue-600"
+                className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]"
               >
                 Consulting
               </button>
@@ -125,7 +125,7 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => handleDropdownToggle("support")}
-                  className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-blue-600 flex items-center gap-1"
+                  className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)] flex items-center gap-1"
                 >
                   Support
                   <svg
@@ -149,19 +149,19 @@ const Navbar: React.FC = () => {
                     >
                       <button
                         onClick={() => navigateToSection("support")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         Help Center
                       </button>
                       <button
                         onClick={() => navigateToSection("documentation")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         Documentation
                       </button>
                       <button
                         onClick={() => navigateToSection("community")}
-                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-blue-600"
+                        className="py-2.5 px-4 text-left text-sm cursor-pointer text-gray-700 transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-[color:var(--color-accent)]"
                       >
                         Community
                       </button>
@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
 
               <button
                 onClick={() => navigateToSection("about")}
-                className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-blue-600"
+                className="relative text-[15px] font-normal cursor-pointer text-gray-800 py-2 px-1 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]"
               >
                 About
               </button>
@@ -180,22 +180,22 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-blue-600">
+            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
               <Search size={18} />
             </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-blue-600">
+            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
               <MessageCircle size={18} />
             </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-blue-600">
+            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
               <Globe size={18} />
             </button>
             <button
-              className="bg-blue-600 text-white py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:bg-blue-700"
+              className="btn-accent py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ease-in-out"
               onClick={() => navigateToSection("contact")}
             >
               Contact Sales
             </button>
-            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-blue-600">
+            <button className="cursor-pointer text-gray-600 transition-colors duration-200 ease-in-out hover:text-[color:var(--color-accent)]">
               <User size={18} />
             </button>
           </div>
@@ -251,7 +251,7 @@ const Navbar: React.FC = () => {
                 </button>
                 <div className="mt-3">
                   <button
-                    className="bg-blue-600 text-white py-2.5 px-3.5 rounded-sm text-[15px] cursor-pointer"
+                    className="btn-accent py-2.5 px-3.5 rounded-sm text-[15px] cursor-pointer"
                     onClick={() => navigateToSection("contact")}
                   >
                     Contact Sales
