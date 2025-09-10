@@ -1,0 +1,27 @@
+{
+  "home": "Home",
+  "products": "Prodotti",
+  "solutions": "Soluzioni",
+  "services": "Servizi",
+  "consulting": "Consulenza",
+  "support": "Supporto",
+  "helpCenter": "Centro assistenza",
+  "documentation": "Documentazione",
+  "community": "Comunità",
+  "about": "Chi siamo",
+  "workWithUs": "Lavora con noi",
+  "allProducts": "Tutti i prodotti",
+  "heroTitleLine1": "La tua idea",
+  "heroTitleLine2": "merita",
+  "heroTitleHighlight": "codice migliore",
+  "heroSubtitle": "Piccolo team. Grandi idee. Creiamo software che le persone vogliono davvero usare.",
+  "heroButtonWork": "Lavora con noi",
+  "heroButtonSee": "Guarda cosa abbiamo fatto",
+  "gradientText": "Costruiamo <1>marchi che contano</1>, creando esperienze digitali su misura per la tua visione. Ogni progetto è una partnership, ogni soluzione è realizzata con uno scopo.",
+  "gradientCTA": "<0>Contattaci</0>",
+  "languages": {
+    "en": "Inglese",
+    "es": "Spagnolo",
+    "it": "Italiano"
+  }
+}

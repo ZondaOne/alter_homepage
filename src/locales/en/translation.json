@@ -1,0 +1,27 @@
+{
+  "home": "Home",
+  "products": "Products",
+  "solutions": "Solutions",
+  "services": "Services",
+  "consulting": "Consulting",
+  "support": "Support",
+  "helpCenter": "Help Center",
+  "documentation": "Documentation",
+  "community": "Community",
+  "about": "About",
+  "workWithUs": "Work with us",
+  "allProducts": "All Products",
+  "heroTitleLine1": "Your idea",
+  "heroTitleLine2": "deserves",
+  "heroTitleHighlight": "better code",
+  "heroSubtitle": "Small team. Big ideas. We build software that people actually want to use.",
+  "heroButtonWork": "Work with us",
+  "heroButtonSee": "See what we've made",
+  "gradientText": "We build <1>brands that matter</1>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.",
+  "gradientCTA": "<0>Contact us</0>",
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "it": "Italian"
+  }
+}
