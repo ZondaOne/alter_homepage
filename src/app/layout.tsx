@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import FAQ from './components/layout/FAQ';
 import "../i18n"; // inicializa i18n
 
 const crimsonText = Crimson_Text({
@@ -46,7 +47,7 @@ export default function RootLayout({
 
         {/* Main content */}
         <main>{children}</main>
-
+        <FAQ />
         <Footer />
       </body>
     </html>

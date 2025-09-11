@@ -74,14 +74,10 @@ const GradientSection: React.FC = () => {
         {/* Animación con marco arquitectónico */}
         <div className="relative lg:sticky lg:top-20">
           <div className="relative group">
-            {/* Marco geométrico */}
-            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-orange-300"></div>
-            <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-orange-300"></div>
-            <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-orange-300"></div>
-            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-orange-300"></div>
             
             {animationData && (
-              <div className="bg-white shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-neutral-200 p-6">
+               <div className="bg-white  rounded-2xl ">
+
                 <Lottie
                   lottieRef={lottieRef}
                   animationData={animationData}
@@ -105,7 +101,7 @@ const GradientSection: React.FC = () => {
           
           {/* Header minimalista y directo */}
           <div>
-            <div className="section-marker h-px bg-gradient-to-r from-orange-500 to-transparent mb-8 origin-left"></div>
+          
             
             <div className="space-y-2 mb-8">
               <p className="text-xs font-medium text-orange-600 tracking-[0.3em] uppercase">

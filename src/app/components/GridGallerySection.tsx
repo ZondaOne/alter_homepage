@@ -1,6 +1,7 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ExternalLink, ArrowRight, Globe, Zap, Users, Shield } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -11,6 +12,7 @@ interface Project {
   tags: string[];
   color: string;
   accentColor: string;
+  image?: string;
 }
 
 const GridGallerySection = () => {
@@ -31,7 +33,8 @@ const GridGallerySection = () => {
       url: "pixelperfect.zonda.one",
       tags: ["AI", "Image Processing", "React", "WebGL"],
       color: "#f97316",
-      accentColor: "#fb923c"
+      accentColor: "#fb923c",
+      image: "https://i.imgur.com/JT2A7mZ.png"
     },
     {
       id: 2,
@@ -41,7 +44,8 @@ const GridGallerySection = () => {
       url: "comerzia.zonda.one",
       tags: ["Business", "Analytics", "CRM", "Automation"],
       color: "#ea580c",
-      accentColor: "#f97316"
+      accentColor: "#f97316",
+      image: "https://i.imgur.com/U2UveIV.png" 
     },
     {
       id: 3,
@@ -51,99 +55,41 @@ const GridGallerySection = () => {
       url: "comchat.zonda.one",
       tags: ["AI", "Chatbot", "NLP", "Privacy"],
       color: "#fb923c",
-      accentColor: "#ea580c"
+      accentColor: "#ea580c",
+      image: "https://i.imgur.com/FTmgxYV.png"
     }
   ];
 
-  return (
-    <div 
-      className="relative w-full py-20 md:py-32 px-5 md:px-8 overflow-hidden"
-      style={{
-        background: 'linear-gradient(135deg, #fafafa 0%, #ffffff 25%, #fef7f0 50%, #ffffff 75%, #f9fafb 100%)'
-      }}
-    >
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        {/* Tech grid pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <svg width="100%" height="100%" className="absolute inset-0">
-            <defs>
-              <pattern id="tech-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f97316" strokeWidth="0.5" opacity="0.3"/>
-                <circle cx="20" cy="20" r="1" fill="#f97316" opacity="0.2"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#tech-grid)" />
-          </svg>
-        </div>
-        
-        {/* Floating tech symbols */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(15)].map((_, i) => {
-            const positions = [
-              { left: 10, top: 20 }, { left: 85, top: 15 }, { left: 25, top: 80 },
-              { left: 70, top: 75 }, { left: 45, top: 10 }, { left: 15, top: 60 },
-              { left: 80, top: 40 }, { left: 35, top: 85 }, { left: 60, top: 25 },
-              { left: 90, top: 70 }, { left: 5, top: 45 }, { left: 75, top: 90 },
-              { left: 50, top: 5 }, { left: 20, top: 35 }, { left: 95, top: 55 }
-            ];
-            const symbols = ['<>', '/>', '{}', '[]', '()', 'fn', 'AI', 'ML'];
-            return (
-              <div
-                key={i}
-                className="absolute text-orange-500/10 font-mono text-xs animate-float"
-                style={{
-                  left: `${positions[i]?.left || 50}%`,
-                  top: `${positions[i]?.top || 50}%`,
-                  animationDelay: `${i * 0.3}s`,
-                  animationDuration: `${4 + (i % 3)}s`
-                }}
-              >
-                {symbols[i % symbols.length]}
-              </div>
-            );
-          })}
-        </div>
+  const getProjectIcon = (tags: string[]) => {
+    if (tags.includes("AI")) return <Zap className="w-5 h-5" />;
+    if (tags.includes("Business")) return <Users className="w-5 h-5" />;
+    if (tags.includes("Privacy")) return <Shield className="w-5 h-5" />;
+    return <Globe className="w-5 h-5" />;
+  };
 
-        {/* Orange accent particles */}
-        <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => {
-            const particlePositions = [
-              { left: 15, top: 25 }, { left: 75, top: 65 }, { left: 30, top: 80 },
-              { left: 85, top: 20 }, { left: 50, top: 15 }, { left: 10, top: 70 },
-              { left: 65, top: 85 }, { left: 90, top: 45 }
-            ];
-            return (
-              <div
-                key={`particle-${i}`}
-                className="absolute w-1 h-1 bg-orange-400 rounded-full animate-pulse opacity-20"
-                style={{
-                  left: `${particlePositions[i]?.left || 50}%`,
-                  top: `${particlePositions[i]?.top || 50}%`,
-                  animationDelay: `${i * 0.4}s`,
-                }}
-              />
-            );
-          })}
-        </div>
+  return (
+    <div className="relative w-full py-20 md:py-32 px-5 md:px-8 overflow-hidden bg-gray-50">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, #f97316 1px, transparent 1px),
+                           radial-gradient(circle at 75% 75%, #ea580c 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+          backgroundPosition: '0 0, 30px 30px'
+        }} />
       </div>
-      
+
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        {/* Clean header */}
-        <div className="mb-16 md:mb-24 text-center max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="mb-20 text-center max-w-4xl mx-auto">
+       
+          
+           
+          
+          
           <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.9] tracking-tight text-gray-900 mb-8 font-display">
-            {mounted && ready ? t("galleryTitleLine1") : "Our latest"}
-            <br />
-            <span 
-              className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 bg-clip-text text-transparent"
-              style={{
-                background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
+            {mounted && ready ? t("galleryTitleLine1") : "Our latest"}{' '}
+            <span className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 bg-clip-text text-transparent">
               {mounted && ready ? t("galleryTitleHighlight") : "programs"}
             </span>
           </h2>
@@ -152,180 +98,190 @@ const GridGallerySection = () => {
           </p>
         </div>
 
-        {/* Programs Showcase Grid */}
-        <div className="space-y-16">
+        {/* Products Grid */}
+        <div className="space-y-20">
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${
-                index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-              }`}
+              className={`group relative`}
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
             >
-              {/* Project Visual */}
-              <div className="lg:w-1/2 relative">
-                <div className="relative group">
-                  {/* Main showcase card */}
-                  <div 
-                    className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-500 hover:scale-105"
-                    style={{
-                      boxShadow: hoveredProject === project.id 
-                        ? `0 25px 50px -12px ${project.color}40` 
-                        : '0 25px 50px -12px rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    {/* App mockup header */}
-                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                      <div className="flex items-center gap-3">
-                        <div className="flex gap-2">
-                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        </div>
-                        <div className="flex-1 bg-white rounded-md px-4 py-2 text-sm text-gray-600 font-mono border border-gray-200">
-                          https://{project.url}
-                        </div>
-                      </div>
-                    </div>
+              {/* Background accent */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                   style={{ 
+                     background: `linear-gradient(135deg, ${project.color}08 0%, transparent 50%)`,
+                   }} />
+              
+              <div className={`relative flex flex-col xl:flex-row items-center gap-12 xl:gap-16 ${index % 2 === 1 ? 'xl:flex-row-reverse' : ''}`}>
+                
+                {/* Enhanced Image Container */}
+                <div className="xl:w-7/12 relative">
+                  <div className="relative group/image">
+                    {/* Main image container with professional styling */}
+                    <div className="relative overflow-hidden rounded-2xl bg-white shadow-2xl border border-gray-100 transform transition-all duration-700 group-hover:shadow-3xl"
+                         style={{ 
+                           boxShadow: hoveredProject === project.id 
+                             ? `0 25px 50px -12px ${project.color}25, 0 0 0 1px ${project.color}15`
+                             : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                         }}>
+                      
+                      {/* Image with overlay effects */}
+                      <div className="relative">
+                        {project.image ? (
+                          <>
+                            <img
+                              src={project.image}
+                              alt={project.title}
+                              className="w-full h-80 lg:h-96 object-cover transition-all duration-700 group-hover/image:scale-105"
+                            />
+                            {/* Subtle overlay for better text readability */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
+                          </>
+                        ) : (
+                          <div
+                            className="w-full h-80 lg:h-96 flex items-center justify-center text-white text-6xl font-bold transition-all duration-700 group-hover/image:scale-105"
+                            style={{ backgroundColor: project.color }}
+                          >
+                            {project.title.substring(0, 2)}
+                          </div>
+                        )}
 
-                    {/* App content area */}
-                    <div className="relative h-80 bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-                      {/* Project icon/logo area */}
-                      <div 
-                        className="w-32 h-32 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg transform transition-all duration-300 hover:scale-110"
-                        style={{ backgroundColor: project.color }}
-                      >
-                        {project.title.substring(0, 2)}
                       </div>
                       
-                      {/* Floating UI elements */}
-                      <div className="absolute inset-4 pointer-events-none">
-                        <div 
-                          className="absolute top-4 left-4 w-16 h-3 rounded-full opacity-20"
-                          style={{ backgroundColor: project.color }}
-                        ></div>
-                        <div 
-                          className="absolute top-4 right-4 w-8 h-8 rounded-lg opacity-10"
-                          style={{ backgroundColor: project.accentColor }}
-                        ></div>
-                        <div 
-                          className="absolute bottom-4 left-4 w-24 h-2 rounded-full opacity-15"
-                          style={{ backgroundColor: project.color }}
-                        ></div>
-                        <div 
-                          className="absolute bottom-4 right-4 w-12 h-2 rounded-full opacity-10"
-                          style={{ backgroundColor: project.accentColor }}
-                        ></div>
+                      {/* Enhanced URL Card - positioned outside image */}
+                    </div>
+                    
+                    {/* Professional URL presentation */}
+                    <div className="mt-6 flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group/url">
+                          <div className="flex-shrink-0">
+                            <div 
+                              className="w-10 h-10 rounded-lg flex items-center justify-center"
+                              style={{ backgroundColor: `${project.color}15` }}
+                            >
+                              <Globe className="w-5 h-5" style={{ color: project.color }} />
+                            </div>
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-500 mb-1">Live Application</p>
+                            <a
+                              href={`https://${project.url}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-lg font-semibold text-gray-900 hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group/link"
+                            >
+                              <span className="truncate">{project.url}</span>
+                              <ExternalLink className="w-4 h-4 opacity-0 group-hover/url:opacity-100 group-hover/link:translate-x-1 transition-all duration-200" />
+                            </a>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Tech stack badges floating around */}
-                  {project.tags.slice(0, 3).map((tag, tagIndex) => (
-                    <div
-                      key={tagIndex}
-                      className={`absolute bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-medium shadow-lg transition-all duration-300 hover:scale-110 ${
-                        tagIndex === 0 ? 'top-4 -right-4' : 
-                        tagIndex === 1 ? 'bottom-8 -left-4' : 
-                        'top-1/2 -right-8'
-                      }`}
-                      style={{ 
-                        color: project.color,
-                        borderColor: hoveredProject === project.id ? project.color : undefined
-                      }}
-                    >
-                      {tag}
+                {/* Enhanced Content Section */}
+                <div className="xl:w-5/12 space-y-8">
+                  {/* Project badge and tags */}
+                  <div className="space-y-4">
+            
+                  
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <span 
+                          key={tag}
+                          className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full border border-gray-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                  
+                  {/* Title and subtitle */}
+                  <div className="space-y-4">
+                    <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 font-display leading-tight">
+                      {project.title}
+                    </h3>
+                    <h4 className="text-xl lg:text-2xl font-light text-gray-700 leading-relaxed">
+                      {project.subtitle}
+                    </h4>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-lg text-gray-600 leading-relaxed font-light">
+                    {project.description}
+                  </p>
 
-              {/* Project Details */}
-              <div className="lg:w-1/2 space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span 
-                      className="px-3 py-1 rounded-full text-sm font-medium"
+                  {/* Enhanced CTA Button */}
+                  <div className="pt-4">
+                    <button 
+                      className="group/button relative inline-flex items-center gap-3 px-8 py-4 text-white rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
                       style={{ 
-                        backgroundColor: `${project.color}15`,
-                        color: project.color 
+                        backgroundColor: project.color,
+                        boxShadow: `0 10px 30px ${project.color}40`
                       }}
                     >
-                      Project {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-                  
-                  <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 font-display">
-                    {project.title}
-                  </h3>
-                  
-                  <h4 className="text-xl lg:text-2xl font-light text-gray-700">
-                    {project.subtitle}
-                  </h4>
-                </div>
-
-                <p className="text-lg text-gray-600 leading-relaxed font-light">
-                  {project.description}
-                </p>
-
-                {/* Tech stack */}
-                <div className="space-y-3">
-                  <h5 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                    Technology Stack
-                  </h5>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span 
-                        key={tagIndex}
-                        className="px-4 py-2 rounded-lg text-sm font-medium border-2 transition-all duration-200 hover:scale-105"
-                        style={{ 
-                          backgroundColor: hoveredProject === project.id ? `${project.color}10` : 'white',
-                          borderColor: project.color,
-                          color: project.color
+                      {/* Button background animation */}
+                      <div 
+                        className="absolute inset-0 opacity-0 group-hover/button:opacity-100 transition-opacity duration-300"
+                        style={{
+                          background: `linear-gradient(45deg, ${project.color}, ${project.accentColor})`
                         }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                      />
+                      
+                      <span className="relative z-10">Launch {project.title}</span>
+                      <ArrowRight className="relative z-10 w-5 h-5 transition-transform group-hover/button:translate-x-1" />
+                      
+                      {/* Subtle shine effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover/button:opacity-100 transition-opacity duration-500">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-full group-hover/button:translate-x-[-200%] transition-transform duration-1000" />
+                      </div>
+                    </button>
                   </div>
-                </div>
-
-                {/* CTA Button */}
-                <div className="pt-4">
-                  <button 
-                    className="group inline-flex items-center gap-3 px-8 py-4 text-white rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg"
-                    style={{ 
-                      backgroundColor: project.color,
-                      boxShadow: `0 8px 25px ${project.color}40`
-                    }}
-                  >
-                    <span>Launch {project.title}</span>
-                    <svg 
-                      className="w-5 h-5 transition-transform group-hover:translate-x-1" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Call to Action Footer */}
-        <div className="mt-24 text-center">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-xl max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Build Something Amazing?</h3>
-            <p className="text-gray-600 mb-6">
-              Let's discuss your next project and bring your ideas to life with cutting-edge technology.
-            </p>
-            <button className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-              Start Your Project
-            </button>
+        {/* Enhanced Footer CTA */}
+        <div className="mt-32">
+          <div className="relative">
+            {/* Background with subtle pattern */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white to-gray-50 border border-gray-200"></div>
+            <div className="absolute inset-0 rounded-3xl" style={{
+              backgroundImage: `radial-gradient(circle at 30% 20%, ${projects[0].color}08 0%, transparent 50%),
+                               radial-gradient(circle at 70% 80%, ${projects[1].color}08 0%, transparent 50%)`
+            }}></div>
+            
+            <div className="relative p-12 text-center max-w-3xl mx-auto">
+              <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-full border border-orange-200">
+                <Zap className="w-4 h-4 text-orange-600" />
+                <span className="text-sm font-medium text-orange-800">Ready to Innovate</span>
+              </div>
+              
+              <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 font-display">
+                Ready to Build Something Amazing?
+              </h3>
+              <p className="text-xl text-gray-600 mb-8 font-light leading-relaxed">
+                Let's discuss your next project and bring your ideas to life with cutting-edge technology.
+              </p>
+              
+              <button className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 overflow-hidden">
+                <span className="relative z-10">Start Your Project</span>
+                <ArrowRight className="relative z-10 w-5 h-5 transition-transform group-hover:translate-x-1" />
+                
+                {/* Shine effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000" />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
