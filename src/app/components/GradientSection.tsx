@@ -3,103 +3,203 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { useTranslation, Trans } from "react-i18next";
 import Lottie from "lottie-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const GradientSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
-
-  const [mounted, setMounted] = useState(false);
   const [animationData, setAnimationData] = useState<any>(null);
+  const lottieRef = useRef<any>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    // Cargar animación Lottie desde public
+    // Cargar animación
     fetch("/dashboard.json")
       .then((res) => res.json())
-      .then((data) => setAnimationData(data))
-      .catch(console.error);
+      .then(setAnimationData);
 
-    if (!mounted) return;
-
+    // Animaciones más directas y arquitectónicas
     const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-        toggleActions: "play none none none",
-      },
+      scrollTrigger: { 
+        trigger: sectionRef.current, 
+        start: "top 70%",
+      }
     });
 
-    tl.from(sectionRef.current, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: "power3.out",
-    });
-
-    tl.from(
-      textRef.current,
-      {
-        opacity: 0,
-        y: 20,
-        duration: 1.2,
-        ease: "power3.out",
+    tl.fromTo(
+      ".section-marker",
+      { scaleX: 0 },
+      { scaleX: 1, duration: 1.2, ease: "power3.out" }
+    )
+    .fromTo(
+      ".main-title",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+      "-=0.8"
+    )
+    .fromTo(
+      ".step-block",
+      { opacity: 0, x: -30 },
+      { 
+        opacity: 1, 
+        x: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out"
       },
       "-=0.5"
     );
-  }, [mounted]);
+
+    // Gradiente sutil
+    gsap.to(".gradient-text", {
+      backgroundPosition: "200% 50%",
+      repeat: -1,
+      yoyo: true,
+      duration: 12,
+      ease: "none"
+    });
+
+  }, []);
 
   return (
-    <div
-  ref={sectionRef}
-  className="relative w-full min-h-[70vh] bg-gray-100 mt-4 mb-4 flex flex-col md:flex-row items-center justify-center px-4 md:px-8"
->
-  <div className="flex flex-col md:flex-row w-full items-center gap-8 md:gap-12">
-    {/* Lottie left 50% */}
-    <div className="w-full md:w-1/2 flex justify-center items-center">
-      {animationData && (
-        <Lottie 
-          animationData={animationData} 
-          loop 
-          autoplay 
-          className="w-full md:max-w-[600px] h-auto"
-        />
-      )}
-    </div>
+    <section 
+      ref={sectionRef} 
+      className="relative py-32 bg-white"
+    >
+      
+     
 
-    {/* Text right 50% */}
-    <div ref={textRef} className="w-full md:w-1/2 flex flex-col items-start md:items-start gap-6">
-      {mounted && (
-        <>
-          <p className="text-xl md:text-2xl font-light leading-[1.5] text-[#1c1c1c] tracking-wide">
-            <Trans i18nKey="gradientText">
-              We build <span className="text-gray-900 font-normal">brands that matter</span>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.
-            </Trans>
-          </p>
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-start">
+        
+        {/* Animación con marco arquitectónico */}
+        <div className="relative lg:sticky lg:top-20">
+          <div className="relative group">
+            {/* Marco geométrico */}
+            <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-orange-300"></div>
+            <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-orange-300"></div>
+            <div className="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-orange-300"></div>
+            <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-orange-300"></div>
+            
+            {animationData && (
+              <div className="bg-white shadow-[0_20px_40px_rgba(0,0,0,0.08)] border border-neutral-200 p-6">
+                <Lottie
+                  lottieRef={lottieRef}
+                  animationData={animationData}
+                  loop
+                  autoplay
+                  onDOMLoaded={() => {
+                    if (lottieRef.current) {
+                      lottieRef.current.setSpeed?.(0.4);
+                      lottieRef.current.animation?.setSpeed(0.4);
+                    }
+                  }}
+                  className="w-full h-auto lg:h-[600px]"
+                />
+              </div>
+            )}
+          </div>
+        </div>
 
-          {/* CTA */}
-          <Trans i18nKey="gradientCTA">
-            <a
-              href="#contact"
-              className="btn-accent py-3 px-6 rounded-md font-semibold text-white transition-colors duration-200 hover:bg-accent-dark"
-            >
-              Contact us
-            </a>
-          </Trans>
-        </>
-      )}
-    </div>
-  </div>
-</div>
+        {/* Contenido arquitectural */}
+        <div className="space-y-16">
+          
+          {/* Header minimalista y directo */}
+          <div>
+            <div className="section-marker h-px bg-gradient-to-r from-orange-500 to-transparent mb-8 origin-left"></div>
+            
+            <div className="space-y-2 mb-8">
+              <p className="text-xs font-medium text-orange-600 tracking-[0.3em] uppercase">
+                ZONDA ONE
+              </p>
+              <h2 className="font-display main-title text-6xl lg:text-7xl font-thin text-neutral-900 leading-[0.85] tracking-[-0.03em]">
+                SOLUTIONS
+              </h2>
+              <h2 className="font-display gradient-text text-6xl lg:text-7xl font-black bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent leading-[0.85] tracking-[-0.03em]" style={{ backgroundSize: "200%" }}>
+                ENGINEERED
+              </h2>
+              <p className="text-2xl font-thin italic text-neutral-600 tracking-wide mt-6">
+                FOR IMPACT
+              </p>
+            </div>
+            
+            <div className="border-l-2 border-orange-300 pl-6">
+              <p className="text-lg text-neutral-700 leading-[1.6] font-light max-w-lg">
+                We architect digital experiences that don't just meet expectations—they redefine them. 
+                Every project is a statement of precision, purpose, and uncompromising quality.
+              </p>
+            </div>
+          </div>
 
+          {/* Process blocks - arquitectónicos */}
+          <div className="space-y-8">
+            <div className="border-l-2 border-neutral-200 pl-6">
+              <h3 className="text-sm font-medium text-neutral-500 tracking-[0.2em] uppercase mb-6">
+                PROCESS
+              </h3>
+            </div>
+            
+            {[
+              {
+                number: "01",
+                title: "STRATEGIC ANALYSIS",
+                description: "Deep-dive into business architecture. We dissect challenges, identify leverage points, and map transformation pathways."
+              },
+              {
+                number: "02",
+                title: "PRECISION ENGINEERING", 
+                description: "Technical mastery meets creative vision. We build solutions that perform flawlessly under pressure and scale without compromise."
+              },
+              {
+                number: "03",
+                title: "PERFORMANCE MASTERY",
+                description: "Relentless optimization and measurement. Every metric matters, every improvement compounds into measurable business impact."
+              },
+            ].map((step, i) => (
+              <div key={i} className="step-block group">
+                <div className="grid grid-cols-12 gap-6 py-8 border-t border-neutral-200 hover:border-orange-300 transition-colors duration-500">
+                  
+                  <div className="col-span-2">
+                    <div className="text-3xl font-black text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
+                      {step.number}
+                    </div>
+                  </div>
+                  
+                  <div className="col-span-10 space-y-3">
+                    <h4 className="text-xl font-bold text-neutral-900 tracking-wide group-hover:text-orange-800 transition-colors duration-300">
+                      {step.title}
+                    </h4>
+                    <p className="text-neutral-600 leading-relaxed font-light text-base max-w-md">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
+          {/* CTA minimalista */}
+          <div className="pt-8 space-y-6">
+            <div className="h-px bg-gradient-to-r from-orange-500 to-transparent"></div>
+            
+            <div className="flex flex-col sm:flex-row gap-6">
+              <button className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300">
+                <span className="flex items-center gap-3">
+                  INITIATE PROJECT
+                  <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
+                </span>
+              </button>
+              
+              <button className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300">
+                <span className="flex items-center gap-3">
+                  VIEW PORTFOLIO
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
