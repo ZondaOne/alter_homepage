@@ -19,10 +19,13 @@ const InteractiveBlobsSection: React.FC = () => {
 
       // --- INITIAL STATES ---
       if (blobs.length > 0) {
-        gsap.set(blobs[0], { x: "-20vw", y: "-10vh", scale: 0.8 });
+        gsap.set(blobs[0], { x: "-60vw", y: "-25vh", scale: 0.6 });
       }
       if (blobs.length > 1) {
-        gsap.set(blobs[1], { x: "20vw", y: "10vh", scale: 1.2 });
+        gsap.set(blobs[1], { x: "60vw", y: "25vh", scale: 1.0 });
+      }
+      if (blobs.length > 2) {
+        gsap.set(blobs[2], { x: "-30vw", y: "-40vh", scale: 0.8 });
       }
       if (logoPaths.length > 0) {
         gsap.set(logoPaths, {
@@ -96,15 +99,25 @@ const InteractiveBlobsSection: React.FC = () => {
         <div
           className="blob blob1"
           style={{
-            '--color1': 'rgba(255, 145, 77, 0.7)',
-            '--color2': 'rgba(255, 145, 77, 0.1)',
+            '--color1': 'rgba(255, 87, 34, 0.9)',
+            '--color2': 'rgba(255, 193, 7, 0.4)',
+            '--color3': 'rgba(255, 152, 0, 0.6)',
           } as React.CSSProperties}
         />
         <div
           className="blob blob2"
           style={{
-            '--color1': 'rgba(255, 49, 49, 0.6)',
-            '--color2': 'rgba(255, 49, 49, 0.1)',
+            '--color1': 'rgba(244, 67, 54, 0.8)',
+            '--color2': 'rgba(233, 30, 99, 0.5)',
+            '--color3': 'rgba(156, 39, 176, 0.3)',
+          } as React.CSSProperties}
+        />
+        <div
+          className="blob blob3"
+          style={{
+            '--color1': 'rgba(255, 193, 7, 0.7)',
+            '--color2': 'rgba(255, 87, 34, 0.5)',
+            '--color3': 'rgba(244, 67, 54, 0.4)',
           } as React.CSSProperties}
         />
       </div>
@@ -115,7 +128,7 @@ const InteractiveBlobsSection: React.FC = () => {
           ref={logoRef}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 500 500"
-          className="w-80 h-80 sm:w-96 sm:h-96 mb-8"
+          className="w-110 h-110 sm:w-96 sm:h-96 mb-8"
         >
           {/* Paths are now easier to target with a class */}
           <path className="logo-path" d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z" fill="#fff" />
@@ -131,7 +144,7 @@ const InteractiveBlobsSection: React.FC = () => {
           --cream-base: #F5F3EF;
         }
         
-        /* The Grainy Texture Overlay */
+        /* Enhanced Grainy Texture Overlay */
         .grain-overlay {
           position: absolute;
           top: 0;
@@ -140,15 +153,23 @@ const InteractiveBlobsSection: React.FC = () => {
           height: 100%;
           pointer-events: none;
           z-index: 2;
-          opacity: 0.1;
+          opacity: 0.5;
+          mix-blend-mode: multiply;
         }
         .grain-overlay::before {
           content: "";
           position: absolute;
           top: -100%; left: -100%;
           width: 300%; height: 300%;
-          background-image: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noise)"/></svg>');
-          animation: grain-pan 5s steps(10) infinite;
+          background-image: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="3"/></filter><rect width="100%" height="100%" filter="url(#noise)" opacity="0.9"/></svg>');
+          animation: grain-pan 6s steps(20) infinite;
+        }
+        .grain-overlay::after {
+          content: "";
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: radial-gradient(ellipse at center, transparent 20%, rgba(255, 87, 34, 0.08) 60%, rgba(244, 67, 54, 0.15) 100%);
         }
         
         @keyframes grain-pan {
@@ -164,34 +185,43 @@ const InteractiveBlobsSection: React.FC = () => {
           90% { transform: translate(-10%, 10%); }
         }
 
-        /* The Animated Blobs */
+        /* The Enhanced Animated Blobs */
         .blob {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          mix-blend-mode: multiply; /* Creates beautiful color overlaps */
-          filter: blur(40px); /* Start with a heavy blur */
-          background: radial-gradient(circle at center, var(--color1) 0%, var(--color2) 100%);
-          will-change: border-radius, transform; /* Performance */
+          mix-blend-mode: hard-light;
+          filter: blur(4px) saturate(1.2) contrast(1.5) brightness(1.3) hue-rotate(-5deg);
+          background: radial-gradient(ellipse at 25% 15%, var(--color1) 0%, var(--color2) 30%, var(--color3) 55%, transparent 80%);
+          will-change: border-radius, transform;
         }
         
         .blob1 {
-          width: 800px;
-          height: 800px;
-          animation: morph 10s ease-in-out infinite;
+          width: 750px;
+          height: 750px;
+          animation: morph 12s ease-in-out infinite;
         }
         
         .blob2 {
-          width: 700px;
-          height: 700px;
-          animation: morph 8s ease-in-out infinite reverse; /* Different timing for variety */
+          width: 650px;
+          height: 650px;
+          animation: morph 9s ease-in-out infinite reverse;
+        }
+        
+        .blob3 {
+          width: 550px;
+          height: 550px;
+          animation: morph 15s ease-in-out infinite;
+          animation-delay: -5s;
         }
         
         @keyframes morph {
-          0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-          50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-          100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(-50%, -50%) rotate(0deg); }
+          25% { border-radius: 40% 60% 50% 30% / 70% 40% 60% 30%; transform: translate(-50%, -50%) rotate(90deg); }
+          50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(-50%, -50%) rotate(180deg); }
+          75% { border-radius: 70% 30% 40% 60% / 40% 70% 50% 60%; transform: translate(-50%, -50%) rotate(270deg); }
+          100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(-50%, -50%) rotate(360deg); }
         }
       `}</style>
     </section>
