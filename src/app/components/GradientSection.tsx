@@ -108,10 +108,9 @@ const GradientSection: React.FC = () => {
               <div className="relative group">
                 {/* Decoración arquitectónica */}
                 <div className="absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 border-r-2 border-b-2 border-orange-200 opacity-60"></div>
                 
                 {animationData && (
-                  <div className="bg-white rounded-2xl p-8 shadow-xl shadow-orange-100/50 border border-orange-100/30">
+                  <div className="bg-white rounded-2xl p-8">
                     <Lottie
                       lottieRef={lottieRef}
                       animationData={animationData}
