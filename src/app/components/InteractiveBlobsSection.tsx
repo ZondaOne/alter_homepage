@@ -86,7 +86,7 @@ const InteractiveBlobsSection: React.FC = () => {
   return (
     <section
       ref={main}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-cream-base"
+      className="hidden md:flex relative min-h-screen flex-col items-center justify-center overflow-hidden bg-cream-base"
     >
       {/* Grainy Texture Overlay */}
       <div className="grain-overlay" />
