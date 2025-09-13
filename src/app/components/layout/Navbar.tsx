@@ -239,11 +239,191 @@ const Navbar: React.FC = () => {
         </div>
       </motion.nav>
 
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="fixed top-16 left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg z-[999] lg:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="max-w-[1440px] mx-auto px-6 py-4">
+              <div className="flex flex-col space-y-1">
+                {/* Mobile Navigation Items */}
+                {[
+                  { key: "products", label: t("products"), dropdown: true },
+                  { key: "consulting", label: t("consulting") },
+                  { key: "support", label: t("support"), dropdown: true },
+                  { key: "about", label: t("about") },
+                ].map((item) => (
+                  <div key={item.key} className="border-b border-gray-100 last:border-b-0">
+                    <button
+                      onClick={() =>
+                        item.dropdown
+                          ? handleDropdownToggle(item.key)
+                          : navigateToSection(item.key)
+                      }
+                      className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between"
+                    >
+                      {mounted ? item.label : " "}
+                      {item.dropdown && (
+                        <svg
+                          className={`w-5 h-5 transition-transform duration-200 ease-in-out ${
+                            activeDropdown === item.key ? "rotate-180" : ""
+                          }`}
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M4.5 6L8 9.5L11.5 6" />
+                        </svg>
+                      )}
+                    </button>
+
+                    {/* Mobile Dropdown Items */}
+                    <AnimatePresence>
+                      {item.dropdown && activeDropdown === item.key && mounted && (
+                        <motion.div
+                          className="bg-gray-50 rounded-md mb-3 overflow-hidden"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {item.key === "products" && (
+                            <>
+                              <button
+                                onClick={() => navigateToSection("products")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("allProducts")}
+                              </button>
+                              <button
+                                onClick={() => navigateToSection("solutions")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("solutions")}
+                              </button>
+                              <button
+                                onClick={() => navigateToSection("services")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("services")}
+                              </button>
+                            </>
+                          )}
+
+                          {item.key === "support" && (
+                            <>
+                              <button
+                                onClick={() => navigateToSection("support")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("helpCenter")}
+                              </button>
+                              <button
+                                onClick={() => navigateToSection("documentation")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("documentation")}
+                              </button>
+                              <button
+                                onClick={() => navigateToSection("community")}
+                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                              >
+                                {t("community")}
+                              </button>
+                            </>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+
+                {/* Mobile Language Selector */}
+                <div className="border-b border-gray-100 pb-3 pt-2">
+                  <button
+                    onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                    className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Globe2 size={20} className="text-orange-500" />
+                      <span>{t("language")}</span>
+                    </div>
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-200 ease-in-out ${
+                        isLangMenuOpen ? "rotate-180" : ""
+                      }`}
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M4.5 6L8 9.5L11.5 6" />
+                    </svg>
+                  </button>
+
+                  <AnimatePresence>
+                    {isLangMenuOpen && mounted && (
+                      <motion.div
+                        className="bg-gray-50 rounded-md mt-2 overflow-hidden"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {["en", "es", "it"]
+                          .filter((lng) => lng !== i18n.language)
+                          .map((lng) => (
+                            <button
+                              key={lng}
+                              onClick={() => changeLanguage(lng)}
+                              className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
+                            >
+                              {t(`languages.${lng}`)}
+                            </button>
+                          ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Mobile CTA Button */}
+                <div className="pt-2">
+                  <button
+                    className="w-full bg-neutral-900 text-white py-3 px-4 rounded-md text-base font-medium transition-colors duration-200 hover:bg-neutral-800"
+                    onClick={() => navigateToSection("contact")}
+                  >
+                    {mounted ? t("workWithUs") : " "}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Overlay to close dropdown */}
       {activeDropdown && (
         <div
           className="fixed top-16 left-0 w-full h-[calc(100vh-64px)] bg-transparent z-[100]"
           onClick={() => setActiveDropdown(null)}
+        />
+      )}
+
+      {/* Overlay to close mobile menu */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black/20 z-[900] lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
     </>
