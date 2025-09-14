@@ -1,7 +1,10 @@
+"use client";
+
 import Hero from "./components/Hero";
 import InteractiveBlobsSection from "./components/InteractiveBlobsSection";
 import GradientSection from "./components/GradientSection";
 import GridGallerySection from './components/GridGallerySection';
+import SimpleParallax from "simple-parallax-js";
 
 export default function HomePage() {
   return (
@@ -11,14 +14,15 @@ export default function HomePage() {
       <main className="relative z-10">
 
          {/* Imagen horizontal justo debajo de GradientSection */}
-        <div className="w-full mt-8">
+ 
+          <SimpleParallax>
           <img
-            src="https://i.imgur.com/pKFQ8vg.png"
+            src="/banner.png"
             alt="Imagen horizontal"
-            className="w-full h-auto object-cover"
+            className="w-full h-300 object-cover"
           />
-        </div>
-        {/* Gradient Section */}
+          </SimpleParallax>
+          {/* Gradient Section */}
         <GradientSection />
 
        
