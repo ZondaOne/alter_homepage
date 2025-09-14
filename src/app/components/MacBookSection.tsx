@@ -6,10 +6,26 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useEffect, useRef, useState, Suspense } from "react";
 import * as THREE from "three";
 
-const MacContainer = () => {
+const MacContainer = ({ currentImage, isFlipping }: { currentImage: string; isFlipping: boolean }) => {
     const model = useGLTF("./models/mac.glb");
-    const tex = useTexture("./bg.png");
+    const tex = useTexture(currentImage);
     const screenRef = useRef<THREE.Mesh>(null);
+    const groupRef = useRef<THREE.Group>(null);
+    const flipProgress = useRef(0);
+    const flipStartTime = useRef(0);
+    const flipDuration = 0.6; // 600ms total flip time
+
+    // Optimize texture quality
+    useMemo(() => {
+        if (tex) {
+            tex.generateMipmaps = true;
+            tex.minFilter = THREE.LinearMipmapLinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            tex.anisotropy = 16; // Maximum anisotropy for better quality
+            tex.flipY = true; // Fix image orientation
+            tex.needsUpdate = true;
+        }
+    }, [tex]);
 
     const meshes = useMemo(() => {
         const meshMap: any = {};
@@ -26,30 +42,64 @@ const MacContainer = () => {
 
     useMemo(() => {
         if (meshes.screen) {
-            meshes.screen.rotation.x = THREE.MathUtils.degToRad(180);
+            meshes.screen.rotation.x = THREE.MathUtils.degToRad(180); // Restore screen rotation
             screenRef.current = meshes.screen;
         }
         if (meshes.matte && meshes.matte.material) {
             const material = meshes.matte.material;
             material.map = tex;
+            material.emissive = new THREE.Color(0x000000); // No emissive
             material.emissiveIntensity = 0;
             material.metalness = 0;
-            material.roughness = 1;
+            material.roughness = 0;
+            material.transparent = false;
+            material.alphaTest = 0;
+            // Remove any color tinting that might wash out the image
+            material.color = new THREE.Color(0xffffff);
+            // Ensure high quality rendering
+            material.precision = 'highp';
             material.needsUpdate = true;
         }
     }, [meshes, tex]);
 
     const data = useScroll();
 
-    useFrame(() => {
+    useFrame((state) => {
+        // Handle screen animation
         if (screenRef.current) {
             screenRef.current.rotation.x = THREE.MathUtils.degToRad(180 - data.offset * 90);
+        }
+
+        // Handle 360° flip animation with easing
+        if (isFlipping && groupRef.current) {
+            if (flipStartTime.current === 0) {
+                flipStartTime.current = state.clock.elapsedTime;
+            }
+
+            const elapsed = state.clock.elapsedTime - flipStartTime.current;
+            const progress = Math.min(elapsed / flipDuration, 1);
+
+            // Smooth easing function (ease-out)
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+            groupRef.current.rotation.y = easedProgress * Math.PI * 2;
+
+            // Complete animation
+            if (progress >= 1) {
+                groupRef.current.rotation.y = 0;
+                flipStartTime.current = 0;
+            }
+        } else if (groupRef.current && !isFlipping) {
+            groupRef.current.rotation.y = 0;
+            flipStartTime.current = 0;
         }
     });
 
     return (
         <group position={[0, -14, 20]}>
-            <primitive object={model.scene} />
+            <group ref={groupRef}>
+                <primitive object={model.scene} />
+            </group>
         </group>
     );
 };
@@ -63,15 +113,16 @@ const LoadingSpinner = () => (
     </div>
 );
 
-const MacBookCanvas = () => (
+const MacBookCanvas = ({ currentImage, isFlipping }: { currentImage: string; isFlipping: boolean }) => (
     <Canvas
         camera={{ fov: 12, position: [0, -10, 220] }}
         dpr={[1, 1.5]} // Limit pixel ratio for performance
         performance={{ min: 0.5 }} // Auto-adjust quality
         gl={{
-            antialias: false, // Disable antialiasing for performance
+            antialias: true, // Enable antialiasing for better texture quality
             alpha: false,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            precision: "highp" // High precision for better texture rendering
         }}
         frameloop="demand" // Only render when needed
     >
@@ -82,7 +133,7 @@ const MacBookCanvas = () => (
             <directionalLight position={[-10, 5, 5]} intensity={1.4} />
             <pointLight position={[0, 0, 10]} intensity={0.4} />
             <ScrollControls pages={3} damping={0.2}>
-                <MacContainer />
+                <MacContainer currentImage={currentImage} isFlipping={isFlipping} />
             </ScrollControls>
         </Suspense>
     </Canvas>
@@ -91,12 +142,36 @@ const MacBookCanvas = () => (
 const MacBookSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const [shouldRender, setShouldRender] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isFlipping, setIsFlipping] = useState(false);
+
+    const images = ["./bg.png", "./bg2.png"];
+    const currentImage = images[currentImageIndex];
+
+    const nextImage = () => {
+        if (isFlipping) return; // Prevent multiple clicks during animation
+        setIsFlipping(true);
+        setTimeout(() => {
+            setCurrentImageIndex((prev) => (prev + 1) % images.length);
+        }, 300); // Change image at halfway point
+        setTimeout(() => setIsFlipping(false), 600); // Complete animation
+    };
+
+    const prevImage = () => {
+        if (isFlipping) return; // Prevent multiple clicks during animation
+        setIsFlipping(true);
+        setTimeout(() => {
+            setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+        }, 300); // Change image at halfway point
+        setTimeout(() => setIsFlipping(false), 600); // Complete animation
+    };
 
     // Start preloading immediately in background
     useEffect(() => {
         const timer = setTimeout(() => {
             useGLTF.preload("./models/mac.glb");
             useTexture.preload("./bg.png");
+            useTexture.preload("./bg2.png");
         }, 1000); // Small delay to not interfere with initial page load
 
         return () => clearTimeout(timer);
@@ -141,9 +216,42 @@ const MacBookSection = () => {
                 scrollSnapStop: 'always'
             }}
         >
+            {/* Floating Arrow Controls */}
+            {shouldRender && (
+                <>
+                    {/* Left Arrow */}
+                    <button
+                        onClick={prevImage}
+                        className="absolute top-1/2 -translate-y-1/2 z-10 transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110"
+                        style={{
+                            left: '10%',
+                            filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))'
+                        }}
+                    >
+                        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" className="text-white">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </button>
+
+                    {/* Right Arrow */}
+                    <button
+                        onClick={nextImage}
+                        className="absolute top-1/2 -translate-y-1/2 z-10 transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110"
+                        style={{
+                            right: '10%',
+                            filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))'
+                        }}
+                    >
+                        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" className="text-white">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </button>
+                </>
+            )}
+
             {shouldRender ? (
                 <Suspense fallback={<LoadingSpinner />}>
-                    <MacBookCanvas />
+                    <MacBookCanvas currentImage={currentImage} isFlipping={isFlipping} />
                 </Suspense>
             ) : (
                 <div className="flex items-center justify-center h-full">
