@@ -16,13 +16,15 @@ export default function HomePage() {
 
          {/* Imagen horizontal justo debajo de GradientSection */}
  
-          <SimpleParallax>
-          <img
-            src="/banner.png"
-            alt="Imagen horizontal"
-            className="w-full h-300 object-cover"
-          />
-          </SimpleParallax>
+          <div className="hidden md:block">
+            <SimpleParallax>
+            <img
+              src="/banner.png"
+              alt="Imagen horizontal"
+              className="w-full h-300 object-cover"
+            />
+            </SimpleParallax>
+          </div>
           {/* Gradient Section */}
         <GradientSection />
 

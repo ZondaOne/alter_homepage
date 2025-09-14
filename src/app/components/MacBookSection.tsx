@@ -253,7 +253,7 @@ const MacBookSection = () => {
     return (
         <div
             ref={sectionRef}
-            className="w-full h-screen relative bg-black text-white snap-center snap-always flex flex-col md:flex-row"
+            className="hidden md:flex w-full h-screen relative bg-black text-white snap-center snap-always flex-col md:flex-row"
             style={{ scrollSnapAlign: 'center', scrollSnapStop: 'always' }}
         >
             {/* --- LAYOUT: Left side for Info, Right side for Canvas --- */}
