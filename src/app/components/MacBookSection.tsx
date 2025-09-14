@@ -76,9 +76,11 @@ const MacBookCanvas = () => (
         frameloop="demand" // Only render when needed
     >
         <Suspense fallback={null}>
-            {/* Simplified lighting instead of heavy HDRI */}
-            <ambientLight intensity={0.4} />
-            <directionalLight position={[10, 10, 5]} intensity={0.8} />
+            {/* Enhanced lighting to make MacBook lighter */}
+            <ambientLight intensity={1.5} />
+            <directionalLight position={[10, 10, 5]} intensity={2.2} />
+            <directionalLight position={[-10, 5, 5]} intensity={1.4} />
+            <pointLight position={[0, 0, 10]} intensity={0.4} />
             <ScrollControls pages={3} damping={0.2}>
                 <MacContainer />
             </ScrollControls>
