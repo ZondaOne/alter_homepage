@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import InteractiveBlobsSection from "./components/InteractiveBlobsSection";
 import GradientSection from "./components/GradientSection";
 import GridGallerySection from './components/GridGallerySection';
+import MacBookSection from './components/MacBookSection';
 import SimpleParallax from "simple-parallax-js";
 
 export default function HomePage() {
@@ -29,6 +30,9 @@ export default function HomePage() {
 
         {/* Grid Gallery */}
         <GridGallerySection />
+
+        {/* MacBook Section */}
+        <MacBookSection />
       </main>
     </>
   );
