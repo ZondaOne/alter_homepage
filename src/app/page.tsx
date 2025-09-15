@@ -5,6 +5,7 @@ import InteractiveBlobsSection from "./components/InteractiveBlobsSection";
 import GradientSection from "./components/GradientSection";
 import GridGallerySection from './components/GridGallerySection';
 import MacBookSection from './components/MacBookSection';
+import ScrollZoom from './components/SimpleParallax';
 import SimpleParallax from "simple-parallax-js";
 
 export default function HomePage() {
@@ -17,14 +18,18 @@ export default function HomePage() {
          {/* Imagen horizontal justo debajo de GradientSection */}
  
           <div className="hidden md:block">
-            <SimpleParallax>
-            <img
-              src="/banner.png"
-              alt="Imagen horizontal"
-              className="w-full h-300 object-cover"
-            />
-            </SimpleParallax>
-          </div>
+            <ScrollZoom>
+  <SimpleParallax scale={1.2}  transition="transform 0.1s linear">
+    <img
+      src="/banner.png"
+      alt="Imagen horizontal"
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  </SimpleParallax>
+  </ScrollZoom>
+</div>
+
+        
           {/* Gradient Section */}
         <GradientSection />
 

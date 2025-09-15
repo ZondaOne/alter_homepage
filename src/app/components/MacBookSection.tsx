@@ -29,7 +29,7 @@ const products = [
 
 // --- Constants ---
 const FLIP_LERP_FACTOR = 4.5;
-const SWAP_IMAGE_DELAY = 400;
+const SWAP_IMAGE_DELAY = 100;
 const TOTAL_FLIP_DURATION = 1000;
 
 // --- BackgroundPlane ---
@@ -39,11 +39,11 @@ const BackgroundPlane = ({ product }: { product: typeof products[0] }) => {
   const material = useMemo(() => {
     switch (product.title) {
       case "PixelPerfect":
-        return new THREE.MeshBasicMaterial({ color: "#1e3c72" }); 
+        return new THREE.MeshBasicMaterial({ color: "#83a7ea" }); 
       case "Comerzia":
         return new THREE.MeshBasicMaterial({ color: "#f7971e" }); 
       case "ComChat":
-       return new THREE.MeshBasicMaterial({ color: "#1ef7e1ff" }); 
+       return new THREE.MeshBasicMaterial({ color: "#dedede" }); 
       default:
         return new THREE.MeshBasicMaterial({ color: "black" });
     }
@@ -200,7 +200,7 @@ const LoadingSpinner = () => (
   <div className="flex items-center justify-center h-full">
     <div className="relative">
       <div className="w-12 h-12 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
-      <p className="text-white text-sm mt-4 text-center">Loading MacBook...</p>
+      <p className="text-white text-sm mt-4 text-center">Loading ...</p>
     </div>
   </div>
 );
