@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ScrollControls, useGLTF, useScroll, useTexture } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import { useMemo, useEffect, useRef, useState, Suspense } from "react";
 import * as THREE from "three";
 
@@ -24,148 +24,116 @@ const products = [
     }
 ];
 
-// --- TUNABLE CONSTANTS ---
-// Adjust these values to change flip speed and logo size/placement
-const FLIP_LERP_FACTOR = 2.0; // lower => slower follow (was 8)
-const SWAP_IMAGE_DELAY = 800; // ms before swapping the product image (was 300)
-const TOTAL_FLIP_DURATION = 2000; // ms until isFlipping becomes false (was 800)
-const LOGO_PLANE_SIZE = { width: 10, height: 6 };
+// --- OPTIMIZED CONSTANTS ---
+const FLIP_LERP_FACTOR = 4.5;
+const SWAP_IMAGE_DELAY = 400;
+const TOTAL_FLIP_DURATION = 1200;
+const ROTATION_SMOOTHING = 8.0;
 
-// SECTION: 3D Model and Canvas
-// ==========================================
-
-const MacContainer = ({ currentImage, isFlipping, scrollProgress }: { currentImage: string; isFlipping: boolean; scrollProgress: number }) => {
+// --- MacContainer Component ---
+const MacContainer = ({
+    currentImage,
+    isFlipping,
+    scrollProgress,
+    flipDirection
+}: {
+    currentImage: string;
+    isFlipping: boolean;
+    scrollProgress: number;
+    flipDirection: number;
+}) => {
     const model = useGLTF("./models/mac.glb");
-    const tex = useTexture(currentImage);
+
+    // Preload todas las texturas
+    const textures = useTexture(products.map(p => p.image));
+
     const screenRef = useRef<THREE.Mesh>(null);
     const groupRef = useRef<THREE.Group>(null);
     const meshesRef = useRef<any>({});
 
-    // --- IMPROVEMENT: Smoother animation state ---
-    const targetRotation = useRef(0);
+    // Animaciones suaves
+    const targetRotationY = useRef(0);
+    const currentRotationY = useRef(0);
+    const targetScreenRotation = useRef(0);
+    const currentScreenRotation = useRef(0);
 
+    // --- Flip con dirección ---
     useEffect(() => {
         if (isFlipping) {
-            // Request a full 360° spin — the actual perceived speed is controlled in useFrame by FLIP_LERP_FACTOR
-            targetRotation.current += Math.PI * 2;
+            targetRotationY.current += Math.PI * 2 * flipDirection;
         }
-    }, [isFlipping]);
-    
-    // --- IMPROVEMENT: Highest possible image quality ---
-    useMemo(() => {
-        if (tex) {
-            tex.colorSpace = (THREE as any).SRGBColorSpace || (THREE as any).sRGBEncoding;
-            tex.generateMipmaps = true;
-            tex.minFilter = THREE.LinearMipmapLinearFilter;
-            tex.magFilter = THREE.LinearFilter;
-            tex.anisotropy = 16;
-            tex.flipY = true;
-            tex.needsUpdate = true;
-        }
-    }, [tex]);
+    }, [isFlipping, flipDirection]);
 
+    // --- Store meshes ---
     const meshes = useMemo(() => {
         const meshMap: any = {};
         model.scene.traverse((e: any) => {
             meshMap[e.name] = e;
-            if (e.material) {
-                e.frustumCulled = false;
-            }
+            if (e.material) e.frustumCulled = false;
         });
         meshesRef.current = meshMap;
         return meshMap;
     }, [model.scene]);
 
-    useMemo(() => {
+    // --- Inicializar materiales ---
+    useEffect(() => {
+        if (!meshes.matte) return;
+        const material = meshes.matte.material;
+        material.color = new THREE.Color(0xffffff);
+        material.emissiveIntensity = 0;
+        material.metalness = 0;
+        material.roughness = 1;
+
+        // Asignar textura inicial
+        const index = products.findIndex(p => p.image === currentImage);
+        if (textures[index]) material.map = textures[index];
+        material.needsUpdate = true; // Solo al inicio
+    }, [meshes, textures]);
+
+    // --- Actualizar textura al cambiar currentImage ---
+    useEffect(() => {
+        if (!meshes.matte) return;
+        const material = meshes.matte.material;
+        const index = products.findIndex(p => p.image === currentImage);
+        if (textures[index]) {
+            material.map = textures[index]; // Swap rápido sin recompilar
+        }
+    }, [currentImage, meshes, textures]);
+
+    // --- Referencia al screen ---
+    useEffect(() => {
         if (meshes.screen) {
             meshes.screen.rotation.x = THREE.MathUtils.degToRad(180);
             screenRef.current = meshes.screen;
         }
-        if (meshes.matte && meshes.matte.material) {
-            const material = meshes.matte.material;
-            material.map = tex;
-            material.color = new THREE.Color(0xffffff);
-            material.emissiveIntensity = 0;
-            material.metalness = 0;
-            material.roughness = 1;
-            material.needsUpdate = true;
-        }
-    }, [meshes, tex]);
+    }, [meshes]);
 
-    // --- RANDOM LOGO ON THE BACK ---
-    const logoCandidates = [
-        "https://i.imgur.com/FS4PhT4.png"
-    ];
-    const [logoPath] = useState(() => logoCandidates[Math.floor(Math.random() * logoCandidates.length)]);
-    const logoTex = useTexture(logoPath);
-
-    useEffect(() => {
-        // When the model is ready, try to attach a small plane to the lid/back surface.
-        if (!logoTex || !meshesRef.current) return;
-
-        // Heuristic: try to find a mesh that looks like the lid/back
-        const lidMesh = Object.values(meshesRef.current).find((m: any) => {
-            if (!m || !m.name) return false;
-            return /lid|screen_back|back|top|rear|cover/i.test(m.name);
-        }) || meshesRef.current['screen'] || model.scene;
-
-        // Create plane and material
-        const logoMaterial = new THREE.MeshBasicMaterial({ map: logoTex, transparent: true, alphaTest: 0.4, side: THREE.DoubleSide });
-        const logoGeometry = new THREE.PlaneGeometry(LOGO_PLANE_SIZE.width, LOGO_PLANE_SIZE.height);
-        const logoMesh = new THREE.Mesh(logoGeometry, logoMaterial);
-
-        // Positioning: try to place slightly above the lid's local origin and facing outward
-        try {
-            // Reset local transform
-            logoMesh.position.set(0, 0, 0.01);
-            logoMesh.rotation.set(0, 0, 0);
-
-            // If the lidMesh has a known bounding box, we can push the logo slightly outwards
-            const bbox = new THREE.Box3().setFromObject(lidMesh);
-            const size = new THREE.Vector3();
-            bbox.getSize(size);
-
-            // Place the logo near the center-top area of the lid/back (heuristic)
-            logoMesh.position.set(0, size.y * 0.15, size.z * 0.51);
-
-            // Align rotation to the lid (if lid has rotation)
-            logoMesh.rotation.copy(lidMesh.rotation || new THREE.Euler());
-
-            // Slightly scale down if the lid is small
-            const scaleFactor = Math.max(0.4, Math.min(1.0, size.x / 20));
-            logoMesh.scale.setScalar(scaleFactor);
-
-            // Add as child to maintain transform with the lid
-            lidMesh.add(logoMesh);
-        } catch (e) {
-            // Fallback: add to root
-            model.scene.add(logoMesh);
-        }
-
-        return () => {
-            try {
-                if (logoMesh.parent) logoMesh.parent.remove(logoMesh);
-                logoGeometry.dispose();
-                logoMaterial.dispose();
-            } catch (e) {}
-        };
-    }, [logoTex, meshesRef, model.scene]);
-
+    // --- Animaciones en cada frame ---
     useFrame((_, delta) => {
-        // Use the external scroll progress instead of internal scroll
+        const deltaMultiplier = Math.min(delta * 60, 2);
+
+        // Rotación de la pantalla según scroll
         if (screenRef.current) {
-            // Clamp the scroll progress to prevent over-rotation
-            const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
-            screenRef.current.rotation.x = THREE.MathUtils.degToRad(180 - clampedProgress * 90);
+            const clamped = Math.max(0, Math.min(1, scrollProgress));
+            targetScreenRotation.current = THREE.MathUtils.degToRad(180 - clamped * 90);
+            currentScreenRotation.current = THREE.MathUtils.lerp(
+                currentScreenRotation.current,
+                targetScreenRotation.current,
+                deltaMultiplier * 0.1
+            );
+            screenRef.current.rotation.x = currentScreenRotation.current;
         }
 
-        // Smoother 360° flip animation (slower now)
+        // Rotación del Mac
         if (groupRef.current) {
-             groupRef.current.rotation.y = THREE.MathUtils.lerp(
-                groupRef.current.rotation.y,
-                targetRotation.current,
-                delta * FLIP_LERP_FACTOR
+            const lerpFactor = Math.min(1, deltaMultiplier * (FLIP_LERP_FACTOR / 60));
+            currentRotationY.current = THREE.MathUtils.lerp(
+                currentRotationY.current,
+                targetRotationY.current,
+                lerpFactor
             );
+            groupRef.current.rotation.y = currentRotationY.current;
+
         }
     });
 
@@ -178,7 +146,18 @@ const MacContainer = ({ currentImage, isFlipping, scrollProgress }: { currentIma
     );
 };
 
-const MacBookCanvas = ({ currentImage, isFlipping, scrollProgress }: { currentImage: string; isFlipping: boolean; scrollProgress: number }) => (
+// --- MacBookCanvas Component ---
+const MacBookCanvas = ({
+    currentImage,
+    isFlipping,
+    scrollProgress,
+    flipDirection
+}: {
+    currentImage: string;
+    isFlipping: boolean;
+    scrollProgress: number;
+    flipDirection: number;
+}) => (
     <Canvas
         camera={{ fov: 12, position: [0, -10, 220] }}
         dpr={[1, 2]}
@@ -196,14 +175,17 @@ const MacBookCanvas = ({ currentImage, isFlipping, scrollProgress }: { currentIm
             <directionalLight position={[10, 10, 5]} intensity={2.2} />
             <directionalLight position={[-10, 5, 5]} intensity={1.4} />
             <pointLight position={[0, 0, 10]} intensity={0.4} />
-            <MacContainer currentImage={currentImage} isFlipping={isFlipping} scrollProgress={scrollProgress} />
+            <MacContainer
+                currentImage={currentImage}
+                isFlipping={isFlipping}
+                scrollProgress={scrollProgress}
+                flipDirection={flipDirection}
+            />
         </Suspense>
     </Canvas>
 );
 
-// SECTION: UI Components
-// ==========================================
-
+// --- UI Components ---
 const LoadingSpinner = () => (
     <div className="flex items-center justify-center h-full">
         <div className="relative">
@@ -213,105 +195,135 @@ const LoadingSpinner = () => (
     </div>
 );
 
-const ProductInfo = ({ product, onNext, onPrev, isFlipping }: { product: any; onNext: () => void; onPrev: () => void; isFlipping: boolean; }) => (
-    <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 relative">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">{product.title}</h1>
-        <p className="text-md md:text-lg text-gray-300 max-w-md">{product.description}</p>
-        
-        {/* Floating Arrow Controls */}
-        <div className="absolute bottom-10 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4">
-             <button
+const ProductInfo = ({
+    product,
+    onNext,
+    onPrev,
+    isFlipping,
+    isVisible
+}: {
+    product: any;
+    onNext: () => void;
+    onPrev: () => void;
+    isFlipping: boolean;
+    isVisible: boolean;
+}) => (
+    <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 relative overflow-hidden">
+        <div
+            className={`transform transition-all duration-700 ease-out ${
+                isVisible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
+            }`}
+            style={{ transitionDelay: isVisible ? '100ms' : '0ms' }}
+        >
+            <h1
+                className={`text-4xl md:text-6xl font-bold mb-4 transform transition-all duration-500 ease-out ${
+                    isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}
+                style={{ transitionDelay: isVisible ? '200ms' : '0ms' }}
+            >
+                {product.title}
+            </h1>
+
+            <p
+                className={`text-md md:text-lg text-gray-300 max-w-md transform transition-all duration-500 ease-out ${
+                    isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}
+                style={{ transitionDelay: isVisible ? '350ms' : '0ms' }}
+            >
+                {product.description}
+            </p>
+        </div>
+
+        <div
+            className={`absolute bottom-10 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4 transform transition-all duration-700 ease-out ${
+                isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'
+            }`}
+            style={{ transitionDelay: isVisible ? '800ms' : '0ms' }}
+        >
+            <button
                 onClick={onPrev}
                 disabled={isFlipping}
-                className="z-10 transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50"
+                className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
+                    isFlipping ? 'scale-90 opacity-60' : 'scale-100 opacity-100'
+                }`}
                 style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))' }}
             >
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </button>
 
             <button
                 onClick={onNext}
                 disabled={isFlipping}
-                className="z-10 transition-all duration-300 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50"
+                className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
+                    isFlipping ? 'scale-90 opacity-60' : 'scale-100 opacity-100'
+                }`}
                 style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))' }}
             >
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300">
+                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </button>
         </div>
     </div>
 );
 
-// SECTION: Main Exported Component
-// ==========================================
-
+// --- Main Exported Component ---
 const MacBookSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const [shouldRender, setShouldRender] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isFlipping, setIsFlipping] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [contentVisible, setContentVisible] = useState(true);
+    const [flipDirection, setFlipDirection] = useState(1);
 
     const currentProduct = products[currentImageIndex];
 
-    const handleImageChange = (nextIndex: number) => {
+    const handleImageChange = (nextIndex: number, direction: number) => {
         if (isFlipping) return;
+
+        setFlipDirection(direction);
         setIsFlipping(true);
+        setContentVisible(false);
 
-        // Slightly longer delay before swapping to match the slower flip
-        setTimeout(() => {
-            setCurrentImageIndex(nextIndex);
-        }, SWAP_IMAGE_DELAY);
-
-        // Keep the flipping state for a longer duration so animation finishes
+        setTimeout(() => setCurrentImageIndex(nextIndex), SWAP_IMAGE_DELAY);
+        setTimeout(() => setContentVisible(true), SWAP_IMAGE_DELAY + 100);
         setTimeout(() => setIsFlipping(false), TOTAL_FLIP_DURATION);
     };
 
-    const nextImage = () => {
-        const nextIndex = (currentImageIndex + 1) % products.length;
-        handleImageChange(nextIndex);
-    };
+    const nextImage = () => handleImageChange((currentImageIndex + 1) % products.length, 1);
+    const prevImage = () => handleImageChange((currentImageIndex - 1 + products.length) % products.length, -1);
 
-    const prevImage = () => {
-        const prevIndex = (currentImageIndex - 1 + products.length) % products.length;
-        handleImageChange(prevIndex);
-    };
-
-    // Handle scroll progress calculation
+    // Scroll progress calculation
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
-            if (!sectionRef.current) return;
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    if (!sectionRef.current) return;
+                    const section = sectionRef.current;
+                    const rect = section.getBoundingClientRect();
+                    const sectionHeight = section.offsetHeight;
+                    const windowHeight = window.innerHeight;
 
-            const section = sectionRef.current;
-            const rect = section.getBoundingClientRect();
-            const sectionHeight = section.offsetHeight;
-            const windowHeight = window.innerHeight;
+                    let progress = 0;
+                    if (rect.top <= 0 && rect.bottom >= windowHeight) {
+                        progress = Math.abs(rect.top) / (sectionHeight - windowHeight);
+                    } else if (rect.top > 0) progress = 0;
+                    else if (rect.bottom < windowHeight) progress = 1;
 
-            // Calculate scroll progress within the section
-            let progress = 0;
-            
-            if (rect.top <= 0 && rect.bottom >= windowHeight) {
-                // Section is fully visible and scrolling through it
-                progress = Math.abs(rect.top) / (sectionHeight - windowHeight);
-            } else if (rect.top > 0) {
-                // Section is below viewport
-                progress = 0;
-            } else if (rect.bottom < windowHeight) {
-                // Section is above viewport
-                progress = 1;
+                    setScrollProgress(Math.max(0, Math.min(1, progress)));
+                    ticking = false;
+                });
+                ticking = true;
             }
-
-            // Clamp progress between 0 and 1
-            progress = Math.max(0, Math.min(1, progress));
-            setScrollProgress(progress);
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll(); // Initial calculation
-
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -334,13 +346,11 @@ const MacBookSection = () => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting && !shouldRender) {
                         setShouldRender(true);
+                        setTimeout(() => setContentVisible(true), 200);
                     }
                 });
             },
-            { 
-                threshold: 0.1,
-                rootMargin: '50px 0px 50px 0px' // Start loading a bit before the section is visible
-            }
+            { threshold: 0.1, rootMargin: '50px 0px 50px 0px' }
         );
 
         observer.observe(section);
@@ -351,47 +361,39 @@ const MacBookSection = () => {
         <div
             ref={sectionRef}
             className="hidden md:flex w-full relative bg-black text-white"
-            style={{ 
-                height: '180vh', // Make it taller so there's scroll space for the animation
+            style={{
+                height: '180vh',
                 scrollSnapAlign: 'start',
                 scrollSnapStop: 'always',
             }}
         >
-            {/* Sticky container that holds everything in place during animation */}
-            <div 
-                className="sticky top-0 w-full h-screen flex"
-                style={{
-                    // The sticky behavior keeps this in view while scrolling through the taller parent
-                    position: 'sticky',
-                    top: 0,
-                }}
-            >
-                {/* Left side for Info */}
+            <div className="sticky top-0 w-full h-screen flex">
                 <div className="w-full md:w-2/5 h-full">
-                     {shouldRender && (
-                        <ProductInfo 
-                            product={currentProduct} 
-                            onNext={nextImage} 
+                    {shouldRender && (
+                        <ProductInfo
+                            product={currentProduct}
+                            onNext={nextImage}
                             onPrev={prevImage}
                             isFlipping={isFlipping}
+                            isVisible={contentVisible}
                         />
-                     )}
+                    )}
                 </div>
 
-                {/* Right side for Canvas */}
                 <div className="w-full md:w-3/5 h-full">
                     {shouldRender ? (
                         <Suspense fallback={<LoadingSpinner />}>
-                            <MacBookCanvas 
-                                currentImage={currentProduct.image} 
-                                isFlipping={isFlipping} 
+                            <MacBookCanvas
+                                currentImage={currentProduct.image}
+                                isFlipping={isFlipping}
                                 scrollProgress={scrollProgress}
+                                flipDirection={flipDirection}
                             />
                         </Suspense>
                     ) : (
                         <div className="flex items-center justify-center h-full">
                             <div className="text-center text-gray-500">
-                                 <p>Scroll down to experience</p>
+                                <p>Scroll down to experience</p>
                             </div>
                         </div>
                     )}
