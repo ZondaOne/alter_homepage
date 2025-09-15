@@ -42,64 +42,65 @@ const InteractiveBlobsSection: React.FC = () => {
         },
       });
 
-      // Blobs zoom-out with fade-in
+      // Blobs zoom-out con fade-in suave
       tl.to(blobs, {
         scale: 1,
         opacity: 1,
-        stagger: 0.25,
+        stagger: 0.35,
+        duration: 1.6,
         ease: "power3.out",
       })
-        // Logo reveal with elastic zoom
-        .to(
-          logoRef.current,
-          {
-            scale: 1,
-            opacity: 1,
-            ease: "elastic.out(1, 0.6)",
-            duration: 1.2,
-          },
-          "-=0.8"
-        )
-        // Logo paths assembling with rotation
+      // Logo reveal con elastic zoom más suave
       .to(
-  logoPaths,
-  {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    stagger: {
-      each: 0.09,
-      from: "start", // puedes probar "center" para otro efecto
-      ease: "sine.out", // muy suave y natural
-    },
-    ease: "sine.out",
-    duration: 1.2, // transición más lenta para sensación premium
-  },
-  "-=0.6"
-)
-
-        // Text reveal with subtle blur fade
-        .to(
-          textElements,
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            stagger: 0.2,
-            ease: "power2.out",
+        logoRef.current,
+        {
+          scale: 1,
+          opacity: 1,
+          ease: "elastic.out(1, 0.5)",
+          duration: 1.3,
+        },
+        "-=1.0"
+      )
+      // Logo paths assembling con rotación más orgánica
+      .to(
+        logoPaths,
+        {
+          opacity: 1,
+          scale: 1,
+          rotate: 0,
+          stagger: {
+            each: 0.12,
+            from: "start",
+            ease: "sine.out",
           },
-          "-=0.5"
-        )
-        // Premium glow highlight after logo forms
-        .to(
-          logoRef.current,
-          {
-            filter:
-              "drop-shadow(0 0 35px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 70px rgba(255, 145, 77, 0.6)) drop-shadow(0 0 120px rgba(255, 87, 34, 0.3))",
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
+          ease: "sine.out",
+          duration: 1.3,
+        },
+        "-=1.0"
+      )
+      // Text reveal con blur y fade más suave
+      .to(
+        textElements,
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          stagger: 0.25,
+          ease: "power2.out",
+          duration: 1.2,
+        },
+        "-=0.8"
+      )
+      // Glow premium sobre el logo
+      .to(
+        logoRef.current,
+        {
+          filter:
+            "drop-shadow(0 0 35px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 70px rgba(255, 145, 77, 0.6)) drop-shadow(0 0 120px rgba(255, 87, 34, 0.3))",
+          ease: "power2.out",
+        },
+        "-=0.5"
+      );
 
       // --- FLOATING + ROTATION LOOP ---
       gsap.to(logoRef.current, {
@@ -195,36 +196,35 @@ const InteractiveBlobsSection: React.FC = () => {
 
         {/* Right column: Text */}
         <div ref={textRef} className="flex flex-col justify-center space-y-6 text-gray-800">
-         <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
-  <span
-    className="hero-gradient-text"
-    style={{
-      background:
-        "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-      backgroundSize: "200% 100%",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
-    }}
-  >
-    #
-  </span>
-  <span className="hero-line">WeAre</span>
-  <span
-    className="hero-gradient-text"
-    style={{
-      background:
-        "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-      backgroundSize: "200% 100%",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
-    }}
-  >
-    Zonda
-  </span>
-</h2>
-
+          <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+            <span
+              className="hero-gradient-text"
+              style={{
+                background:
+                  "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                backgroundSize: "200% 100%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              #
+            </span>
+            <span className="hero-line">WeAre</span>
+            <span
+              className="hero-gradient-text"
+              style={{
+                background:
+                  "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                backgroundSize: "200% 100%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Zonda
+            </span>
+          </h2>
 
           <p className="text-xl text-element">
             We transform ideas into solutions, challenges into opportunities, and technology into value.
@@ -240,11 +240,11 @@ const InteractiveBlobsSection: React.FC = () => {
         </div>
       </div>
 
+      {/* Grain & blobs CSS */}
       <style jsx global>{`
         :root {
           --cream-base: #f5f3ef;
         }
-
         .grain-overlay {
           position: absolute;
           top: 0;
@@ -280,101 +280,12 @@ const InteractiveBlobsSection: React.FC = () => {
             rgba(244, 67, 54, 0.15) 100%
           );
         }
-
-        @keyframes grain-pan {
-          0%,
-          100% {
-            transform: translate(0, 0);
-          }
-          10% {
-            transform: translate(-5%, -10%);
-          }
-          20% {
-            transform: translate(-15%, 5%);
-          }
-          30% {
-            transform: translate(7%, -25%);
-          }
-          40% {
-            transform: translate(-5%, 25%);
-          }
-          50% {
-            transform: translate(-15%, 10%);
-          }
-          60% {
-            transform: translate(15%, 0%);
-          }
-          70% {
-            transform: translate(0%, 15%);
-          }
-          80% {
-            transform: translate(3%, 35%);
-          }
-          90% {
-            transform: translate(-10%, 10%);
-          }
-        }
-
-        /* Blobs */
-        .blob {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          mix-blend-mode: hard-light;
-          filter: blur(6px) saturate(1.3) contrast(1.6) brightness(1.3)
-            hue-rotate(-5deg);
-          background: radial-gradient(
-            ellipse at 25% 15%,
-            var(--color1) 0%,
-            var(--color2) 30%,
-            var(--color3) 55%,
-            transparent 80%
-          );
-          will-change: border-radius, transform;
-        }
-
-        .blob1 {
-          width: 480px;
-          height: 480px;
-          animation: morph 12s ease-in-out infinite;
-        }
-
-        .blob2 {
-          width: 420px;
-          height: 420px;
-          animation: morph 10s ease-in-out infinite reverse;
-        }
-
-        .blob3 {
-          width: 520px;
-          height: 520px;
-          animation: morph 16s ease-in-out infinite;
-          animation-delay: -5s;
-        }
-
-        @keyframes morph {
-          0% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-            transform: translate(-50%, -50%) rotate(0deg);
-          }
-          25% {
-            border-radius: 40% 60% 50% 30% / 70% 40% 60% 30%;
-            transform: translate(-50%, -50%) rotate(90deg) scale(1.05);
-          }
-          50% {
-            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-            transform: translate(-50%, -50%) rotate(180deg) scale(0.95);
-          }
-          75% {
-            border-radius: 70% 30% 40% 60% / 40% 70% 50% 60%;
-            transform: translate(-50%, -50%) rotate(270deg) scale(1.08);
-          }
-          100% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-            transform: translate(-50%, -50%) rotate(360deg) scale(1);
-          }
-        }
+        @keyframes grain-pan { 0%,100%{transform:translate(0,0);} 10%{transform:translate(-5%,-10%);} 20%{transform:translate(-15%,5%);} 30%{transform:translate(7%,-25%);} 40%{transform:translate(-5%,25%);} 50%{transform:translate(-15%,10%);} 60%{transform:translate(15%,0%);} 70%{transform:translate(0%,15%);} 80%{transform:translate(3%,35%);} 90%{transform:translate(-10%,10%);} }
+        .blob { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); mix-blend-mode:hard-light; filter:blur(6px) saturate(1.3) contrast(1.6) brightness(1.3) hue-rotate(-5deg); background:radial-gradient(ellipse at 25% 15%, var(--color1) 0%, var(--color2) 30%, var(--color3) 55%, transparent 80%); will-change:border-radius, transform; }
+        .blob1 { width:480px; height:480px; animation:morph 12s ease-in-out infinite; }
+        .blob2 { width:420px; height:420px; animation:morph 10s ease-in-out infinite reverse; }
+        .blob3 { width:520px; height:520px; animation:morph 16s ease-in-out infinite; animation-delay:-5s; }
+        @keyframes morph { 0%{border-radius:60% 40% 30% 70% / 60% 30% 70% 40%; transform:translate(-50%,-50%) rotate(0deg);} 25%{border-radius:40% 60% 50% 30% / 70% 40% 60% 30%; transform:translate(-50%,-50%) rotate(90deg) scale(1.05);} 50%{border-radius:30% 60% 70% 40% / 50% 60% 30% 60%; transform:translate(-50%,-50%) rotate(180deg) scale(0.95);} 75%{border-radius:70% 30% 40% 60% / 40% 70% 50% 60%; transform:translate(-50%,-50%) rotate(270deg) scale(1.08);} 100%{border-radius:60% 40% 30% 70% / 60% 30% 70% 40%; transform:translate(-50%,-50%) rotate(360deg) scale(1);} }
       `}</style>
     </section>
   );

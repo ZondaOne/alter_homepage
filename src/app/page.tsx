@@ -156,7 +156,6 @@ export default function HomePage() {
           <MyParallax
             scale={1}
             minScale={0.90}
-            transition="transform 0.3s ease-out"
             text={
               <div className="text-black space-y-8">
                 <div className="parallax-eyebrow text-sm font-medium tracking-wider uppercase text-orange-400">
