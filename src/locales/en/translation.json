@@ -11,21 +11,63 @@
   "about": "About",
   "workWithUs": "Work with us",
   "allProducts": "All Products",
+
   "heroTitleLine1": "Your idea",
   "heroTitleLine2": "deserves",
   "heroTitleHighlight": "better code",
   "heroSubtitle": "Small team. Big ideas. We build software that people actually want to use.",
   "heroButtonWork": "Work with us",
   "heroButtonSee": "See what we've made",
+
   "gradientText": "We build <1>brands that matter</1>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.",
   "gradientCTA": "<0>Contact us</0>",
+
   "galleryTitleLine1": "Our latest",
   "galleryTitleHighlight": "creations",
   "gallerySubtitle": "Explore our portfolio of web applications that solve real problems with elegant design and powerful technology.",
   "galleryButtonVisit": "Launch",
+
   "languages": {
     "en": "English",
     "es": "Spanish",
     "it": "Italian"
+  },
+
+  "engineered": "Engineered",
+  "hero": {
+    "description": "We architect digital experiences that don't just meet expectations—they redefine them. Every project is a statement of precision, purpose, and uncompromising quality."
+  },
+  "cta": {
+    "title": "Ready to Transform?",
+    "description": "Let's discuss how we can architect your next breakthrough solution.",
+    "initiate": "Initiate Project",
+    "portfolio": "View Portfolio"
+  },
+  "process": {
+    "title": "Our Process",
+    "description": "Three pillars of excellence that transform complexity into clarity, challenges into opportunities, and visions into measurable results.",
+    "steps": {
+      "analysis": {
+        "title": "Strategic Analysis",
+        "description": "Deep-dive into business architecture. We dissect challenges, identify leverage points, and map transformation pathways that align with your strategic vision."
+      },
+      "engineering": {
+        "title": "Precision Engineering",
+        "description": "Technical mastery meets creative vision. We build solutions that perform flawlessly under pressure and scale without compromise across all platforms."
+      },
+      "performance": {
+        "title": "Performance Mastery",
+        "description": "Relentless optimization and measurement. Every metric matters, every improvement compounds into measurable business impact and sustained growth."
+      }
+    }
+  },
+
+  "interactiveBlobs": {
+    "hash": "#",
+    "weAre": "WeAre",
+    "zonda": "Zonda",
+    "description1": "We transform ideas into solutions, challenges into opportunities, and technology into value.",
+    "description2": "What sets us apart is not what we do, but how we do it: with people, with purpose, with passion.",
+    "discoverButton": "Discover Zonda"
   }
 }

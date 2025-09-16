@@ -78,7 +78,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
     <div ref={containerRef} className="relative w-full min-h-screen bg-white">
       <div className="relative w-full min-h-screen flex items-center justify-center overflow-visible">
         <div
-          className="relative transition-all duration-500 ease-out max-w-none"
+          className="relative transition-all duration-600 ease-out max-w-none"
           style={{
             transform: `scale(${currentScale}) translateX(${imageTransform.x}vw)`,
             width: `${imageTransform.width}vw`,
@@ -96,7 +96,13 @@ const MyParallax: React.FC<MyParallaxProps> = ({
             transition: "opacity 0.3s ease-out, transform 0.3s ease-out",
           }}
         >
-          <div className="max-w-lg text-right">{text && <div className="space-y-6">{text}</div>}</div>
+          <div className="max-w-lg text-right">
+            {text && (
+              <div className="space-y-6 text-gray-900 drop-shadow-sm">
+                {text}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

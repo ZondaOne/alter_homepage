@@ -11,21 +11,63 @@
   "about": "Acerca de",
   "workWithUs": "Trabaja con nosotros",
   "allProducts": "Todos los productos",
+
   "heroTitleLine1": "Tu idea",
   "heroTitleLine2": "merece",
   "heroTitleHighlight": "mejor código",
   "heroSubtitle": "Equipo pequeño. Grandes ideas. Construimos software que la gente realmente quiere usar.",
   "heroButtonWork": "Trabaja con nosotros",
   "heroButtonSee": "Mira lo que hemos creado",
+
   "gradientText": "Construimos <1>marcas que importan</1>, creando experiencias digitales adaptadas a tu visión. Cada proyecto es una colaboración, cada solución se realiza con propósito.",
   "gradientCTA": "<0>Contáctanos</0>",
+
   "galleryTitleLine1": "Nuestros últimos",
   "galleryTitleHighlight": "programas",
   "gallerySubtitle": "Explora nuestro portafolio de aplicaciones web que resuelven problemas reales con diseño elegante y tecnología poderosa.",
   "galleryButtonVisit": "Lanzar",
+
   "languages": {
     "en": "Inglés",
     "es": "Español",
     "it": "Italiano"
+  },
+
+  "engineered": "Diseñado",
+  "hero": {
+    "description": "Diseñamos experiencias digitales que no solo cumplen expectativas, sino que las redefinen. Cada proyecto es una declaración de precisión, propósito y calidad inquebrantable."
+  },
+  "cta": {
+    "title": "¿Listo para transformar?",
+    "description": "Hablemos sobre cómo podemos diseñar tu próxima solución innovadora.",
+    "initiate": "Iniciar proyecto",
+    "portfolio": "Ver portafolio"
+  },
+  "process": {
+    "title": "Nuestro proceso",
+    "description": "Tres pilares de excelencia que transforman la complejidad en claridad, los desafíos en oportunidades y las ideas en resultados medibles.",
+    "steps": {
+      "analysis": {
+        "title": "Análisis estratégico",
+        "description": "Profundizamos en la arquitectura del negocio. Disectamos desafíos, identificamos puntos clave y trazamos caminos de transformación alineados con tu visión estratégica."
+      },
+      "engineering": {
+        "title": "Ingeniería de precisión",
+        "description": "Maestría técnica combinada con visión creativa. Construimos soluciones que funcionan a la perfección bajo presión y escalan sin comprometer la calidad en todas las plataformas."
+      },
+      "performance": {
+        "title": "Maestría en desempeño",
+        "description": "Optimización y medición constante. Cada métrica importa, cada mejora se traduce en impacto tangible y crecimiento sostenido."
+      }
+    }
+  },
+
+  "interactiveBlobs": {
+    "hash": "#",
+    "weAre": "Somos",
+    "zonda": "Zonda",
+    "description1": "Transformamos ideas en soluciones, desafíos en oportunidades y tecnología en valor.",
+    "description2": "Lo que nos diferencia no es lo que hacemos, sino cómo lo hacemos: con personas, con propósito, con pasión.",
+    "discoverButton": "Descubre Zonda"
   }
 }

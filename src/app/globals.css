@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+
+
+html {
+  scroll-behavior: smooth;
+}
 /* =======================
    Variables de Tema
    ======================= */

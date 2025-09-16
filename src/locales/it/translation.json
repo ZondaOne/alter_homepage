@@ -11,21 +11,63 @@
   "about": "Chi siamo",
   "workWithUs": "Lavora con noi",
   "allProducts": "Tutti i prodotti",
+
   "heroTitleLine1": "La tua idea",
   "heroTitleLine2": "merita",
   "heroTitleHighlight": "codice migliore",
   "heroSubtitle": "Piccolo team. Grandi idee. Creiamo software che le persone vogliono davvero usare.",
   "heroButtonWork": "Lavora con noi",
   "heroButtonSee": "Guarda cosa abbiamo fatto",
+
   "gradientText": "Costruiamo <1>marchi che contano</1>, creando esperienze digitali su misura per la tua visione. Ogni progetto è una partnership, ogni soluzione è realizzata con uno scopo.",
   "gradientCTA": "<0>Contattaci</0>",
+
   "galleryTitleLine1": "I nostri ultimi",
   "galleryTitleHighlight": "programmi",
   "gallerySubtitle": "Esplora il nostro portfolio di applicazioni web che risolvono problemi reali con design elegante e tecnologia potente.",
   "galleryButtonVisit": "Lancia",
+
   "languages": {
     "en": "Inglese",
     "es": "Spagnolo",
     "it": "Italiano"
+  },
+
+  "engineered": "Progettato",
+  "hero": {
+    "description": "Progettiamo esperienze digitali che non si limitano a soddisfare le aspettative, ma le ridefiniscono. Ogni progetto è una dichiarazione di precisione, scopo e qualità senza compromessi."
+  },
+  "cta": {
+    "title": "Pronto a trasformare?",
+    "description": "Parliamo di come possiamo progettare la tua prossima soluzione innovativa.",
+    "initiate": "Avvia progetto",
+    "portfolio": "Visualizza portfolio"
+  },
+  "process": {
+    "title": "Il nostro processo",
+    "description": "Tre pilastri di eccellenza che trasformano la complessità in chiarezza, le sfide in opportunità e le idee in risultati misurabili.",
+    "steps": {
+      "analysis": {
+        "title": "Analisi strategica",
+        "description": "Approfondiamo l'architettura del business. Analizziamo le sfide, identifichiamo i punti chiave e tracciamo percorsi di trasformazione allineati alla tua visione strategica."
+      },
+      "engineering": {
+        "title": "Ingegneria di precisione",
+        "description": "Maestria tecnica unita a visione creativa. Creiamo soluzioni che funzionano perfettamente sotto pressione e scalano senza compromettere la qualità su tutte le piattaforme."
+      },
+      "performance": {
+        "title": "Padronanza delle prestazioni",
+        "description": "Ottimizzazione e misurazione costante. Ogni metrica conta, ogni miglioramento si traduce in un impatto tangibile e crescita sostenuta."
+      }
+    }
+  },
+
+  "interactiveBlobs": {
+    "hash": "#",
+    "weAre": "Siamo",
+    "zonda": "Zonda",
+    "description1": "Trasformiamo idee in soluzioni, sfide in opportunità e tecnologia in valore.",
+    "description2": "Ciò che ci distingue non è ciò che facciamo, ma come lo facciamo: con persone, con scopo, con passione.",
+    "discoverButton": "Scopri Zonda"
   }
 }
