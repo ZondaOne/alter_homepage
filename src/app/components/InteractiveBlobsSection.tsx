@@ -3,16 +3,18 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslation } from "react-i18next"; // <-- IMPORT i18n
+import { useTranslation } from "react-i18next"; 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const InteractiveBlobsSection: React.FC = () => {
-  const { t } = useTranslation(); // <-- HOOK i18n
+  const { t } = useTranslation(); 
   const main = useRef<HTMLDivElement>(null);
   const logoRef = useRef<SVGSVGElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
+
+  
   useEffect(() => {
     const ctx = gsap.context(() => {
       const blobs = gsap.utils.toArray<HTMLElement>(".blob");
@@ -247,7 +249,7 @@ const InteractiveBlobsSection: React.FC = () => {
 
           <p className="text-lg text-element">{t("interactiveBlobs.description2")}</p>
 
-          <button className="mt-6 px-8 py-3 bg-orange-500 text-white rounded-full font-semibold text-lg w-fit text-element hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform">
+          <button className="mt-6 px-8 py-3 bg-orange-500 text-white rounded-full font-semibold text-lg w-fit text-element hover:bg-orange-600 transition-all duration-100 shadow-lg hover:shadow-xl hover:scale-105 transform">
             {t("interactiveBlobs.discoverButton")}
           </button>
         </div>

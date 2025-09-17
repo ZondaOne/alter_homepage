@@ -4,12 +4,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Lottie from "lottie-react";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const GradientSection: React.FC = () => {
-  const { t } = useTranslation(); 
+const StepProcessSection: React.FC = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [animationData, setAnimationData] = useState<any>(null);
   const lottieRef = useRef<any>(null);
@@ -20,33 +20,68 @@ const GradientSection: React.FC = () => {
       .then(setAnimationData);
 
     const tl = gsap.timeline({
-      scrollTrigger: { 
-        trigger: sectionRef.current, 
+      scrollTrigger: {
+        trigger: sectionRef.current,
         start: "top 90%",
-        toggleActions: "play none none none"
-      }
+        toggleActions: "play none none none",
+      },
     });
 
-    tl.fromTo(".section-marker",{ scaleX: 0 },{ scaleX: 1, duration: 0, ease: "none" })
-      .fromTo(".main-title",{ opacity: 0, y: 30 },{ opacity: 1, y: 0, duration: 0, ease: "none" },0)
-      .fromTo(".step-block",{ opacity: 0, x: -30 },{ opacity: 1, x: 0, duration: 0, stagger: 0, ease: "none" },0);
+    // Línea de marcador
+    tl.fromTo(
+      ".section-marker",
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.5, ease: "power2.out" }
+    );
 
+    // Título principal con fade up
+    tl.fromTo(
+      ".main-title",
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+      "-=0.3"
+    );
+
+    // Descripción con fade up
+    tl.fromTo(
+      ".hero-description",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+      "-=0.5"
+    );
+
+    // Animación de Lottie con fade up
+    tl.fromTo(
+      ".lottie-container",
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+      "-=0.5"
+    );
+
+    // Bloques de pasos con stagger + fade up
+    tl.fromTo(
+      ".step-block",
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out" },
+      "-=0.5"
+    );
+
+    // Animación infinita del gradiente
     gsap.to(".gradient-text", {
       backgroundPosition: "200% 50%",
       repeat: -1,
       yoyo: true,
       duration: 12,
-      ease: "none"
+      ease: "none",
     });
   }, []);
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className="relative py-20 lg:py-32 bg-white overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
-        
         {/* Header principal */}
         <div className="text-center lg:mb-20">
           <div className="mb-10">
@@ -56,7 +91,8 @@ const GradientSection: React.FC = () => {
               <span
                 className="gradient-text"
                 style={{
-                  background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                  background:
+                    "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
                   backgroundSize: "200% 100%",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -67,10 +103,10 @@ const GradientSection: React.FC = () => {
               </span>
             </h2>
           </div>
-          
+
           <div className="max-w-2xl mx-auto">
-            <div className="w-16 h-px bg-orange-500 mx-auto mb-8"></div>
-            <p className="text-xl lg:text-2xl text-neutral-700 leading-[1.6] font-light">
+            <div className="section-marker w-16 h-px bg-orange-500 mx-auto mb-8"></div>
+            <p className="hero-description text-xl lg:text-2xl text-neutral-700 leading-[1.6] font-light">
               {t("hero.description")}
             </p>
           </div>
@@ -78,14 +114,13 @@ const GradientSection: React.FC = () => {
 
         {/* Layout principal */}
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-          
           {/* Columna izquierda */}
           <div className="lg:col-span-5 xl:col-span-6 space-y-12">
             <div className="relative">
               <div className="relative group">
                 <div className="hidden md:flex absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
                 {animationData && (
-                  <div className="bg-white rounded-2xl p-8">
+                  <div className="lottie-container bg-white rounded-2xl p-8">
                     <Lottie
                       lottieRef={lottieRef}
                       animationData={animationData}
@@ -110,15 +145,17 @@ const GradientSection: React.FC = () => {
                 <div className="h-px bg-gradient-to-r from-orange-500 via-orange-400 to-transparent flex-1"></div>
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h4 className="text-xl font-bold text-neutral-900">{t("cta.title")}</h4>
+                  <h4 className="text-xl font-bold text-neutral-900">
+                    {t("cta.title")}
+                  </h4>
                   <p className="text-neutral-600 leading-relaxed">
                     {t("cta.description")}
                   </p>
                 </div>
-                
+
                 <div className="flex flex-col gap-4">
                   <button className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg">
                     <span className="flex items-center justify-center gap-3">
@@ -126,11 +163,13 @@ const GradientSection: React.FC = () => {
                       <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
                     </span>
                   </button>
-                  
+
                   <button className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg">
                     <span className="flex items-center justify-center gap-3">
                       {t("cta.portfolio")}
-                      <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                      <span className="transform group-hover:translate-x-1 transition-transform duration-300">
+                        →
+                      </span>
                     </span>
                   </button>
                 </div>
@@ -197,4 +236,4 @@ const GradientSection: React.FC = () => {
   );
 };
 
-export default GradientSection;
+export default StepProcessSection;

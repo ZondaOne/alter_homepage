@@ -28,7 +28,7 @@ const products = [
 ];
 
 // --- Constants ---
-const FLIP_LERP_FACTOR = 4.5;
+const FLIP_LERP_FACTOR = 2.9;
 const SWAP_IMAGE_DELAY = 100;
 const TOTAL_FLIP_DURATION = 1000;
 
@@ -148,7 +148,7 @@ const MacContainer = ({
   });
 
   return (
-    <group position={[-2, -14, 20]} scale={0.9}>
+    <group position={[-2, -14, 20]} scale={1.0}>
       <group ref={groupRef}>
         <primitive object={model.scene} />
       </group>
@@ -170,7 +170,6 @@ const MacBookCanvas = ({
 }) => (
   <Canvas
     camera={{ fov: 12, position: [0, -10, 220] }}
-    dpr={[1, 2]}
     performance={{ min: 0.5 }}
     gl={{ antialias: true, alpha: false, powerPreference: "high-performance", precision: "highp" }}
     frameloop="always"

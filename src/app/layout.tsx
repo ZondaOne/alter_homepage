@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import FAQ from './components/layout/FAQ';
+import Loader from './components/Loader';
 import "../i18n"; // inicializa i18n
 
 const crimsonText = Crimson_Text({
@@ -38,13 +39,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body
+          
         className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
-      >
+      ><Loader duration={1200} />
         {/* Navbar es Client Component */}
         <Navbar />
-
+      
         {/* Main content */}
         <main>{children}</main>
         <FAQ />
