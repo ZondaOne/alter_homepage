@@ -78,6 +78,15 @@ export const metadata: Metadata = {
   verification: {
     google: 'google-site-verification-code-here',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Zonda One - Software Startup Building Innovative Solutions',
+    description: 'We build innovative software products and custom business solutions that drive growth and efficiency.',
+    images: ['/logo512.png'],
+  },
+  alternates: {
+    canonical: 'https://zonda.one',
+  },
 };
 
 export default function RootLayout({

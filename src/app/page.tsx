@@ -162,7 +162,7 @@ export default function HomePage() {
           >
             <img
               src="/banner.png"
-              alt="Zonda One software development team working on innovative solutions"
+              alt="Zonda One team collaborating on custom software development projects with modern technology stack"
               className="w-full h-auto object-cover rounded-lg shadow-xl"
               style={{ maxHeight: 'none' }}
             />

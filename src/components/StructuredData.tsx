@@ -14,7 +14,8 @@ export default function StructuredData() {
       "addressCountry": "IT"
     },
     "sameAs": [
-      "https://linkedin.com/company/zonda-one"
+      "https://www.linkedin.com/company/zonda-one",
+      "https://www.instagram.com/zonda.one/"
     ],
     "service": [
       {
@@ -47,6 +48,45 @@ export default function StructuredData() {
     }
   }
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What's your process like?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We start by understanding your problem, then build a solution that actually works. No complicated frameworks or unnecessary features—just what you need."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will you disappear after launch?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nope. We stick around to make sure everything keeps working. Good software evolves with your business, and we build things so they can grow when you need them to."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you work with our existing stuff?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Usually, yes. We're pretty good at figuring out how to make new things work with what you already have. If there's a problem, we'll tell you upfront."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if our project is unique?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unique projects are often the most interesting. If you've got a specific problem that needs solving, we're probably the right people to help figure it out."
+        }
+      }
+    ]
+  }
+
   return (
     <>
       <script
@@ -59,6 +99,12 @@ export default function StructuredData() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(websiteSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
         }}
       />
     </>

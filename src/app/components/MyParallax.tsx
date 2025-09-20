@@ -214,7 +214,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
           <div className="relative w-64 h-64 mx-auto">
             <img
               src="/banner.png"
-              alt="Zonda One - Software Solutions"
+              alt="Zonda One custom software development and digital transformation services showcase"
               className="w-full h-full object-cover rounded-2xl shadow-xl"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-2xl"></div>
