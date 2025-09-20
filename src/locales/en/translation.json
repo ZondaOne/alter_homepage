@@ -1,7 +1,7 @@
 {
   "home": "Home",
   "products": "Products",
-  "solutions": "Solutions",
+  "solutions": "Your ideas",
   "services": "Services",
   "consulting": "Consulting",
   "support": "Support",
@@ -22,10 +22,69 @@
   "gradientText": "We build <1>brands that matter</1>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.",
   "gradientCTA": "<0>Contact us</0>",
 
-  "galleryTitleLine1": "Our latest",
-  "galleryTitleHighlight": "creations",
-  "gallerySubtitle": "Explore our portfolio of web applications that solve real problems with elegant design and powerful technology.",
+  "galleryTitleLine1": "What we've",
+  "galleryTitleHighlight": "built together",
+  "gallerySubtitle": "Every project tells a story of collaboration. Here's how we've helped businesses solve their toughest problems with thoughtful, custom solutions.",
   "galleryButtonVisit": "Launch",
+  "galleryCTA": {
+    "title": "Ready to start building?",
+    "description": "Every great project starts with a conversation. What's your next move?",
+    "button": "START YOUR PROJECT"
+  },
+
+  "parallax": {
+    "desktop": {
+      "line1": "Turning complex",
+      "line2": "problems into",
+      "line3": "simple solutions",
+      "subtitle": "Every challenge is an opportunity to build something meaningful. We take what's complicated and make it work beautifully."
+    },
+    "mobile": {
+      "title": "Simple solutions for",
+      "highlight": "complex problems",
+      "subtitle": "We take the complicated stuff and make it work beautifully. That's what good software should do."
+    }
+  },
+
+  "macbook": {
+    "products": {
+      "pixelperfect": {
+        "title": "PixelPerfect",
+        "description": "Professional image editing that doesn't require a degree in Photoshop. Clean backgrounds, sharp images, and content creation made simple."
+      },
+      "comerzia": {
+        "title": "Comerzia",
+        "description": "Keep track of your customers and orders without drowning in spreadsheets. Simple tools that actually help you run your business better."
+      },
+      "comchat": {
+        "title": "ComChat",
+        "description": "Your own AI assistant that understands your business. It learns from your content and helps your customers get answers fast."
+      }
+    }
+  },
+
+  "faq": {
+    "title": "What You're",
+    "titleHighlight": "Wondering",
+    "questions": [
+      {
+        "question": "What's your process like?",
+        "answer": "We start by understanding your problem, then build a solution that actually works. No complicated frameworks or unnecessary features—just what you need."
+      },
+      {
+        "question": "Will you disappear after launch?",
+        "answer": "Nope. We stick around to make sure everything keeps working. Good software evolves with your business, and we build things so they can grow when you need them to."
+      },
+      {
+        "question": "Can you work with our existing stuff?",
+        "answer": "Usually, yes. We're pretty good at figuring out how to make new things work with what you already have. If there's a problem, we'll tell you upfront."
+      },
+      {
+        "question": "What if our project is unique?",
+        "answer": "Unique projects are often the most interesting. If you've got a specific problem that needs solving, we're probably the right people to help figure it out."
+      }
+    ]
+  },
 
   "languages": {
     "en": "English",
@@ -33,31 +92,31 @@
     "it": "Italian"
   },
 
-  "engineered": "Engineered",
+  "engineered": "our expertise",
   "hero": {
-    "description": "We architect digital experiences that don't just meet expectations—they redefine them. Every project is a statement of precision, purpose, and uncompromising quality."
+    "description": "You know your business better than anyone. We know how to build software that won't let you down. Together, we create something that actually moves the needle."
   },
   "cta": {
-    "title": "Ready to Transform?",
-    "description": "Let's discuss how we can architect your next breakthrough solution.",
-    "initiate": "Initiate Project",
-    "portfolio": "View Portfolio"
+    "title": "Ready to Partner Up?",
+    "description": "Let's talk about what you're trying to build and figure out the best way to make it happen.",
+    "initiate": "Start a Conversation",
+    "portfolio": "See Our Work"
   },
   "process": {
-    "title": "Our Process",
-    "description": "Three pillars of excellence that transform complexity into clarity, challenges into opportunities, and visions into measurable results.",
+    "title": "How We Work",
+    "description": "Three simple steps that turn your ideas into software that actually works for your business and your users.",
     "steps": {
       "analysis": {
-        "title": "Strategic Analysis",
-        "description": "Deep-dive into business architecture. We dissect challenges, identify leverage points, and map transformation pathways that align with your strategic vision."
+        "title": "Understanding Together",
+        "description": "We start by really listening. What's working? What's not? What would make your life easier? We dig deep until we understand exactly what needs to be built."
       },
       "engineering": {
-        "title": "Precision Engineering",
-        "description": "Technical mastery meets creative vision. We build solutions that perform flawlessly under pressure and scale without compromise across all platforms."
+        "title": "Building Smart",
+        "description": "No over-engineering, no unnecessary complexity. We build exactly what you need using the right tools for the job, keeping things simple and maintainable."
       },
       "performance": {
-        "title": "Performance Mastery",
-        "description": "Relentless optimization and measurement. Every metric matters, every improvement compounds into measurable business impact and sustained growth."
+        "title": "Making It Better",
+        "description": "Launch is just the beginning. We monitor, learn, and continuously improve so your software gets better over time, not worse."
       }
     }
   },
@@ -66,8 +125,8 @@
     "hash": "#",
     "weAre": "WeAre",
     "zonda": "Zonda",
-    "description1": "We transform ideas into solutions, challenges into opportunities, and technology into value.",
-    "description2": "What sets us apart is not what we do, but how we do it: with people, with purpose, with passion.",
+    "description1": "Great software isn't born from templates or quick fixes. It comes from understanding what you really need and having the skill to make it happen.",
+    "description2": "We're the team that rolls up our sleeves, asks the hard questions, and builds solutions that grow with you.",
     "discoverButton": "Discover Zonda"
   }
 }

@@ -1,7 +1,7 @@
 {
   "home": "Home",
   "products": "Prodotti",
-  "solutions": "Soluzioni",
+  "solutions": "Le tue idee",
   "services": "Servizi",
   "consulting": "Consulenza",
   "support": "Supporto",
@@ -22,10 +22,69 @@
   "gradientText": "Costruiamo <1>marchi che contano</1>, creando esperienze digitali su misura per la tua visione. Ogni progetto è una partnership, ogni soluzione è realizzata con uno scopo.",
   "gradientCTA": "<0>Contattaci</0>",
 
-  "galleryTitleLine1": "I nostri ultimi",
-  "galleryTitleHighlight": "programmi",
-  "gallerySubtitle": "Esplora il nostro portfolio di applicazioni web che risolvono problemi reali con design elegante e tecnologia potente.",
+  "galleryTitleLine1": "Quello che abbiamo",
+  "galleryTitleHighlight": "costruito insieme",
+  "gallerySubtitle": "Ogni progetto racconta una storia di collaborazione. Ecco come abbiamo aiutato le aziende a risolvere i loro problemi più complessi con soluzioni ponderate e personalizzate.",
   "galleryButtonVisit": "Lancia",
+  "galleryCTA": {
+    "title": "Pronto per iniziare a costruire?",
+    "description": "Ogni grande progetto inizia con una conversazione. Qual è la tua prossima mossa?",
+    "button": "INIZIA IL TUO PROGETTO"
+  },
+
+  "parallax": {
+    "desktop": {
+      "line1": "Trasformiamo problemi",
+      "line2": "complessi in",
+      "line3": "soluzioni semplici",
+      "subtitle": "Ogni sfida è un'opportunità per costruire qualcosa di significativo. Prendiamo ciò che è complicato e lo facciamo funzionare magnificamente."
+    },
+    "mobile": {
+      "title": "Soluzioni semplici per",
+      "highlight": "problemi complessi",
+      "subtitle": "Prendiamo le cose complicate e le facciamo funzionare magnificamente. È quello che il buon software dovrebbe fare."
+    }
+  },
+
+  "macbook": {
+    "products": {
+      "pixelperfect": {
+        "title": "PixelPerfect",
+        "description": "Editing professionale di immagini che non richiede una laurea in Photoshop. Sfondi puliti, immagini nitide e creazione di contenuti semplificata."
+      },
+      "comerzia": {
+        "title": "Comerzia",
+        "description": "Tieni traccia dei tuoi clienti e ordini senza annegare nei fogli di calcolo. Strumenti semplici che ti aiutano davvero a gestire meglio il tuo business."
+      },
+      "comchat": {
+        "title": "ComChat",
+        "description": "Il tuo assistente AI personale che capisce il tuo business. Impara dai tuoi contenuti e aiuta i tuoi clienti a ottenere risposte velocemente."
+      }
+    }
+  },
+
+  "faq": {
+    "title": "Cosa Ti Stai",
+    "titleHighlight": "Chiedendo",
+    "questions": [
+      {
+        "question": "Com'è il vostro processo?",
+        "answer": "Iniziamo capendo il tuo problema, poi costruiamo una soluzione che funziona davvero. Niente framework complicati o funzionalità inutili—solo quello che ti serve."
+      },
+      {
+        "question": "Sparirete dopo il lancio?",
+        "answer": "No. Rimaniamo per assicurarci che tutto continui a funzionare. Il buon software evolve con il tuo business, e costruiamo cose che possono crescere quando ne hai bisogno."
+      },
+      {
+        "question": "Potete lavorare con il nostro sistema esistente?",
+        "answer": "Di solito, sì. Siamo bravi a capire come far funzionare le cose nuove con quello che hai già. Se c'è un problema, te lo diremo subito."
+      },
+      {
+        "question": "E se il nostro progetto è unico?",
+        "answer": "I progetti unici sono spesso i più interessanti. Se hai un problema specifico che ha bisogno di essere risolto, probabilmente siamo le persone giuste per aiutarti a risolverlo."
+      }
+    ]
+  },
 
   "languages": {
     "en": "Inglese",
@@ -33,31 +92,31 @@
     "it": "Italiano"
   },
 
-  "engineered": "Progettato",
+  "engineered": "la nostra esperienza",
   "hero": {
-    "description": "Progettiamo esperienze digitali che non si limitano a soddisfare le aspettative, ma le ridefiniscono. Ogni progetto è una dichiarazione di precisione, scopo e qualità senza compromessi."
+    "description": "Tu conosci il tuo business meglio di chiunque altro. Noi sappiamo come costruire software che non ti deluderà. Insieme, creiamo qualcosa che fa davvero la differenza."
   },
   "cta": {
-    "title": "Pronto a trasformare?",
-    "description": "Parliamo di come possiamo progettare la tua prossima soluzione innovativa.",
-    "initiate": "Avvia progetto",
-    "portfolio": "Visualizza portfolio"
+    "title": "Pronti a Collaborare?",
+    "description": "Parliamo di quello che stai cercando di costruire e troviamo il modo migliore per realizzarlo.",
+    "initiate": "Inizia una Conversazione",
+    "portfolio": "Guarda il Nostro Lavoro"
   },
   "process": {
-    "title": "Il nostro processo",
-    "description": "Tre pilastri di eccellenza che trasformano la complessità in chiarezza, le sfide in opportunità e le idee in risultati misurabili.",
+    "title": "Come Lavoriamo",
+    "description": "Tre semplici passaggi che trasformano le tue idee in software che funziona davvero per il tuo business e i tuoi utenti.",
     "steps": {
       "analysis": {
-        "title": "Analisi strategica",
-        "description": "Approfondiamo l'architettura del business. Analizziamo le sfide, identifichiamo i punti chiave e tracciamo percorsi di trasformazione allineati alla tua visione strategica."
+        "title": "Capire Insieme",
+        "description": "Iniziamo ascoltando davvero. Cosa funziona? Cosa non va? Cosa ti renderebbe la vita più facile? Approfondiamo finché non capiamo esattamente cosa deve essere costruito."
       },
       "engineering": {
-        "title": "Ingegneria di precisione",
-        "description": "Maestria tecnica unita a visione creativa. Creiamo soluzioni che funzionano perfettamente sotto pressione e scalano senza compromettere la qualità su tutte le piattaforme."
+        "title": "Costruire in Modo Intelligente",
+        "description": "Niente over-engineering, niente complessità inutile. Costruiamo esattamente quello che ti serve usando gli strumenti giusti, mantenendo le cose semplici e gestibili."
       },
       "performance": {
-        "title": "Padronanza delle prestazioni",
-        "description": "Ottimizzazione e misurazione costante. Ogni metrica conta, ogni miglioramento si traduce in un impatto tangibile e crescita sostenuta."
+        "title": "Renderlo Migliore",
+        "description": "Il lancio è solo l'inizio. Monitoriamo, impariamo e miglioriamo continuamente così il tuo software migliora nel tempo, non peggiora."
       }
     }
   },
@@ -66,8 +125,8 @@
     "hash": "#",
     "weAre": "Siamo",
     "zonda": "Zonda",
-    "description1": "Trasformiamo idee in soluzioni, sfide in opportunità e tecnologia in valore.",
-    "description2": "Ciò che ci distingue non è ciò che facciamo, ma come lo facciamo: con persone, con scopo, con passione.",
+    "description1": "Il grande software non nasce da template o soluzioni rapide. Nasce dal capire cosa ti serve davvero e avere le competenze per realizzarlo.",
+    "description2": "Siamo il team che si rimbocca le maniche, fa le domande difficili e costruisce soluzioni che crescono con te.",
     "discoverButton": "Scopri Zonda"
   }
 }

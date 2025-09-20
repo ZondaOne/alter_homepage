@@ -4,26 +4,27 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { useTranslation } from "react-i18next";
 
 // --- Data for products ---
-const products = [
+const getProducts = (t: any) => [
   {
     image: "/bg.png",
-    title: "PixelPerfect",
-    description:
-      "Advanced image editing with background removal, upscaling, and content generation. Precision and ease combined in one powerful platform.",
+    title: t('macbook.products.pixelperfect.title'),
+    description: t('macbook.products.pixelperfect.description'),
+    key: 'pixelperfect'
   },
   {
     image: "/bg2.png",
-    title: "Comerzia",
-    description:
-      "Complete business management solution for handling clients and orders. Features dashboard analytics and automated customer notifications.",
+    title: t('macbook.products.comerzia.title'),
+    description: t('macbook.products.comerzia.description'),
+    key: 'comerzia'
   },
   {
     image: "/bg3.png",
-    title: "ComChat",
-    description:
-      "Intelligent chatbot that learns from your data. Supports text and multimodal conversations with privacy-focused local deployment.",
+    title: t('macbook.products.comchat.title'),
+    description: t('macbook.products.comchat.description'),
+    key: 'comchat'
   },
 ];
 
@@ -33,7 +34,7 @@ const SWAP_IMAGE_DELAY = 100;
 const TOTAL_FLIP_DURATION = 1000;
 
 // --- BackgroundPlane ---
-const BackgroundPlane = ({ product }: { product: typeof products[0] }) => {
+const BackgroundPlane = ({ product }: { product: any }) => {
   const ref = useRef<THREE.Mesh>(null);
 
   const material = useMemo(() => {
@@ -70,7 +71,7 @@ const MacContainer = ({
   flipDirection: number;
 }) => {
   const model = useGLTF("./models/mac.glb");
-  const textures = useTexture(products.map((p) => p.image));
+  const textures = useTexture(["/bg.png", "/bg2.png", "/bg3.png"]);
 
   const screenRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
@@ -103,15 +104,17 @@ const MacContainer = ({
     material.metalness = 0;
     material.roughness = 1;
 
-    const index = products.findIndex((p) => p.image === currentImage);
+    const imageMap: { [key: string]: number } = { "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 };
+    const index = imageMap[currentImage] ?? 0;
     if (textures[index]) material.map = textures[index];
     material.needsUpdate = true;
-  }, [meshes, textures]);
+  }, [meshes, textures, currentImage]);
 
   useEffect(() => {
     if (!meshes.matte) return;
     const material = meshes.matte.material;
-    const index = products.findIndex((p) => p.image === currentImage);
+    const imageMap: { [key: string]: number } = { "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 };
+    const index = imageMap[currentImage] ?? 0;
     if (textures[index]) material.map = textures[index];
   }, [currentImage, meshes, textures]);
 
@@ -163,7 +166,7 @@ const MacBookCanvas = ({
   scrollProgress,
   flipDirection,
 }: {
-  currentProduct: typeof products[0];
+  currentProduct: any;
   isFlipping: boolean;
   scrollProgress: number;
   flipDirection: number;
@@ -212,7 +215,7 @@ const ProductInfo = ({
   isFlipping,
   isVisible,
 }: {
-  product: typeof products[0];
+  product: any;
   onNext: () => void;
   onPrev: () => void;
   isFlipping: boolean;
@@ -305,6 +308,8 @@ const ProductInfo = ({
 
 // --- Main Component ---
 const MacBookSection = () => {
+  const { t, ready } = useTranslation();
+  const [mounted, setMounted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [shouldRender, setShouldRender] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -313,10 +318,15 @@ const MacBookSection = () => {
   const [contentVisible, setContentVisible] = useState(true);
   const [flipDirection, setFlipDirection] = useState(1);
 
-  const currentProduct = products[currentIndex];
+  const products = useMemo(() => mounted && ready ? getProducts(t) : [], [t, mounted, ready]);
+  const currentProduct = products[currentIndex] || null;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleChange = (nextIndex: number, direction: number) => {
-    if (isFlipping) return;
+    if (isFlipping || !products.length) return;
     setFlipDirection(direction);
     setIsFlipping(true);
     setContentVisible(false);
@@ -325,8 +335,8 @@ const MacBookSection = () => {
     setTimeout(() => setIsFlipping(false), TOTAL_FLIP_DURATION);
   };
 
-  const next = () => handleChange((currentIndex + 1) % products.length, 1);
-  const prev = () => handleChange((currentIndex - 1 + products.length) % products.length, -1);
+  const next = () => products.length && handleChange((currentIndex + 1) % products.length, 1);
+  const prev = () => products.length && handleChange((currentIndex - 1 + products.length) % products.length, -1);
 
   // Scroll progress
   useEffect(() => {
@@ -358,7 +368,9 @@ const MacBookSection = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       useGLTF.preload("./models/mac.glb");
-      products.forEach((p) => useTexture.preload(p.image));
+      useTexture.preload("/bg.png");
+      useTexture.preload("/bg2.png");
+      useTexture.preload("/bg3.png");
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -390,7 +402,7 @@ const MacBookSection = () => {
     >
       <div className="sticky top-0 w-full h-screen flex">
         <div className="w-full md:w-2/5 h-full">
-          {shouldRender && (
+          {shouldRender && currentProduct && (
             <ProductInfo
               product={currentProduct}
               onNext={next}
@@ -402,7 +414,7 @@ const MacBookSection = () => {
         </div>
 
         <div className="w-full md:w-3/5 h-full">
-          {shouldRender ? (
+          {shouldRender && currentProduct ? (
             <Suspense fallback={<LoadingSpinner />}>
               <MacBookCanvas
                 currentProduct={currentProduct}
@@ -411,9 +423,7 @@ const MacBookSection = () => {
                 flipDirection={flipDirection}
               />
             </Suspense>
-          ) 
-            
-: (<LoadingSpinner />)}
+          ) : (<LoadingSpinner />)}
         </div>
       </div>
     </div>

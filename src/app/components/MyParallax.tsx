@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,10 +23,16 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   preStartOffset = 150,
   mobileRef,
 }) => {
+  const { t, ready } = useTranslation();
+  const [mounted, setMounted] = useState(false);
   const [currentScale, setCurrentScale] = useState(scale);
   const [imageTransform, setImageTransform] = useState({ x: 0, width: 100 });
   const [textOpacity, setTextOpacity] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // === Parallax scroll ===
   useEffect(() => {
@@ -113,8 +120,12 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   const defaultText = (
     <div className="text-gray-900 space-y-6">
       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight font-display">
-        <div className="parallax-title-line">Innovating today</div>
-        <div className="parallax-title-line">to shape the</div>
+        <div className="parallax-title-line">
+          {mounted && ready ? t('parallax.desktop.line1') : 'Turning complex'}
+        </div>
+        <div className="parallax-title-line">
+          {mounted && ready ? t('parallax.desktop.line2') : 'problems into'}
+        </div>
         <div className="parallax-title-line">
           <span
             className="hero-gradient-text"
@@ -127,13 +138,12 @@ const MyParallax: React.FC<MyParallaxProps> = ({
               backgroundClip: "text",
             }}
           >
-            future of tech
+            {mounted && ready ? t('parallax.desktop.line3') : 'simple solutions'}
           </span>
         </div>
       </h1>
       <p className="parallax-subtitle text-lg sm:text-xl text-gray-600 max-w-lg font-light leading-relaxed">
-        We merge creativity and technology to build digital experiences that
-        inspire and make a difference.
+        {mounted && ready ? t('parallax.desktop.subtitle') : 'Every challenge is an opportunity to build something meaningful. We take what\'s complicated and make it work beautifully.'}
       </p>
     </div>
   );
@@ -142,7 +152,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   const defaultMobileText = (
     <>
       <h1 className="text-3xl font-semibold text-gray-900 font-display tracking-tight">
-        A vision for{" "}
+        {mounted && ready ? t('parallax.mobile.title') : 'Simple solutions for'}{" "}
         <span
           className="block hero-gradient-text"
           style={{
@@ -154,12 +164,11 @@ const MyParallax: React.FC<MyParallaxProps> = ({
             backgroundClip: "text",
           }}
         >
-          tomorrow
+          {mounted && ready ? t('parallax.mobile.highlight') : 'complex problems'}
         </span>
       </h1>
       <p className="text-lg text-gray-600 leading-relaxed font-light">
-        Discover ideas and technology designed to transform how we live, work,
-        and connect.
+        {mounted && ready ? t('parallax.mobile.subtitle') : 'We take the complicated stuff and make it work beautifully. That\'s what good software should do.'}
       </p>
     </>
   );

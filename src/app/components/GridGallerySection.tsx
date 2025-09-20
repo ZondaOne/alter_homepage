@@ -157,14 +157,13 @@ const GridGallerySection = () => {
     <div className="mt-40">
       <div className="relative bg-neutral-900 text-white p-16 rounded-2xl text-center shadow-xl">
         <h3 className="text-3xl lg:text-4xl font-semibold mb-6 leading-tight">
-          Ready to build something amazing?
+          {mounted && ready ? t('galleryCTA.title') : 'Ready to start building?'}
         </h3>
         <p className="text-lg text-neutral-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Let's discuss your next project and bring your ideas to life with
-          cutting-edge technology.
+          {mounted && ready ? t('galleryCTA.description') : "Every great project starts with a conversation. What's your next move?"}
         </p>
         <button className="group bg-white text-neutral-900 px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 rounded-lg flex items-center gap-3 mx-auto">
-          START YOUR PROJECT
+          {mounted && ready ? t('galleryCTA.button') : 'START YOUR PROJECT'}
           <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
         </button>
       </div>

@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function FAQ() {
+  const { t, ready } = useTranslation();
   const faqRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(0); // Primera pregunta abierta
@@ -46,28 +48,7 @@ export default function FAQ() {
     );
   }, [mounted]);
 
-  const faqs = [
-    {
-      question: "What services do you provide?",
-      answer:
-        "We provide end-to-end software development, from initial concept to deployment and ongoing support.",
-    },
-    {
-      question: "How long does a typical project take?",
-      answer:
-        "Project timelines vary depending on complexity, but most small to medium projects take 6-12 weeks.",
-    },
-    {
-      question: "Do you offer post-launch support?",
-      answer:
-        "Yes, we provide maintenance and support packages to ensure your product runs smoothly.",
-    },
-    {
-      question: "Can you work with existing teams?",
-      answer:
-        "Absolutely. We integrate with your team seamlessly, providing technical expertise where needed.",
-    },
-  ];
+  const faqs = mounted && ready ? t('faq.questions', { returnObjects: true }) : [];
 
   return (
     <section
@@ -78,20 +59,20 @@ export default function FAQ() {
         {/* Header */}
         <div className="text-center">
           <h1 className="faq-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
-            Frequently Asked
+            {mounted && ready ? t('faq.title') : 'What You\'re'}
             <br />
             <span
               className="bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 bg-clip-text text-transparent"
               style={{ backgroundSize: "200% 100%" }}
             >
-              Questions
+              {mounted && ready ? t('faq.titleHighlight') : 'Wondering'}
             </span>
           </h1>
         </div>
 
         {/* FAQ items */}
         <div className="space-y-4">
-          {faqs.map((faq, i) => {
+          {Array.isArray(faqs) && faqs.map((faq: any, i: number) => {
             const isOpen = i === openIndex;
             return (
               <div
