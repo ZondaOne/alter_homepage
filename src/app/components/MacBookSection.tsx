@@ -76,6 +76,7 @@ const MacContainer = ({
   const screenRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const meshesRef = useRef<any>({});
+  const screenMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
 
   const targetRotationY = useRef(0);
   const currentRotationY = useRef(0);
@@ -98,25 +99,39 @@ const MacContainer = ({
 
   useEffect(() => {
     if (!meshes.matte) return;
-    const material = meshes.matte.material;
-    material.color = new THREE.Color(0xffffff);
-    material.emissiveIntensity = 0;
-    material.metalness = 0;
-    material.roughness = 1;
 
+    // Create (once) an unlit material so the screen image isn't affected by lights or tone mapping
+    if (!screenMaterialRef.current) {
+      screenMaterialRef.current = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        toneMapped: false,
+        side: THREE.DoubleSide,
+      });
+    }
+
+    const material = screenMaterialRef.current;
+
+    // Choose the texture based on current image and ensure correct color space/orientation
     const imageMap: { [key: string]: number } = { "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 };
     const index = imageMap[currentImage] ?? 0;
-    if (textures[index]) material.map = textures[index];
-    material.needsUpdate = true;
+    const tex = textures[index];
+
+    if (tex) {
+      // Make sure UI textures render with their intended colors
+      tex.colorSpace = THREE.SRGBColorSpace;
+      // This mesh's UVs expect the default orientation
+      tex.flipY = true;
+      tex.needsUpdate = true;
+
+      material.map = tex;
+      material.needsUpdate = true;
+    }
+
+    // Assign our custom material to the screen mesh
+    if ((meshes.matte as THREE.Mesh).material !== material) {
+      (meshes.matte as THREE.Mesh).material = material;
+    }
   }, [meshes, textures, currentImage]);
-
-  useEffect(() => {
-    if (!meshes.matte) return;
-    const material = meshes.matte.material;
-    const imageMap: { [key: string]: number } = { "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 };
-    const index = imageMap[currentImage] ?? 0;
-    if (textures[index]) material.map = textures[index];
-  }, [currentImage, meshes, textures]);
 
   useEffect(() => {
     if (meshes.screen) {
