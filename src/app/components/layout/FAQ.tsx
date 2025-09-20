@@ -52,6 +52,7 @@ export default function FAQ() {
 
   return (
     <section
+      id="support"
       ref={faqRef}
       className="relative py-32 overflow-hidden bg-white"
     >

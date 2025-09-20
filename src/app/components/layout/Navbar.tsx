@@ -45,6 +45,25 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const scrollToProjects = () => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
+
+    const isMobile = window.innerWidth < 768; // md breakpoint
+    const targetId = isMobile ? 'gallery-section' : 'macbook-section';
+
+    if (pathname === "/") {
+      const element = document.getElementById(targetId);
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/#${targetId}`);
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  };
+
   const handleDropdownToggle = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
@@ -84,99 +103,27 @@ const Navbar: React.FC = () => {
           {/* Nav items */}
           <div className="flex-1 ml-10 hidden lg:flex items-center gap-8">
             {[
-              { key: "products", label: t("products"), dropdown: true },
+              { key: "products", label: t("products"), isProductsLink: true },
               { key: "consulting", label: t("consulting") },
-              { key: "support", label: t("support"), dropdown: true },
+              { key: "support", label: t("support") },
               { key: "about", label: t("about") },
             ].map((item) => (
               <div key={item.key} className="relative">
                 <button
-                  onClick={() =>
-                    item.dropdown
-                      ? handleDropdownToggle(item.key)
-                      : navigateToSection(item.key)
-                  }
+                  onClick={() => {
+                    if (item.isProductsLink) {
+                      scrollToProjects();
+                    } else {
+                      navigateToSection(item.key);
+                    }
+                  }}
                   className="relative text-[15px] font-normal text-gray-800 py-2 px-1 transition-colors duration-200 hover:text-[color:var(--color-accent)] flex items-center gap-1 group"
                 >
                   {mounted ? item.label : " "}
-                  {item.dropdown && (
-                    <svg
-                      className={`w-5 h-5 transition-transform duration-200 ease-in-out ${
-                        activeDropdown === item.key ? "rotate-180" : ""
-                      }`}
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2.5} // flecha más gorda
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M4.5 6L8 9.5L11.5 6" />
-                    </svg>
-                  )}
 
                   {/* underline hover */}
                   <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[color:var(--color-accent)] transition-all duration-300 group-hover:w-full"></span>
                 </button>
-
-                {/* Dropdowns */}
-                <AnimatePresence>
-                  {item.dropdown && activeDropdown === item.key && mounted && (
-                    <motion.div
-                      className="absolute top-full left-0 min-w-[220px] bg-white border border-gray-200 shadow-lg rounded-md mt-1.5 z-[2000] flex flex-col overflow-hidden"
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {item.key === "products" && (
-                        <>
-                          <button
-                            onClick={() => navigateToSection("products")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("allProducts")}
-                          </button>
-                          <button
-                            onClick={() => navigateToSection("solutions")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("solutions")}
-                          </button>
-                          <button
-                            onClick={() => navigateToSection("services")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("services")}
-                          </button>
-                        </>
-                      )}
-
-                      {item.key === "support" && (
-                        <>
-                          <button
-                            onClick={() => navigateToSection("support")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("helpCenter")}
-                          </button>
-                          <button
-                            onClick={() => navigateToSection("documentation")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("documentation")}
-                          </button>
-                          <button
-                            onClick={() => navigateToSection("community")}
-                            className="py-2.5 px-4 text-left text-sm text-gray-700 hover:bg-gray-50 hover:text-[color:var(--color-accent)] transition-all"
-                          >
-                            {t("community")}
-                          </button>
-                        </>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             ))}
           </div>
@@ -253,96 +200,24 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col space-y-1">
                 {/* Mobile Navigation Items */}
                 {[
-                  { key: "products", label: t("products"), dropdown: true },
+                  { key: "products", label: t("products"), isProductsLink: true },
                   { key: "consulting", label: t("consulting") },
-                  { key: "support", label: t("support"), dropdown: true },
+                  { key: "support", label: t("support") },
                   { key: "about", label: t("about") },
                 ].map((item) => (
                   <div key={item.key} className="border-b border-gray-100 last:border-b-0">
                     <button
-                      onClick={() =>
-                        item.dropdown
-                          ? handleDropdownToggle(item.key)
-                          : navigateToSection(item.key)
-                      }
+                      onClick={() => {
+                        if (item.isProductsLink) {
+                          scrollToProjects();
+                        } else {
+                          navigateToSection(item.key);
+                        }
+                      }}
                       className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between"
                     >
                       {mounted ? item.label : " "}
-                      {item.dropdown && (
-                        <svg
-                          className={`w-5 h-5 transition-transform duration-200 ease-in-out ${
-                            activeDropdown === item.key ? "rotate-180" : ""
-                          }`}
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2.5}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M4.5 6L8 9.5L11.5 6" />
-                        </svg>
-                      )}
                     </button>
-
-                    {/* Mobile Dropdown Items */}
-                    <AnimatePresence>
-                      {item.dropdown && activeDropdown === item.key && mounted && (
-                        <motion.div
-                          className="bg-gray-50 rounded-md mb-3 overflow-hidden"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          {item.key === "products" && (
-                            <>
-                              <button
-                                onClick={() => navigateToSection("products")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("allProducts")}
-                              </button>
-                              <button
-                                onClick={() => navigateToSection("solutions")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("solutions")}
-                              </button>
-                              <button
-                                onClick={() => navigateToSection("services")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("services")}
-                              </button>
-                            </>
-                          )}
-
-                          {item.key === "support" && (
-                            <>
-                              <button
-                                onClick={() => navigateToSection("support")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("helpCenter")}
-                              </button>
-                              <button
-                                onClick={() => navigateToSection("documentation")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("documentation")}
-                              </button>
-                              <button
-                                onClick={() => navigateToSection("community")}
-                                className="w-full text-left py-2.5 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-[color:var(--color-accent)] transition-all"
-                              >
-                                {t("community")}
-                              </button>
-                            </>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </div>
                 ))}
 
@@ -411,13 +286,6 @@ const Navbar: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Overlay to close dropdown */}
-      {activeDropdown && (
-        <div
-          className="fixed top-16 left-0 w-full h-[calc(100vh-64px)] bg-transparent z-[100]"
-          onClick={() => setActiveDropdown(null)}
-        />
-      )}
 
       {/* Overlay to close mobile menu */}
       {isMobileMenuOpen && (

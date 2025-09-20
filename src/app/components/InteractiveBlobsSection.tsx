@@ -150,6 +150,7 @@ const InteractiveBlobsSection: React.FC = () => {
 
   return (
     <section
+      id="about"
       ref={main}
       className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-cream-base px-8"
     >

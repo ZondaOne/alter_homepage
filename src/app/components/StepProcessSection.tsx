@@ -18,6 +18,18 @@ const scrollToContact = () => {
   }
 };
 
+const scrollToProjects = () => {
+  const isMobile = window.innerWidth < 768; // md breakpoint
+  const targetId = isMobile ? 'gallery-section' : 'macbook-section';
+  const targetSection = document.getElementById(targetId);
+  if (targetSection) {
+    targetSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
 const StepProcessSection: React.FC = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -88,6 +100,7 @@ const StepProcessSection: React.FC = () => {
 
   return (
     <section
+      id="consulting"
       ref={sectionRef}
       className="relative py-20 lg:py-32 bg-white overflow-hidden"
     >
@@ -177,7 +190,10 @@ const StepProcessSection: React.FC = () => {
                     </span>
                   </button>
 
-                  <button className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg">
+                  <button
+                    onClick={scrollToProjects}
+                    className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg"
+                  >
                     <span className="flex items-center justify-center gap-3">
                       {t("cta.portfolio")}
                       <span className="transform group-hover:translate-x-1 transition-transform duration-300">

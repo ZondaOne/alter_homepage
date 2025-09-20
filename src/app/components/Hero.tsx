@@ -17,6 +17,18 @@ const scrollToContact = () => {
   }
 };
 
+const scrollToProjects = () => {
+  const isMobile = window.innerWidth < 768; // md breakpoint
+  const targetId = isMobile ? 'gallery-section' : 'macbook-section';
+  const targetSection = document.getElementById(targetId);
+  if (targetSection) {
+    targetSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
@@ -204,7 +216,10 @@ export default function Hero() {
               {mounted && ready ? t("heroButtonWork") : "Work with us"}
             </button>
 
-            <button className="text-gray-700 text-sm font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group">
+            <button
+              onClick={scrollToProjects}
+              className="text-gray-700 text-sm font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
+            >
               {mounted && ready ? t("heroButtonSee") : "See what we've made"}
               <svg
                 width="14"
