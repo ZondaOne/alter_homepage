@@ -151,7 +151,7 @@ export default function HomePage() {
     <>
       <Hero />
       <InteractiveBlobsSection />
-      <main className="relative z-10">
+      <article className="relative z-10">
         
         {/* Parallax Section with Hero-style text */}
         <section className="w-full" ref={parallaxRef}>
@@ -162,7 +162,7 @@ export default function HomePage() {
           >
             <img
               src="/banner.png"
-              alt="Innovation in technology"
+              alt="Zonda One software development team working on innovative solutions"
               className="w-full h-auto object-cover rounded-lg shadow-xl"
               style={{ maxHeight: 'none' }}
             />
@@ -183,7 +183,7 @@ export default function HomePage() {
 
         {/* Contact Section */}
         <ContactSection />
-      </main>
+      </article>
     </>
   );
 }

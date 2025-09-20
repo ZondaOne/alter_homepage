@@ -173,10 +173,11 @@ export default function Hero() {
   }, [mounted]);
 
   return (
-    <div
+    <section
       ref={heroRef}
       className="relative h-screen overflow-hidden hero-gradient"
       style={{ backgroundColor: "#F9FAFB" }}
+      aria-label="Hero section - Zonda One"
     >
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
         <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20">
@@ -246,6 +247,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

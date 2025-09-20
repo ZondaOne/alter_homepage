@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Loader from './components/Loader';
+import StructuredData from '../components/StructuredData';
 import "../i18n"; // inicializa i18n
 
 const crimsonText = Crimson_Text({
@@ -28,8 +29,55 @@ const awareBold = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Zonda Consulting",
-  description: "Boutique consultancy landing page",
+  title: {
+    default: "Zonda One",
+    template: "%s | Zonda One"
+  },
+  description: "Zonda One is a software startup building innovative products and custom business solutions. We create software that people actually want to use.",
+  keywords: ["software development", "startup", "custom solutions", "business software", "web development", "mobile apps", "digital transformation"],
+  authors: [{ name: "Zonda One Team" }],
+  creator: "Zonda One",
+  publisher: "Zonda One",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://zonda.one'),
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/logo192.png',
+  },
+  openGraph: {
+    title: "Zonda One",
+    description: "We build innovative software products and custom business solutions that drive growth and efficiency.",
+    url: 'https://zonda.one',
+    siteName: 'Zonda One',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/logo512.png',
+        width: 512,
+        height: 512,
+        alt: 'Zonda One - Software Startup',
+      }
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'google-site-verification-code-here',
+  },
 };
 
 export default function RootLayout({
@@ -39,13 +87,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <StructuredData />
+      </head>
       <body
-          
+
         className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
       ><Loader duration={1200} />
         {/* Navbar es Client Component */}
         <Navbar />
-      
+
         {/* Main content */}
         <main>{children}</main>
         <Footer />
