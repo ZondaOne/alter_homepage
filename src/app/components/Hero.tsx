@@ -7,6 +7,16 @@ import SoftwareLogo from "./SoftwareLogo";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const scrollToContact = () => {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
@@ -187,7 +197,10 @@ export default function Hero() {
           </p>
 
           <div className="hero-buttons flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
-            <button className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto">
+            <button
+              onClick={scrollToContact}
+              className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
+            >
               {mounted && ready ? t("heroButtonWork") : "Work with us"}
             </button>
 

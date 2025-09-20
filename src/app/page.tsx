@@ -9,6 +9,7 @@ import StepProcessSection from "./components/StepProcessSection";
 import GridGallerySection from './components/GridGallerySection';
 import MacBookSection from './components/MacBookSection';
 import MyParallax from './components/MyParallax';
+import ContactSection from './components/ContactSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -175,6 +176,9 @@ export default function HomePage() {
 
         {/* MacBook Section */}
         <MacBookSection />
+
+        {/* Contact Section */}
+        <ContactSection />
       </main>
     </>
   );

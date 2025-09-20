@@ -128,5 +128,23 @@
     "description1": "Il grande software non nasce da template o soluzioni rapide. Nasce dal capire cosa ti serve davvero e avere le competenze per realizzarlo.",
     "description2": "Siamo il team che si rimbocca le maniche, fa le domande difficili e costruisce soluzioni che crescono con te.",
     "discoverButton": "Scopri Zonda"
+  },
+
+  "contact": {
+    "title": "Iniziamo a",
+    "titleHighlight": "costruire insieme",
+    "subtitle": "Hai un progetto in mente? Ci piacerebbe sentirne parlare. Inviaci un messaggio e discutiamo di come possiamo aiutarti a realizzare le tue idee.",
+    "form": {
+      "name": "Il tuo nome",
+      "namePlaceholder": "Inserisci il tuo nome",
+      "email": "Indirizzo email",
+      "emailPlaceholder": "Inserisci la tua email",
+      "message": "Raccontaci del tuo progetto",
+      "messagePlaceholder": "Cosa vuoi costruire? Condividi le tue idee, sfide o qualsiasi domanda tu abbia...",
+      "submit": "Invia messaggio",
+      "sending": "Invio in corso...",
+      "success": "Grazie per averci contattato! Ti risponderemo presto.",
+      "error": "Qualcosa è andato storto. Riprova."
+    }
   }
 }

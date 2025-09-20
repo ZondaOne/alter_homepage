@@ -1,0 +1,237 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function ContactSection() {
+  const contactRef = useRef<HTMLDivElement>(null);
+  const { t, ready } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitType, setSubmitType] = useState<"success" | "error" | "">("");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const contactSection = contactRef.current;
+    if (!contactSection) return;
+
+    // Set initial states
+    gsap.set([".contact-title .title-line", ".contact-subtitle", ".contact-form"], {
+      opacity: 0,
+      y: 60,
+      rotationX: 15,
+      force3D: true,
+    });
+
+    gsap.set([".contact-title", ".contact-subtitle", ".contact-form"], {
+      willChange: "transform, opacity",
+    });
+
+    // Master timeline for entrance
+    const masterTL = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: {
+        trigger: contactSection,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    masterTL
+      .to(".contact-title .title-line", {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.8,
+        stagger: {
+          amount: 0.2,
+          from: "start"
+        },
+        transformOrigin: "center bottom"
+      })
+      .to(".contact-subtitle", {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.6,
+        transformOrigin: "center bottom"
+      }, "-=0.5")
+      .to(".contact-form", {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.8,
+        transformOrigin: "center bottom"
+      }, "-=0.4");
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [mounted]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage("");
+    setSubmitType("");
+
+    try {
+      const response = await fetch("https://formspree.io/f/xgvylepr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      });
+
+      if (response.ok) {
+        setSubmitType("success");
+        setSubmitMessage(t("contact.form.success"));
+        setFormState({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      setSubmitType("error");
+      setSubmitMessage(t("contact.form.error"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section
+      id="contact"
+      ref={contactRef}
+      className="relative py-20 sm:py-24 lg:py-32 bg-gray-50"
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="contact-title text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
+            <div className="title-line">
+              {mounted && ready ? t("contact.title") : "Let's start"}
+            </div>
+            <div className="title-line">
+              <span
+                className="gradient-text"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                  backgroundSize: "200% 100%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {mounted && ready ? t("contact.titleHighlight") : "building together"}
+              </span>
+            </div>
+          </h2>
+
+          <p className="contact-subtitle text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+            {mounted && ready ? t("contact.subtitle") : "Have a project in mind? We'd love to hear about it. Drop us a message and let's discuss how we can help bring your ideas to life."}
+          </p>
+        </div>
+
+        <div className="contact-form max-w-2xl mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  {mounted && ready ? t("contact.form.name") : "Your name"}
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formState.name}
+                  onChange={handleInputChange}
+                  placeholder={mounted && ready ? t("contact.form.namePlaceholder") : "Enter your name"}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  {mounted && ready ? t("contact.form.email") : "Email address"}
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formState.email}
+                  onChange={handleInputChange}
+                  placeholder={mounted && ready ? t("contact.form.emailPlaceholder") : "Enter your email"}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                {mounted && ready ? t("contact.form.message") : "Tell us about your project"}
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={6}
+                value={formState.message}
+                onChange={handleInputChange}
+                placeholder={mounted && ready ? t("contact.form.messagePlaceholder") : "What are you looking to build? Share your ideas, challenges, or any questions you have..."}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 resize-vertical min-h-[120px]"
+              />
+            </div>
+
+            <div className="flex flex-col items-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 w-full sm:w-auto min-w-[160px]"
+              >
+                {isSubmitting
+                  ? (mounted && ready ? t("contact.form.sending") : "Sending...")
+                  : (mounted && ready ? t("contact.form.submit") : "Send message")
+                }
+              </button>
+
+              {submitMessage && (
+                <div className={`mt-4 p-4 rounded-sm text-sm ${
+                  submitType === "success"
+                    ? "bg-green-50 text-green-800 border border-green-200"
+                    : "bg-red-50 text-red-800 border border-red-200"
+                }`}>
+                  {submitMessage}
+                </div>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}

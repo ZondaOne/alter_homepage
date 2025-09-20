@@ -8,6 +8,16 @@ import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const scrollToContact = () => {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
 const StepProcessSection: React.FC = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -157,7 +167,10 @@ const StepProcessSection: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  <button className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg">
+                  <button
+                    onClick={scrollToContact}
+                    className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg"
+                  >
                     <span className="flex items-center justify-center gap-3">
                       {t("cta.initiate")}
                       <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>

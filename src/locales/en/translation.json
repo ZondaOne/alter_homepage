@@ -128,5 +128,23 @@
     "description1": "Great software isn't born from templates or quick fixes. It comes from understanding what you really need and having the skill to make it happen.",
     "description2": "We're the team that rolls up our sleeves, asks the hard questions, and builds solutions that grow with you.",
     "discoverButton": "Discover Zonda"
+  },
+
+  "contact": {
+    "title": "Let's start",
+    "titleHighlight": "building together",
+    "subtitle": "Have a project in mind? We'd love to hear about it. Drop us a message and let's discuss how we can help bring your ideas to life.",
+    "form": {
+      "name": "Your name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email address",
+      "emailPlaceholder": "Enter your email",
+      "message": "Tell us about your project",
+      "messagePlaceholder": "What are you looking to build? Share your ideas, challenges, or any questions you have...",
+      "submit": "Send message",
+      "sending": "Sending...",
+      "success": "Thanks for reaching out! We'll get back to you soon.",
+      "error": "Something went wrong. Please try again."
+    }
   }
 }

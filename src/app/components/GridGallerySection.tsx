@@ -13,6 +13,16 @@ interface Project {
   image?: string
 }
 
+const scrollToContact = () => {
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
 const GridGallerySection = () => {
   const { t, ready } = useTranslation()
   const [mounted, setMounted] = useState(false)
@@ -162,7 +172,10 @@ const GridGallerySection = () => {
         <p className="text-lg text-neutral-300 max-w-2xl mx-auto mb-10 leading-relaxed">
           {mounted && ready ? t('galleryCTA.description') : "Every great project starts with a conversation. What's your next move?"}
         </p>
-        <button className="group bg-white text-neutral-900 px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 rounded-lg flex items-center gap-3 mx-auto">
+        <button
+          onClick={scrollToContact}
+          className="group bg-white text-neutral-900 px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 rounded-lg flex items-center gap-3 mx-auto"
+        >
           {mounted && ready ? t('galleryCTA.button') : 'START YOUR PROJECT'}
           <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
         </button>
