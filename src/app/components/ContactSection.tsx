@@ -125,11 +125,11 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={contactRef}
-      className="relative py-20 sm:py-24 lg:py-32 bg-gray-50"
+      className="relative min-h-screen flex items-center bg-gray-50 py-8 sm:py-16"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="contact-title text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
+          <h2 className="contact-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-4 sm:mb-6">
             <div className="title-line">
               {mounted && ready ? t("contact.title") : "Let's start"}
             </div>
@@ -150,14 +150,14 @@ export default function ContactSection() {
             </div>
           </h2>
 
-          <p className="contact-subtitle text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+          <p className="contact-subtitle text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto mb-8 sm:mb-12 font-light leading-relaxed px-4 sm:px-0">
             {mounted && ready ? t("contact.subtitle") : "Have a project in mind? We'd love to hear about it. Drop us a message and let's discuss how we can help bring your ideas to life."}
           </p>
         </div>
 
-        <div className="contact-form max-w-2xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="contact-form max-w-2xl mx-auto px-4 sm:px-0">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   {mounted && ready ? t("contact.form.name") : "Your name"}
@@ -170,7 +170,7 @@ export default function ContactSection() {
                   onChange={handleInputChange}
                   placeholder={mounted && ready ? t("contact.form.namePlaceholder") : "Enter your name"}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm sm:text-base"
                 />
               </div>
 
@@ -186,7 +186,7 @@ export default function ContactSection() {
                   onChange={handleInputChange}
                   placeholder={mounted && ready ? t("contact.form.emailPlaceholder") : "Enter your email"}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function ContactSection() {
                 onChange={handleInputChange}
                 placeholder={mounted && ready ? t("contact.form.messagePlaceholder") : "What are you looking to build? Share your ideas, challenges, or any questions you have..."}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 resize-vertical min-h-[120px]"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 resize-vertical min-h-[100px] sm:min-h-[120px] text-sm sm:text-base"
               />
             </div>
 
@@ -211,7 +211,7 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 w-full sm:w-auto min-w-[160px]"
+                className="bg-gray-900 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-sm text-sm font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 w-full sm:w-auto min-w-[160px]"
               >
                 {isSubmitting
                   ? (mounted && ready ? t("contact.form.sending") : "Sending...")

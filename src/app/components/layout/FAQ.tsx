@@ -54,12 +54,12 @@ export default function FAQ() {
     <section
       id="support"
       ref={faqRef}
-      className="relative py-32 overflow-hidden bg-white"
+      className="relative min-h-screen flex items-center overflow-hidden bg-white py-8 sm:py-16"
     >
-      <div className="max-w-5xl mx-auto px-6 space-y-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-8 sm:space-y-12 lg:space-y-16">
         {/* Header */}
         <div className="text-center">
-          <h1 className="faq-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+          <h1 className="faq-h1 m-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             {mounted && ready ? t('faq.title') : 'What You\'re'}
             <br />
             <span
@@ -78,11 +78,11 @@ export default function FAQ() {
             return (
               <div
                 key={i}
-                className="faq-item border-l-2 border-gray-200 pl-6 py-4 hover:border-orange-500 transition-colors duration-300 cursor-pointer"
+                className="faq-item border-l-2 border-gray-200 pl-4 sm:pl-6 py-4 hover:border-orange-500 transition-colors duration-300 cursor-pointer"
                 onClick={() => setOpenIndex(isOpen ? -1 : i)}
               >
                 <div className="flex justify-between items-center">
-                  <h4 className="text-xl font-bold text-gray-900">
+                  <h4 className="text-lg sm:text-xl font-bold text-gray-900 pr-4">
                     {faq.question}
                   </h4>
                   <svg
@@ -102,7 +102,7 @@ export default function FAQ() {
                   </svg>
                 </div>
                 {isOpen && (
-                  <p className="text-gray-600 font-light leading-relaxed mt-3">
+                  <p className="text-sm sm:text-base text-gray-600 font-light leading-relaxed mt-3">
                     {faq.answer}
                   </p>
                 )}
