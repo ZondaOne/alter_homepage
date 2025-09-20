@@ -234,13 +234,38 @@ const ProductInfo = ({
         {product.title}
       </h1>
       <p
-        className={`text-md md:text-lg text-gray-300 max-w-md transform transition-all duration-500 ease-out ${
+        className={`text-md md:text-lg text-gray-300 max-w-md mb-8 transform transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
         style={{ transitionDelay: isVisible ? "350ms" : "0ms" }}
       >
         {product.description}
       </p>
+
+      {/* Launch Button */}
+      <div
+        className={`transform transition-all duration-500 ease-out ${
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        }`}
+        style={{ transitionDelay: isVisible ? "500ms" : "0ms" }}
+      >
+        <a
+          href={`https://${product.title.toLowerCase()}.zonda.one`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-3 px-8 py-4 text-black font-medium text-lg rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
+        >
+          <span className="relative z-10">Launch {product.title}</span>
+          <svg
+            className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
     </div>
 
     <div

@@ -55,7 +55,7 @@ const GridGallerySection = () => {
   ]
 
   return (
-   <section className="relative w-full py-16 md:py-24 px-6 md:px-8 overflow-hidden" style={{ backgroundColor: '#F9FAFB' }}>
+   <section className="relative w-full py-16 md:py-24 px-6 md:px-8 overflow-hidden md:hidden" style={{ backgroundColor: '#F9FAFB' }}>
   <div className="relative z-10 max-w-7xl mx-auto w-full">
     {/* Header */}
     <div className="mb-16 text-center max-w-5xl mx-auto">
