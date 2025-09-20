@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import FAQ from './components/layout/FAQ';
 import Loader from './components/Loader';
 import "../i18n"; // inicializa i18n
 
@@ -49,7 +48,6 @@ export default function RootLayout({
       
         {/* Main content */}
         <main>{children}</main>
-        <FAQ />
         <Footer />
       </body>
     </html>
