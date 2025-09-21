@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
 import SoftwareLogo from "./SoftwareLogo";
+import DarkVeil from "./DarkVeil";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -176,9 +177,21 @@ export default function Hero() {
     <section
       ref={heroRef}
       className="relative h-screen overflow-hidden hero-gradient"
-      style={{ backgroundColor: "#F9FAFB" }}
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label="Hero section - Zonda One"
     >
+      <div className="absolute inset-0 w-screen h-screen z-0" style={{ transform: "scaleX(-1)", opacity: 0.8 }}>
+        <DarkVeil
+          hueShift={39}
+          noiseIntensity={0.03}
+          scanlineIntensity={0}
+          speed={0.7}
+          scanlineFrequency={0}
+          warpAmount={0.5}
+          resolutionScale={1}
+          flipX={false}
+        />
+      </div>
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
         <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20">
           <h1 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
@@ -241,11 +254,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative h-full hidden lg:block">
+        {/* <div className="relative h-full hidden lg:block">
           <div className="w-full h-full object-cover hero-logo">
             <SoftwareLogo scale={1.6} />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
