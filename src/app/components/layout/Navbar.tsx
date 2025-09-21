@@ -89,15 +89,20 @@ const Navbar: React.FC = () => {
         <div className="w-full h-full max-w-[1440px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <button
-            onClick={() => navigateToSection("home")}
-            className="flex items-center gap-2 py-2 px-3"
+            onClick={() => navigateToSection("hero")}
+            className="flex items-center py-2 px-3 group transition-all duration-300 ease-in-out"
           >
-            <div className="w-10 h-10 flex items-center justify-center">
+            <div className="w-10 h-10 flex items-center justify-center transform transition-transform duration-300 ease-in-out group-hover:scale-110">
               <Logo />
             </div>
-            <span className="text-base font-semibold text-[color:var(--foreground)]">
-              ZONDA
-            </span>
+            <div className="overflow-hidden ml-2">
+              <span
+                className="text-base text-[color:var(--foreground)] whitespace-nowrap block transform translate-x-[-20px] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
+                style={{ fontFamily: 'AwareBold, sans-serif' }}
+              >
+                ZONDA
+              </span>
+            </div>
           </button>
 
           {/* Nav items */}

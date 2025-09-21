@@ -175,6 +175,7 @@ export default function Hero() {
 
   return (
     <section
+      id="hero"
       ref={heroRef}
       className="relative h-screen overflow-hidden hero-gradient"
       style={{ backgroundColor: "#FFFFFF" }}
