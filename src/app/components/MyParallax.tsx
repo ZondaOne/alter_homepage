@@ -13,6 +13,7 @@ interface MyParallaxProps {
   text?: React.ReactNode;
   preStartOffset?: number;
   mobileRef?: React.RefObject<HTMLDivElement | null>;
+  leftLimit?: string; // New prop to control how far left the image can go
 }
 
 const MyParallax: React.FC<MyParallaxProps> = ({
@@ -22,68 +23,65 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   text,
   preStartOffset = 150,
   mobileRef,
+  leftLimit = "-25vw", // Default value, but now customizable
 }) => {
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [currentScale, setCurrentScale] = useState(scale);
-  const [imageTransform, setImageTransform] = useState({ x: 0, width: 100 });
-  const [textOpacity, setTextOpacity] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // === Parallax scroll ===
+  // === GSAP Parallax Animation ===
   useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
+    if (!containerRef.current || !imageRef.current || !textRef.current) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const elementHeight = containerRef.current.offsetHeight;
+    // Set initial states
+    gsap.set(imageRef.current, {
+      scale: scale,
+      x: "0vw",
+      width: "85vw",
+      transformOrigin: "center center"
+    });
 
-      let scrollProgress = 0;
-      const adjustedTop = rect.top - preStartOffset;
+    gsap.set(textRef.current, {
+      opacity: 0,
+      x: 100
+    });
 
-      if (adjustedTop <= windowHeight && rect.bottom >= 0) {
-        if (adjustedTop <= 0) {
-          const visibleTop = Math.abs(adjustedTop);
-          scrollProgress = Math.min(1, visibleTop / (elementHeight - windowHeight));
-        }
-      } else if (rect.bottom < 0) {
-        scrollProgress = 1;
+    // Create main parallax timeline with later start and earlier end point
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: `top+=${preStartOffset + 200} bottom`, // Added 200px delay to start later
+        end: "top center", // Much earlier end point for faster animation
+        scrub: 0.8 // Reduced scrub for faster response
       }
+    });
 
-      const scaleProgress = Math.min(1, scrollProgress * 1.5);
-      const newScale = Math.max(minScale, scale - scaleProgress * (scale - minScale));
-      setCurrentScale(newScale);
-
-      const moveProgress = Math.max(0, scrollProgress - 0.15);
-      const maxXTranslate = -25;
-      const initialWidth = 85;
-      const minWidth = 55;
-      const newX = moveProgress * maxXTranslate;
-      const newWidth = initialWidth - moveProgress * (initialWidth - minWidth);
-      setImageTransform({ x: newX, width: newWidth });
-
-      const textStartPoint = 0.25;
-      const textProgress = Math.max(
-        0,
-        Math.min(1, (scrollProgress - textStartPoint) / (1 - textStartPoint))
-      );
-      setTextOpacity(textProgress);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
+    // Image animations: scale down, move left (with limit), shrink width
+    tl.to(imageRef.current, {
+      scale: minScale,
+      x: leftLimit, // Use the customizable left limit
+      width: "55vw",
+      duration: 1,
+      ease: "power2.out"
+    })
+    // Text animation: fade in and slide from right
+    .to(textRef.current, {
+      opacity: 1,
+      x: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, 0.25); // Start text animation 25% through
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [scale, minScale, preStartOffset]);
+  }, [scale, minScale, preStartOffset, leftLimit]);
 
   // === Animaciones GSAP tipo Hero ===
   useEffect(() => {
@@ -182,23 +180,15 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       >
         <div className="relative w-full min-h-screen flex items-center justify-center overflow-visible">
           <div
-            className="relative transition-all duration-600 ease-out max-w-none"
-            style={{
-              transform: `scale(${currentScale}) translateX(${imageTransform.x}vw)`,
-              width: `${imageTransform.width}vw`,
-              transformOrigin: "center center",
-            }}
+            ref={imageRef}
+            className="relative max-w-none"
           >
             <div className="w-full h-auto">{children}</div>
           </div>
 
           <div
+            ref={textRef}
             className="absolute right-0 top-0 w-1/2 h-full flex items-center justify-end pr-8 lg:pr-16"
-            style={{
-              opacity: textOpacity,
-              transform: `translateX(${(1 - textOpacity) * 100}px)`,
-              transition: "opacity 0.3s ease-out, transform 0.3s ease-out",
-            }}
           >
             <div className="max-w-lg text-right">{text || defaultText}</div>
           </div>

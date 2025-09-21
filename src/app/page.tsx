@@ -157,8 +157,9 @@ export default function HomePage() {
         <section className="w-full" ref={parallaxRef}>
           <MyParallax
             scale={1}
-            minScale={0.90}
+            minScale={0.95}
             mobileRef={mobileRef}
+            leftLimit="-20vw"
           >
             <img
               src="/banner.png"
