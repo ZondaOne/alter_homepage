@@ -37,7 +37,7 @@ const StepProcessSection: React.FC = () => {
   const lottieRef = useRef<any>(null);
 
   useEffect(() => {
-    fetch("/software.json")
+    fetch("/WebCoding.json")
       .then((res) => res.json())
       .then(setAnimationData);
 
@@ -143,7 +143,7 @@ const StepProcessSection: React.FC = () => {
               <div className="relative group">
                 <div className="hidden md:flex absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
                 {animationData && (
-                  <div className="lottie-container bg-white rounded-2xl p-8">
+                  <div className="lottie-container bg-white rounded-2xl p-12">
                     <Lottie
                       lottieRef={lottieRef}
                       animationData={animationData}
@@ -155,8 +155,8 @@ const StepProcessSection: React.FC = () => {
                           lottieRef.current.animation?.setSpeed(0.4);
                         }
                       }}
-                      className="w-full h-auto lg:h-[500px] xl:h-[600px]"
-                      style={{ transform: "scaleX(-1)" }}
+                      className="w-full h-auto"
+                      style={{ transform: "scale(1.8)" }}
                     />
                   </div>
                 )}

@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Lottie from "lottie-react";
 
-export default function SoftwareLogo({ path = "/WebCoding.json", scale = 1 }: { path?: string; scale?: number }) {
+export default function SoftwareLogo({ path = "/Software.json", scale = 1 }: { path?: string; scale?: number }) {
   const [data, setData] = useState<any>(null);
   const lottieRef = useRef<any>(null);
 

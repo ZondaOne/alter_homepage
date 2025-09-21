@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
 import SoftwareLogo from "./SoftwareLogo";
-import DarkVeil from "./DarkVeil";
+import Threads from "./Threads";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -180,16 +180,12 @@ export default function Hero() {
       style={{ backgroundColor: "#FFFFFF" }}
       aria-label="Hero section - Zonda One"
     >
-      <div className="absolute inset-0 w-screen h-screen z-0" style={{ transform: "scaleX(-1)", opacity: 0.8 }}>
-        <DarkVeil
-          hueShift={39}
-          noiseIntensity={0.03}
-          scanlineIntensity={0}
-          speed={0.7}
-          scanlineFrequency={0}
-          warpAmount={0.5}
-          resolutionScale={1}
-          flipX={false}
+      <div className="absolute inset-0 w-screen h-screen z-0" style={{ opacity: 0.7 }}>
+        <Threads
+          color={[0.98, 0.45, 0.14]}
+          amplitude={0.5}
+          distance={1}
+          enableMouseInteraction={true}
         />
       </div>
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
@@ -254,11 +250,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* <div className="relative h-full hidden lg:block">
+        <div className="relative h-full hidden lg:block">
           <div className="w-full h-full object-cover hero-logo">
-            <SoftwareLogo scale={1.6} />
+            <SoftwareLogo scale={0.8} />
           </div>
-        </div> */}
+        </div> 
       </div>
     </section>
   );
