@@ -185,8 +185,8 @@ export default function Hero() {
         <Threads
           color={[0.98, 0.45, 0.14]}
           amplitude={0.5}
-          distance={1}
-          enableMouseInteraction={true}
+          distance={0.9}
+          enableMouseInteraction={false}
         />
       </div>
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">

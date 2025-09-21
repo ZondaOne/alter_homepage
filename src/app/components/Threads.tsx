@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
 
 interface ThreadsProps {
@@ -19,7 +19,7 @@ void main() {
 `;
 
 const fragmentShader = `
-precision highp float;
+precision mediump float;
 
 uniform float iTime;
 uniform vec3 iResolution;
@@ -30,9 +30,9 @@ uniform vec2 uMouse;
 
 #define PI 3.1415926538
 
-const int u_line_count = 40;
+const int u_line_count = 25;
 const float u_line_width = 7.0;
-const float u_line_blur = 10.0;
+const float u_line_blur = 8.0;
 
 float Perlin2D(vec2 P) {
     vec2 Pi = floor(P);
@@ -134,12 +134,31 @@ const Threads: React.FC<ThreadsProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
+  const lastUpdateTime = useRef<number>(0);
+  const lastMousePosition = useRef<[number, number]>([0.5, 0.5]);
+
+  const colorValue = useMemo(() => new Color(...color), [color[0], color[1], color[2]]);
+
+  const handleMouseMove = useCallback((e: MouseEvent, container: HTMLDivElement) => {
+    const rect = container.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = 1.0 - (e.clientY - rect.top) / rect.height;
+    lastMousePosition.current = [x, y];
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    lastMousePosition.current = [0.5, 0.5];
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
 
-    const renderer = new Renderer({ alpha: true });
+    const renderer = new Renderer({
+      alpha: true,
+      antialias: false,
+      powerPreference: "high-performance"
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -155,7 +174,7 @@ const Threads: React.FC<ThreadsProps> = ({
         iResolution: {
           value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
         },
-        uColor: { value: new Color(...color) },
+        uColor: { value: colorValue },
         uAmplitude: { value: amplitude },
         uDistance: { value: distance },
         uMouse: { value: new Float32Array([0.5, 0.5]) }
@@ -164,46 +183,51 @@ const Threads: React.FC<ThreadsProps> = ({
 
     const mesh = new Mesh(gl, { geometry, program });
 
-    function resize() {
+    const resizeHandler = () => {
       const { clientWidth, clientHeight } = container;
       renderer.setSize(clientWidth, clientHeight);
       program.uniforms.iResolution.value.r = clientWidth;
       program.uniforms.iResolution.value.g = clientHeight;
       program.uniforms.iResolution.value.b = clientWidth / clientHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
+    };
+    window.addEventListener('resize', resizeHandler);
+    resizeHandler();
 
     let currentMouse = [0.5, 0.5];
-    let targetMouse = [0.5, 0.5];
+    const targetMouse = lastMousePosition.current;
 
-    function handleMouseMove(e: MouseEvent) {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-      targetMouse = [x, y];
-    }
-    function handleMouseLeave() {
-      targetMouse = [0.5, 0.5];
-    }
+    const mouseHandler = (e: MouseEvent) => handleMouseMove(e, container);
+    const leaveHandler = () => handleMouseLeave();
+
     if (enableMouseInteraction) {
-      container.addEventListener('mousemove', handleMouseMove);
-      container.addEventListener('mouseleave', handleMouseLeave);
+      container.addEventListener('mousemove', mouseHandler);
+      container.addEventListener('mouseleave', leaveHandler);
     }
 
     function update(t: number) {
-      if (enableMouseInteraction) {
-        const smoothing = 0.05;
-        currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
-        currentMouse[1] += smoothing * (targetMouse[1] - currentMouse[1]);
-        program.uniforms.uMouse.value[0] = currentMouse[0];
-        program.uniforms.uMouse.value[1] = currentMouse[1];
-      } else {
-        program.uniforms.uMouse.value[0] = 0.5;
-        program.uniforms.uMouse.value[1] = 0.5;
-      }
-      program.uniforms.iTime.value = t * 0.0005;
+      const deltaTime = t - lastUpdateTime.current;
 
+      if (deltaTime < 16.67) {
+        animationFrameId.current = requestAnimationFrame(update);
+        return;
+      }
+
+      lastUpdateTime.current = t;
+
+      if (enableMouseInteraction) {
+        const smoothing = 0.08;
+        const dx = targetMouse[0] - currentMouse[0];
+        const dy = targetMouse[1] - currentMouse[1];
+
+        if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
+          currentMouse[0] += smoothing * dx;
+          currentMouse[1] += smoothing * dy;
+          program.uniforms.uMouse.value[0] = currentMouse[0];
+          program.uniforms.uMouse.value[1] = currentMouse[1];
+        }
+      }
+
+      program.uniforms.iTime.value = t * 0.0005;
       renderer.render({ scene: mesh });
       animationFrameId.current = requestAnimationFrame(update);
     }
@@ -211,16 +235,16 @@ const Threads: React.FC<ThreadsProps> = ({
 
     return () => {
       if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', resizeHandler);
 
       if (enableMouseInteraction) {
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('mouseleave', handleMouseLeave);
+        container.removeEventListener('mousemove', mouseHandler);
+        container.removeEventListener('mouseleave', leaveHandler);
       }
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+  }, [color, amplitude, distance, enableMouseInteraction, colorValue, handleMouseMove, handleMouseLeave]);
 
   return <div ref={containerRef} className="w-full h-full relative" {...rest} />;
 };
