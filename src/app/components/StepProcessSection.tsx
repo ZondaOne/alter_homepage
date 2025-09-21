@@ -37,7 +37,7 @@ const StepProcessSection: React.FC = () => {
   const lottieRef = useRef<any>(null);
 
   useEffect(() => {
-    fetch("/dashboard.json")
+    fetch("/software.json")
       .then((res) => res.json())
       .then(setAnimationData);
 
@@ -156,6 +156,7 @@ const StepProcessSection: React.FC = () => {
                         }
                       }}
                       className="w-full h-auto lg:h-[500px] xl:h-[600px]"
+                      style={{ transform: "scaleX(-1)" }}
                     />
                   </div>
                 )}
