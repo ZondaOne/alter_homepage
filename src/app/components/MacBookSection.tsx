@@ -348,7 +348,7 @@ const MacBookSection = () => {
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [shouldRender, setShouldRender] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
