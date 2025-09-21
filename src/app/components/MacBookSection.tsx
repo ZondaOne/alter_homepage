@@ -8,17 +8,18 @@ import { useTranslation } from "react-i18next";
 
 // --- Data for products ---
 const getProducts = (t: any) => [
-  {
-    image: "/bg.png",
-    title: t('macbook.products.pixelperfect.title'),
-    description: t('macbook.products.pixelperfect.description'),
-    key: 'pixelperfect'
-  },
+ 
   {
     image: "/bg2.png",
     title: t('macbook.products.comerzia.title'),
     description: t('macbook.products.comerzia.description'),
     key: 'comerzia'
+  },
+   {
+    image: "/bg.png",
+    title: t('macbook.products.pixelperfect.title'),
+    description: t('macbook.products.pixelperfect.description'),
+    key: 'pixelperfect'
   },
   {
     image: "/bg3.png",
@@ -42,7 +43,7 @@ const BackgroundPlane = ({ product }: { product: any }) => {
       case "PixelPerfect":
         return new THREE.MeshBasicMaterial({ color: "#83a7ea" }); 
       case "Comerzia":
-        return new THREE.MeshBasicMaterial({ color: "#f7971e" }); 
+        return new THREE.MeshBasicMaterial({ color: "#fe7b3e" }); 
       case "ComChat":
        return new THREE.MeshBasicMaterial({ color: "#dedede" }); 
       default:
@@ -428,6 +429,9 @@ const MacBookSection = () => {
             />
           )}
         </div>
+
+        {/* Línea vertical divisoria */}
+        <div className="w-2 h-full bg-white"></div>
 
         <div className="w-full md:w-3/5 h-full">
           {shouldRender && currentProduct ? (

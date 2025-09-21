@@ -4,7 +4,11 @@
 
 html {
   scroll-behavior: smooth;
+ 
+
+
 }
+
 /* =======================
    Variables de Tema
    ======================= */
@@ -117,7 +121,9 @@ html, body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-size: 14px; /* 🔹 tamaño global más pequeño */
 }
+
 
 /* Custom font utility classes */
 .font-display {

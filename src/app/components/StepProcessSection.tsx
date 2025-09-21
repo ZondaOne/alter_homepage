@@ -50,11 +50,7 @@ const StepProcessSection: React.FC = () => {
     });
 
     // Línea de marcador
-    tl.fromTo(
-      ".section-marker",
-      { scaleX: 0 },
-      { scaleX: 1, duration: 0.5, ease: "power2.out" }
-    );
+ 
 
     // Título principal con fade up
     tl.fromTo(
@@ -128,7 +124,7 @@ const StepProcessSection: React.FC = () => {
           </div>
 
           <div className="max-w-2xl mx-auto">
-            <div className="section-marker w-16 h-px bg-orange-500 mx-auto mb-8"></div>
+           
             <p className="hero-description text-xl lg:text-2xl text-neutral-700 leading-[1.6] font-light">
               {t("hero.description")}
             </p>
@@ -143,7 +139,7 @@ const StepProcessSection: React.FC = () => {
               <div className="relative group">
                 <div className="hidden md:flex absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
                 {animationData && (
-                  <div className="lottie-container bg-white rounded-2xl p-12">
+                  <div className="lottie-container rounded-2xl p-12">
                     <Lottie
                       lottieRef={lottieRef}
                       animationData={animationData}
@@ -167,7 +163,7 @@ const StepProcessSection: React.FC = () => {
             <div className="space-y-8">
               <div className="flex items-center gap-4">
                 <div className="h-px bg-gradient-to-r from-orange-500 via-orange-400 to-transparent flex-1"></div>
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+               
               </div>
 
               <div className="space-y-6">
@@ -211,7 +207,6 @@ const StepProcessSection: React.FC = () => {
           <div className="lg:col-span-7 xl:col-span-6 space-y-16">
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-px bg-orange-500"></div>
                 <h3 className="text-sm font-bold text-neutral-500 tracking-[0.3em] uppercase">
                   {t("process.title")}
                 </h3>
