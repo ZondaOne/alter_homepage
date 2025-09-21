@@ -415,7 +415,7 @@ const MacBookSection = () => {
       id="macbook-section"
       ref={sectionRef}
       className="hidden md:flex w-full relative bg-black text-white"
-      style={{ height: "180vh", scrollSnapAlign: "start", scrollSnapStop: "always" }}
+      style={{ height: "180vh", scrollSnapAlign: "start", scrollSnapStop: "always", borderBottom: "12px solid #ffffff" }}
     >
       <div className="sticky top-0 w-full h-screen flex">
         <div className="w-full md:w-2/5 h-full">

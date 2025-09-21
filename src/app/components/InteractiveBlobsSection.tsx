@@ -223,7 +223,7 @@ const InteractiveBlobsSection: React.FC = () => {
         </div>
 
         <div ref={textRef} className="flex flex-col justify-center space-y-6 text-gray-800">
-          <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+          <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-8">
             <span
               className="hero-gradient-text text-element"
               style={{
@@ -258,14 +258,6 @@ const InteractiveBlobsSection: React.FC = () => {
 
           <p className="text-xl text-element">{t("interactiveBlobs.description1")}</p>
 
-          <p className="text-lg text-element">{t("interactiveBlobs.description2")}</p>
-
-          <button
-            onClick={scrollToContact}
-            className="mt-6 px-8 py-3 bg-orange-500 text-white rounded-full font-semibold text-lg w-fit text-element hover:bg-orange-600 transition-all duration-100 shadow-lg hover:shadow-xl hover:scale-105 transform"
-          >
-            {t("interactiveBlobs.discoverButton")}
-          </button>
         </div>
       </div>
 
