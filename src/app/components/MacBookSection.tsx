@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, memo, useCallback } from "react";
 import * as THREE from "three";
 import { useTranslation } from "react-i18next";
 
@@ -30,37 +30,35 @@ const getProducts = (t: any) => [
 ];
 
 // --- Constants ---
-const FLIP_LERP_FACTOR = 2.9;
-const SWAP_IMAGE_DELAY = 100;
+const FLIP_LERP_FACTOR = 4.5;
+const SWAP_IMAGE_DELAY = 400;
 const TOTAL_FLIP_DURATION = 1000;
 
-// --- BackgroundPlane ---
-const BackgroundPlane = ({ product }: { product: any }) => {
-  const ref = useRef<THREE.Mesh>(null);
+// Shared geometries for performance
+const SHARED_PLANE_GEOMETRY = new THREE.PlaneGeometry(1, 1);
 
-  const material = useMemo(() => {
-    switch (product.title) {
-      case "PixelPerfect":
-        return new THREE.MeshBasicMaterial({ color: "#83a7ea" }); 
-      case "Comerzia":
-        return new THREE.MeshBasicMaterial({ color: "#fe7b3e" }); 
-      case "ComChat":
-       return new THREE.MeshBasicMaterial({ color: "#dedede" }); 
-      default:
-        return new THREE.MeshBasicMaterial({ color: "black" });
-    }
-  }, [product]);
+// Pre-created materials to avoid recreation
+const BACKGROUND_MATERIALS = {
+  pixelperfect: new THREE.MeshBasicMaterial({ color: "#83a7ea" }),
+  comerzia: new THREE.MeshBasicMaterial({ color: "#fe7b3e" }),
+  comchat: new THREE.MeshBasicMaterial({ color: "#dedede" }),
+  default: new THREE.MeshBasicMaterial({ color: "black" })
+};
+
+// --- BackgroundPlane ---
+const BackgroundPlane = memo(({ product }: { product: any }) => {
+  const material = BACKGROUND_MATERIALS[product.key as keyof typeof BACKGROUND_MATERIALS] || BACKGROUND_MATERIALS.default;
 
   return (
-    <mesh ref={ref} position={[0, 0, -50]} scale={[300, 200, 1]}>
-      <planeGeometry args={[1, 1]} />
+    <mesh position={[0, 0, -50]} scale={[300, 200, 1]}>
+      <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
       <primitive object={material} attach="material" />
     </mesh>
   );
-};
+});
 
 // --- MacContainer ---
-const MacContainer = ({
+const MacContainer = memo(({
   currentImage,
   isFlipping,
   scrollProgress,
@@ -92,11 +90,17 @@ const MacContainer = ({
     const meshMap: any = {};
     model.scene.traverse((e: any) => {
       meshMap[e.name] = e;
-      if (e.material) e.frustumCulled = false;
+      if (e.material) {
+        e.frustumCulled = true; // Enable frustum culling for better performance
+        e.matrixAutoUpdate = false; // Disable auto matrix updates if not needed
+      }
     });
     meshesRef.current = meshMap;
     return meshMap;
   }, [model.scene]);
+
+  // Pre-configured texture map for faster lookups
+  const imageMap = useMemo(() => ({ "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 } as Record<string, number>), []);
 
   useEffect(() => {
     if (!meshes.matte) return;
@@ -111,18 +115,19 @@ const MacContainer = ({
     }
 
     const material = screenMaterialRef.current;
-
-    // Choose the texture based on current image and ensure correct color space/orientation
-    const imageMap: { [key: string]: number } = { "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 };
     const index = imageMap[currentImage] ?? 0;
     const tex = textures[index];
 
-    if (tex) {
-      // Make sure UI textures render with their intended colors
-      tex.colorSpace = THREE.SRGBColorSpace;
-      // This mesh's UVs expect the default orientation
-      tex.flipY = true;
-      tex.needsUpdate = true;
+    if (tex && material.map !== tex) { // Only update if texture actually changed
+      // Configure texture properties once
+      if (!tex.userData.configured) {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.flipY = true;
+        tex.generateMipmaps = false; // Disable mipmaps for UI textures
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        tex.userData.configured = true;
+      }
 
       material.map = tex;
       material.needsUpdate = true;
@@ -132,7 +137,7 @@ const MacContainer = ({
     if ((meshes.matte as THREE.Mesh).material !== material) {
       (meshes.matte as THREE.Mesh).material = material;
     }
-  }, [meshes, textures, currentImage]);
+  }, [meshes, textures, currentImage, imageMap]);
 
   useEffect(() => {
     if (meshes.screen) {
@@ -142,38 +147,45 @@ const MacContainer = ({
   }, [meshes]);
 
   useFrame((_, delta) => {
-    const deltaMultiplier = Math.min(delta * 60, 2);
+    const deltaMultiplier = Math.min(delta * 60, 3); // Slightly higher cap for smoother motion
 
     if (screenRef.current) {
       const clamped = Math.max(0, Math.min(1, scrollProgress));
       targetScreenRotation.current = THREE.MathUtils.degToRad(180 - clamped * 90);
-      currentScreenRotation.current = THREE.MathUtils.lerp(
-        currentScreenRotation.current,
-        targetScreenRotation.current,
-        deltaMultiplier * 0.1
-      );
-      screenRef.current.rotation.x = currentScreenRotation.current;
+
+      const diff = Math.abs(currentScreenRotation.current - targetScreenRotation.current);
+      if (diff > 0.001) { // Only update if difference is significant
+        currentScreenRotation.current = THREE.MathUtils.lerp(
+          currentScreenRotation.current,
+          targetScreenRotation.current,
+          deltaMultiplier * 0.12 // Slightly faster lerp
+        );
+        screenRef.current.rotation.x = currentScreenRotation.current;
+      }
     }
 
     if (groupRef.current) {
-      const lerpFactor = Math.min(1, deltaMultiplier * (FLIP_LERP_FACTOR / 60));
-      currentRotationY.current = THREE.MathUtils.lerp(
-        currentRotationY.current,
-        targetRotationY.current,
-        lerpFactor
-      );
-      groupRef.current.rotation.y = currentRotationY.current;
+      const diff = Math.abs(currentRotationY.current - targetRotationY.current);
+      if (diff > 0.001) { // Only update if difference is significant
+        const lerpFactor = Math.min(1, deltaMultiplier * (FLIP_LERP_FACTOR / 60));
+        currentRotationY.current = THREE.MathUtils.lerp(
+          currentRotationY.current,
+          targetRotationY.current,
+          lerpFactor
+        );
+        groupRef.current.rotation.y = currentRotationY.current;
+      }
     }
   });
 
   return (
-    <group position={[-2, -14, 20]} scale={1.0}>
+    <group position={[-2, -14, 20]} scale={0.9}>
       <group ref={groupRef}>
         <primitive object={model.scene} />
       </group>
     </group>
   );
-};
+});
 
 // --- MacBookCanvas ---
 const MacBookCanvas = ({
@@ -189,9 +201,18 @@ const MacBookCanvas = ({
 }) => (
   <Canvas
     camera={{ fov: 12, position: [0, -10, 220] }}
-    performance={{ min: 0.5 }}
-    gl={{ antialias: true, alpha: false, powerPreference: "high-performance", precision: "highp" }}
+    dpr={[1, Math.min(2, window.devicePixelRatio)]}
+    performance={{ min: 0.7, max: 1.0, debounce: 200 }}
+    gl={{
+      antialias: false,
+      alpha: false,
+      powerPreference: "high-performance",
+      precision: "highp",
+      stencil: false,
+      depth: true
+    }}
     frameloop="always"
+    flat
   >
     <Suspense fallback={null}>
       <ambientLight intensity={1.5} />
@@ -327,7 +348,7 @@ const MacBookSection = () => {
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -341,7 +362,7 @@ const MacBookSection = () => {
     setMounted(true);
   }, []);
 
-  const handleChange = (nextIndex: number, direction: number) => {
+  const handleChange = useCallback((nextIndex: number, direction: number) => {
     if (isFlipping || !products.length) return;
     setFlipDirection(direction);
     setIsFlipping(true);
@@ -349,47 +370,76 @@ const MacBookSection = () => {
     setTimeout(() => setCurrentIndex(nextIndex), SWAP_IMAGE_DELAY);
     setTimeout(() => setContentVisible(true), SWAP_IMAGE_DELAY + 100);
     setTimeout(() => setIsFlipping(false), TOTAL_FLIP_DURATION);
-  };
+  }, [isFlipping, products.length]);
 
-  const next = () => products.length && handleChange((currentIndex + 1) % products.length, 1);
-  const prev = () => products.length && handleChange((currentIndex - 1 + products.length) % products.length, -1);
+  const next = useCallback(() => products.length && handleChange((currentIndex + 1) % products.length, 1), [products.length, currentIndex, handleChange]);
+  const prev = useCallback(() => products.length && handleChange((currentIndex - 1 + products.length) % products.length, -1), [products.length, currentIndex, handleChange]);
 
-  // Scroll progress
+  // Optimized scroll progress with throttling
   useEffect(() => {
     let ticking = false;
+    let lastProgress = 0;
+
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          if (!sectionRef.current) return;
+          if (!sectionRef.current) {
+            ticking = false;
+            return;
+          }
+
           const rect = sectionRef.current.getBoundingClientRect();
           const sectionHeight = sectionRef.current.offsetHeight;
           const windowHeight = window.innerHeight;
           let progress = 0;
+
           if (rect.top <= 0 && rect.bottom >= windowHeight) {
             progress = Math.abs(rect.top) / (sectionHeight - windowHeight);
-          } else if (rect.top > 0) progress = 0;
-          else if (rect.bottom < windowHeight) progress = 1;
-          setScrollProgress(Math.max(0, Math.min(1, progress)));
+          } else if (rect.top > 0) {
+            progress = 0;
+          } else if (rect.bottom < windowHeight) {
+            progress = 1;
+          }
+
+          const newProgress = Math.max(0, Math.min(1, progress));
+
+          // Only update if change is significant (reduces unnecessary re-renders)
+          if (Math.abs(newProgress - lastProgress) > 0.005) {
+            setScrollProgress(newProgress);
+            lastProgress = newProgress;
+          }
+
           ticking = false;
         });
         ticking = true;
       }
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Preload assets
+  // Optimized preloading with priority
   useEffect(() => {
-    const timer = setTimeout(() => {
-      useGLTF.preload("./models/mac.glb");
-      useTexture.preload("/bg.png");
-      useTexture.preload("/bg2.png");
-      useTexture.preload("/bg3.png");
-    }, 1000);
+    if (!products.length) return;
+
+    // Immediate preload for critical assets
+    useGLTF.preload("./models/mac.glb");
+
+    // Staggered texture preloading to avoid blocking
+    const preloadTextures = async () => {
+      for (let i = 0; i < products.length; i++) {
+        await new Promise(resolve => {
+          useTexture.preload(products[i].image);
+          setTimeout(resolve, 50); // Small delay between preloads
+        });
+      }
+    };
+
+    const timer = setTimeout(preloadTextures, 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [products]);
 
   // Intersection observer
   useEffect(() => {

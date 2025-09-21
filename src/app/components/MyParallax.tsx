@@ -57,8 +57,8 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       scrollTrigger: {
         trigger: containerRef.current,
         start: `top+=${preStartOffset + 200} bottom`, // Added 200px delay to start later
-        end: "top center", // Much earlier end point for faster animation
-        scrub: 0.8 // Reduced scrub for faster response
+        end: "center top", // Changed from "bottom top" to end earlier
+        scrub: 1.2
       }
     });
 
