@@ -3,15 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
 
-interface Project {
-  id: number
-  title: string
-  subtitle: string
-  description: string
-  url: string
-  tags: string[]
-  image?: string
-}
 
 const scrollToContact = () => {
   const contactSection = document.getElementById('contact');
@@ -23,6 +14,36 @@ const scrollToContact = () => {
   }
 };
 
+const getProjects = (t: (key: string) => string) => [
+  {
+    id: 1,
+    title: t('macbook.products.pixelperfect.title'),
+    subtitle: t('macbook.products.pixelperfect.description'),
+    description: t('macbook.products.pixelperfect.description'),
+    url: 'pixelperfect.zonda.one',
+    tags: [],
+    image: '/bg.png',
+  },
+  {
+    id: 2,
+    title: t('macbook.products.comerzia.title'),
+    subtitle: t('macbook.products.comerzia.description'),
+    description: t('macbook.products.comerzia.description'),
+    url: 'comerzia.zonda.one',
+    tags: [],
+    image: '/bg2.png',
+  },
+  {
+    id: 3,
+    title: t('macbook.products.comchat.title'),
+    subtitle: t('macbook.products.comchat.description'),
+    description: t('macbook.products.comchat.description'),
+    url: 'comchat.zonda.one',
+    tags: [],
+    image: '/bg3.png',
+  },
+];
+
 const GridGallerySection = () => {
   const { t, ready } = useTranslation()
   const [mounted, setMounted] = useState(false)
@@ -31,38 +52,7 @@ const GridGallerySection = () => {
     setMounted(true)
   }, [])
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'PixelPerfect',
-      subtitle: 'Professional image editing powered by AI',
-      description:
-        'Advanced image editing with background removal, upscaling, and content generation. Precision and ease combined in one powerful platform.',
-      url: 'pixelperfect.zonda.one',
-      tags: ['AI', 'Image Processing', 'React', 'WebGL'],
-      image: 'https://i.imgur.com/JT2A7mZ.png',
-    },
-    {
-      id: 2,
-      title: 'Comerzia',
-      subtitle: 'Smart business management platform',
-      description:
-        'Complete business management solution for handling clients and orders. Features dashboard analytics and automated customer notifications.',
-      url: 'comerzia.zonda.one',
-      tags: ['Business', 'Analytics', 'CRM', 'Automation'],
-      image: 'https://i.imgur.com/U2UveIV.png',
-    },
-    {
-      id: 3,
-      title: 'ComChat',
-      subtitle: 'Custom AI chatbot for businesses',
-      description:
-        'Intelligent chatbot that learns from your data. Supports text and multimodal conversations with privacy-focused local deployment.',
-      url: 'comchat.zonda.one',
-      tags: ['AI', 'Chatbot', 'NLP', 'Privacy'],
-      image: 'https://i.imgur.com/FTmgxYV.png',
-    },
-  ]
+  const projects = mounted && ready ? getProjects(t) : []
 
   return (
    <section id="gallery-section" className="relative w-full py-16 md:py-24 px-6 md:px-8 overflow-hidden md:hidden" style={{ backgroundColor: '#F9FAFB' }}>
@@ -110,10 +100,10 @@ const GridGallerySection = () => {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-96 lg:h-[28rem] object-cover"
+                  className="w-full h-80 lg:h-96 object-cover"
                 />
               ) : (
-                <div className="w-full h-96 lg:h-[28rem] flex items-center justify-center text-gray-100 text-7xl font-semibold bg-gray-900">
+                <div className="w-full h-80 lg:h-96 flex items-center justify-center text-gray-100 text-7xl font-semibold bg-gray-900">
                   {project.title.substring(0, 2)}
                 </div>
               )}
@@ -142,10 +132,6 @@ const GridGallerySection = () => {
             <h4 className="text-xl lg:text-2xl font-light text-neutral-600">
               {project.subtitle}
             </h4>
-
-            <p className="text-lg text-neutral-600 font-light leading-relaxed max-w-xl mx-auto xl:mx-0">
-              {project.description}
-            </p>
 
             <div className="pt-6">
               <a
