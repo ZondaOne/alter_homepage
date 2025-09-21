@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie from "lottie-react";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -33,8 +33,8 @@ const scrollToProjects = () => {
 const StepProcessSection: React.FC = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [animationData, setAnimationData] = useState<any>(null);
-  const lottieRef = useRef<any>(null);
+  const [animationData, setAnimationData] = useState<object | null>(null);
+  const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
   useEffect(() => {
     fetch("/WebCoding.json")
@@ -147,8 +147,7 @@ const StepProcessSection: React.FC = () => {
                       autoplay
                       onDOMLoaded={() => {
                         if (lottieRef.current) {
-                          lottieRef.current.setSpeed?.(0.4);
-                          lottieRef.current.animation?.setSpeed(0.4);
+                          lottieRef.current.setSpeed(0.4);
                         }
                       }}
                       className="w-full h-auto"

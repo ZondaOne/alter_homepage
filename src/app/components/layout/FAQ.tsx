@@ -73,7 +73,7 @@ export default function FAQ() {
 
         {/* FAQ items */}
         <div className="space-y-4">
-          {Array.isArray(faqs) && faqs.map((faq: any, i: number) => {
+          {Array.isArray(faqs) && (faqs as { question: string; answer: string }[]).map((faq, i) => {
             const isOpen = i === openIndex;
             return (
               <div

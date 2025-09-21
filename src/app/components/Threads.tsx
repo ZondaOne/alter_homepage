@@ -193,7 +193,7 @@ const Threads: React.FC<ThreadsProps> = ({
     window.addEventListener('resize', resizeHandler);
     resizeHandler();
 
-    let currentMouse = [0.5, 0.5];
+    const currentMouse = [0.5, 0.5];
     const targetMouse = lastMousePosition.current;
 
     const mouseHandler = (e: MouseEvent) => handleMouseMove(e, container);

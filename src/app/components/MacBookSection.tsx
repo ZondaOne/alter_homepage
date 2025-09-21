@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { useTranslation } from "react-i18next";
 
 // --- Data for products ---
-const getProducts = (t: any) => [
+const getProducts = (t: (key: string) => string) => [
  
   {
     image: "/bg2.png",
@@ -46,7 +46,7 @@ const BACKGROUND_MATERIALS = {
 };
 
 // --- BackgroundPlane ---
-const BackgroundPlane = memo(({ product }: { product: any }) => {
+const BackgroundPlane = memo(({ product }: { product: { key: string; image: string; title: string; description: string } }) => {
   const material = BACKGROUND_MATERIALS[product.key as keyof typeof BACKGROUND_MATERIALS] || BACKGROUND_MATERIALS.default;
 
   return (
@@ -56,6 +56,7 @@ const BackgroundPlane = memo(({ product }: { product: any }) => {
     </mesh>
   );
 });
+BackgroundPlane.displayName = 'BackgroundPlane';
 
 // --- MacContainer ---
 const MacContainer = memo(({
@@ -74,7 +75,7 @@ const MacContainer = memo(({
 
   const screenRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
-  const meshesRef = useRef<any>({});
+  const meshesRef = useRef<Record<string, THREE.Object3D>>({});
   const screenMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
 
   const targetRotationY = useRef(0);
@@ -87,12 +88,12 @@ const MacContainer = memo(({
   }, [isFlipping, flipDirection]);
 
   const meshes = useMemo(() => {
-    const meshMap: any = {};
-    model.scene.traverse((e: any) => {
+    const meshMap: Record<string, THREE.Object3D> = {};
+    model.scene.traverse((e: THREE.Object3D) => {
       meshMap[e.name] = e;
-      if (e.material) {
-        e.frustumCulled = true; // Enable frustum culling for better performance
-        e.matrixAutoUpdate = false; // Disable auto matrix updates if not needed
+      if ('material' in e && e.material) {
+        (e as THREE.Mesh).frustumCulled = true; // Enable frustum culling for better performance
+        (e as THREE.Mesh).matrixAutoUpdate = false; // Disable auto matrix updates if not needed
       }
     });
     meshesRef.current = meshMap;
@@ -141,8 +142,8 @@ const MacContainer = memo(({
 
   useEffect(() => {
     if (meshes.screen) {
-      meshes.screen.rotation.x = THREE.MathUtils.degToRad(180);
-      screenRef.current = meshes.screen;
+      (meshes.screen as THREE.Mesh).rotation.x = THREE.MathUtils.degToRad(180);
+      screenRef.current = meshes.screen as THREE.Mesh;
     }
   }, [meshes]);
 
@@ -186,6 +187,7 @@ const MacContainer = memo(({
     </group>
   );
 });
+MacContainer.displayName = 'MacContainer';
 
 // --- MacBookCanvas ---
 const MacBookCanvas = ({
@@ -194,7 +196,7 @@ const MacBookCanvas = ({
   scrollProgress,
   flipDirection,
 }: {
-  currentProduct: any;
+  currentProduct: { key: string; image: string; title: string; description: string };
   isFlipping: boolean;
   scrollProgress: number;
   flipDirection: number;
@@ -252,7 +254,7 @@ const ProductInfo = ({
   isFlipping,
   isVisible,
 }: {
-  product: any;
+  product: { key: string; image: string; title: string; description: string };
   onNext: () => void;
   onPrev: () => void;
   isFlipping: boolean;

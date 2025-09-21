@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import Lottie from "lottie-react";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
 
 export default function SoftwareLogo({ path = "/Software.json", scale = 1 }: { path?: string; scale?: number }) {
-  const [data, setData] = useState<any>(null);
-  const lottieRef = useRef<any>(null);
+  const [data, setData] = useState<object | null>(null);
+  const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -42,8 +42,7 @@ export default function SoftwareLogo({ path = "/Software.json", scale = 1 }: { p
           autoplay
           onDOMLoaded={() => {
             if (lottieRef.current) {
-              lottieRef.current.setSpeed?.(0.7);
-              lottieRef.current.animation?.setSpeed(0.7);
+              lottieRef.current.setSpeed(0.7);
             }
           }}
           style={{ width: "100%", height: "100%", background: "transparent" }}
