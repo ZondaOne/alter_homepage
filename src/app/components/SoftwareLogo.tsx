@@ -25,13 +25,14 @@ export default function SoftwareLogo({ path = "/Software.json", scale = 1 }: { p
   if (!data) return <div className="w-full h-full" />;
 
   return (
-    <div className="w-full h-full flex items-center justify-center overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center overflow-hidden" style={{ background: "transparent" }}>
       <div
         style={{
           width: "100%",
           height: "100%",
           transform: `scale(${scale})`,
           transformOrigin: "center",
+          background: "transparent",
         }}
       >
         <Lottie
@@ -41,11 +42,11 @@ export default function SoftwareLogo({ path = "/Software.json", scale = 1 }: { p
           autoplay
           onDOMLoaded={() => {
             if (lottieRef.current) {
-              lottieRef.current.setSpeed?.(0.3);
-              lottieRef.current.animation?.setSpeed(0.3);
+              lottieRef.current.setSpeed?.(0.7);
+              lottieRef.current.animation?.setSpeed(0.7);
             }
           }}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", background: "transparent" }}
         />
       </div>
     </div>

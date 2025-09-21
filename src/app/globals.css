@@ -38,6 +38,7 @@ html {
   --cream-50: #fffaf5;
   --cream-100: #fff4e6;
   --cream-200: #ffecd6;
+  --cream-base: #f5f3ef;
   --cream-foreground: #1a1a1a;
 }
 
@@ -129,6 +130,20 @@ html, body {
 
 .font-aware-bold {
   font-family: var(--font-aware-bold);
+}
+
+/* =======================
+   Global Section Styling
+   ======================= */
+
+/* Apply cream background to all sections */
+section {
+  background-color: var(--cream-50);
+}
+
+/* White padding dividers for all sections */
+section:not(:last-child) {
+  border-bottom: 12px solid #ffffff;
 }
 
 
