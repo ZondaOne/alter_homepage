@@ -133,7 +133,7 @@ const Threads: React.FC<ThreadsProps> = ({
   ...rest
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number | null>(null);
   const lastUpdateTime = useRef<number>(0);
   const lastMousePosition = useRef<[number, number]>([0.5, 0.5]);
 
