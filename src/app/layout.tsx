@@ -103,7 +103,7 @@ export default function RootLayout({
       <body
 
         className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
-      ><Loader duration={1200} />
+      ><Loader duration={1500} />
         {/* Navbar es Client Component */}
         <Navbar />
 

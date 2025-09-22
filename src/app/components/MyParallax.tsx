@@ -203,7 +203,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
         <div className="max-w-md mx-auto text-center space-y-8">
           <div className="relative w-64 h-64 mx-auto">
             <img
-              src="/banner.png"
+              src="/banner.webp"
               alt="Zonda One custom software development and digital transformation services showcase"
               className="w-full h-full object-cover rounded-2xl shadow-xl"
             />

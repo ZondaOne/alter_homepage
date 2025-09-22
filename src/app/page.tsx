@@ -162,7 +162,7 @@ export default function HomePage() {
             leftLimit="-20vw"
           >
             <img
-              src="/banner.png"
+              src="/banner.webp"
               alt="Zonda One team collaborating on custom software development projects with modern technology stack"
               className="w-full h-auto object-cover rounded-lg shadow-xl"
               style={{ maxHeight: 'none' }}
