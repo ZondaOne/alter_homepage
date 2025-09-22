@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
 interface ThreadsProps {
@@ -157,7 +157,6 @@ const Threads: React.FC<ThreadsProps> = ({
   const programRef = useRef<Program | null>(null);
   const meshRef = useRef<Mesh | null>(null);
   const rafRef = useRef<number | null>(null);
-  const lastFrameTimeRef = useRef<number>(performance.now());
   const lastMousePosition = useRef<[number, number]>([0.5, 0.5]); // mutate in place
   const currentMouse = useRef<[number, number]>([0.5, 0.5]);
 
@@ -201,12 +200,15 @@ const Threads: React.FC<ThreadsProps> = ({
   }, []);
 
   // initialize once
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+      useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
 
-    // detect low-end device heuristics
-    const deviceMemory = (navigator as any).deviceMemory || 4; // GB estimate (may be undefined)
+      interface NavigatorWithDeviceMemory extends Navigator {
+      deviceMemory?: number;
+    }
+
+    const deviceMemory = (navigator as NavigatorWithDeviceMemory).deviceMemory || 4;
     const concurrency = navigator.hardwareConcurrency || 4;
     const lowEnd = deviceMemory <= 1 || concurrency <= 2;
 

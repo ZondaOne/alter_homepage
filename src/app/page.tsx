@@ -11,6 +11,8 @@ import MacBookSection from './components/MacBookSection';
 import MyParallax from './components/MyParallax';
 import ContactSection from './components/ContactSection';
 import FAQ from './components/layout/FAQ';
+import Image from "next/image";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -161,12 +163,15 @@ export default function HomePage() {
             mobileRef={mobileRef}
             leftLimit="-20vw"
           >
-            <img
-              src="/banner.webp"
-              alt="Zonda One team collaborating on custom software development projects with modern technology stack"
-              className="w-full h-auto object-cover rounded-lg shadow-xl"
-              style={{ maxHeight: 'none' }}
-            />
+            <Image
+            src="/banner.webp"
+            alt="Zonda One team collaborating on custom software development projects with modern technology stack"
+            width={1200}          // ancho inicial
+            height={600}          // alto inicial
+            className="w-full h-auto object-cover rounded-lg shadow-xl"
+          />
+
+
           </MyParallax>
         </section>
 

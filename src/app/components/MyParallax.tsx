@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -202,11 +203,12 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       >
         <div className="max-w-md mx-auto text-center space-y-8">
           <div className="relative w-64 h-64 mx-auto">
-            <img
-              src="/banner.webp"
-              alt="Zonda One custom software development and digital transformation services showcase"
-              className="w-full h-full object-cover rounded-2xl shadow-xl"
-            />
+            <Image
+                        src="/banner.webp"
+                        alt="Zonda One team collaborating on custom software development projects with modern technology stack"
+                        fill          // alto inicial
+                        className="w-full h-auto object-cover rounded-lg shadow-xl"
+                      />
             <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-2xl"></div>
           </div>
           <div className="space-y-4">{defaultMobileText}</div>

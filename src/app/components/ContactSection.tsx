@@ -114,9 +114,11 @@ export default function ContactSection() {
         throw new Error("Form submission failed");
       }
     } catch (error) {
-      setSubmitType("error");
-      setSubmitMessage(t("contact.form.error"));
-    } finally {
+  console.error("Form submission error:", error);
+  setSubmitType("error");
+  setSubmitMessage(t("contact.form.error"));
+}
+ finally {
       setIsSubmitting(false);
     }
   };

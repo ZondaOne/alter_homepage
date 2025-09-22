@@ -9,7 +9,7 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ duration = 2000, onLoadingComplete }) => {
   const [visible, setVisible] = useState(true);
-  const [contentReady, setContentReady] = useState(false);
+  const [,setContentReady] = useState(false);
 
   // Use requestIdleCallback to defer heavy operations and avoid blocking
   const deferHeavyOperations = useCallback(() => {

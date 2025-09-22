@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
+import Image from "next/image";
 
 
 const scrollToContact = () => {
@@ -97,11 +98,14 @@ const GridGallerySection = () => {
           <div className="xl:w-7/12 relative group">
             <div className="relative overflow-hidden rounded-2xl shadow-xl transition-transform duration-700 ease-out group-hover:scale-[1.02]">
               {project.image ? (
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-80 lg:h-96 object-cover"
-                />
+                <Image
+                src={project.image}
+                alt={project.title}
+                width={500}       // ajusta según tu diseño
+                height={400}      // ajusta según tu diseño
+                className="w-full h-80 lg:h-96 object-cover"
+              />
+
               ) : (
                 <div className="w-full h-80 lg:h-96 flex items-center justify-center text-gray-100 text-7xl font-semibold bg-gray-900">
                   {project.title.substring(0, 2)}

@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
   const navRef = useRef<HTMLElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [, setActiveDropdown] = useState<string | null>(null);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -64,9 +64,7 @@ const Navbar: React.FC = () => {
     }
   };
 
-  const handleDropdownToggle = (dropdown: string) => {
-    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
-  };
+
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

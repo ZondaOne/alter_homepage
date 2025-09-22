@@ -35,6 +35,11 @@ const StepProcessSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [animationData, setAnimationData] = useState<object | null>(null);
   const lottieRef = useRef<LottieRefCurrentProps | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true); // marca que estamos en el cliente
+  }, []);
 
   useEffect(() => {
     fetch("/WebCoding.json")
@@ -48,9 +53,6 @@ const StepProcessSection: React.FC = () => {
         toggleActions: "play none none none",
       },
     });
-
-    // Línea de marcador
- 
 
     // Título principal con fade up
     tl.fromTo(
@@ -105,7 +107,7 @@ const StepProcessSection: React.FC = () => {
         <div className="text-center lg:mb-20">
           <div className="mb-10">
             <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900">
-              {t("solutions")}
+              {mounted ? t("solutions") : ""}
               <br />
               <span
                 className="gradient-text"
@@ -118,15 +120,14 @@ const StepProcessSection: React.FC = () => {
                   backgroundClip: "text",
                 }}
               >
-                {t("engineered")}
+                {mounted ? t("engineered") : ""}
               </span>
             </h2>
           </div>
 
           <div className="max-w-2xl mx-auto">
-           
             <p className="hero-description text-xl lg:text-2xl text-neutral-700 leading-[1.6] font-light">
-              {t("hero.description")}
+              {mounted ? t("hero.description") : ""}
             </p>
           </div>
         </div>
@@ -162,16 +163,15 @@ const StepProcessSection: React.FC = () => {
             <div className="space-y-8">
               <div className="flex items-center gap-4">
                 <div className="h-px bg-gradient-to-r from-orange-500 via-orange-400 to-transparent flex-1"></div>
-               
               </div>
 
               <div className="space-y-6">
                 <div className="space-y-3">
                   <h4 className="text-xl font-bold text-neutral-900">
-                    {t("cta.title")}
+                    {mounted ? t("cta.title") : ""}
                   </h4>
                   <p className="text-neutral-600 leading-relaxed">
-                    {t("cta.description")}
+                    {mounted ? t("cta.description") : ""}
                   </p>
                 </div>
 
@@ -181,7 +181,7 @@ const StepProcessSection: React.FC = () => {
                     className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg"
                   >
                     <span className="flex items-center justify-center gap-3">
-                      {t("cta.initiate")}
+                      {mounted ? t("cta.initiate") : ""}
                       <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
                     </span>
                   </button>
@@ -191,7 +191,7 @@ const StepProcessSection: React.FC = () => {
                     className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg"
                   >
                     <span className="flex items-center justify-center gap-3">
-                      {t("cta.portfolio")}
+                      {mounted ? t("cta.portfolio") : ""}
                       <span className="transform group-hover:translate-x-1 transition-transform duration-300">
                         →
                       </span>
@@ -207,51 +207,43 @@ const StepProcessSection: React.FC = () => {
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <h3 className="text-sm font-bold text-neutral-500 tracking-[0.3em] uppercase">
-                  {t("process.title")}
+                  {mounted ? t("process.title") : ""}
                 </h3>
               </div>
               <p className="text-lg text-neutral-600 leading-relaxed max-w-xl">
-                {t("process.description")}
+                {mounted ? t("process.description") : ""}
               </p>
             </div>
 
             {/* Bloques de proceso */}
             <div className="space-y-1">
-              {[
-                {
-                  number: "01",
-                  title: t("process.steps.analysis.title"),
-                  description: t("process.steps.analysis.description"),
-                },
-                {
-                  number: "02",
-                  title: t("process.steps.engineering.title"),
-                  description: t("process.steps.engineering.description"),
-                },
-                {
-                  number: "03",
-                  title: t("process.steps.performance.title"),
-                  description: t("process.steps.performance.description"),
-                },
-              ].map((step, i) => (
-                <div key={i} className="step-block group">
-                  <div className="grid grid-cols-12 gap-6 py-8 lg:py-10 border-t border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:bg-orange-50/30 -mx-6 px-6 rounded-lg">
-                    <div className="col-span-3 sm:col-span-2">
-                      <div className="text-2xl lg:text-3xl font-black text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
-                        {step.number}
+              {[0, 1, 2].map((i) => {
+                const stepKeys = ["analysis", "engineering", "performance"];
+                const step = {
+                  number: `0${i + 1}`,
+                  title: mounted ? t(`process.steps.${stepKeys[i]}.title`) : "",
+                  description: mounted ? t(`process.steps.${stepKeys[i]}.description`) : "",
+                };
+                return (
+                  <div key={i} className="step-block group">
+                    <div className="grid grid-cols-12 gap-6 py-8 lg:py-10 border-t border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:bg-orange-50/30 -mx-6 px-6 rounded-lg">
+                      <div className="col-span-3 sm:col-span-2">
+                        <div className="text-2xl lg:text-3xl font-black text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
+                          {step.number}
+                        </div>
+                      </div>
+                      <div className="col-span-9 sm:col-span-10 space-y-4">
+                        <h4 className="text-lg lg:text-xl font-bold text-neutral-900 tracking-wide group-hover:text-orange-800 transition-colors duration-300">
+                          {step.title}
+                        </h4>
+                        <p className="text-neutral-600 leading-relaxed font-light text-base lg:text-lg">
+                          {step.description}
+                        </p>
                       </div>
                     </div>
-                    <div className="col-span-9 sm:col-span-10 space-y-4">
-                      <h4 className="text-lg lg:text-xl font-bold text-neutral-900 tracking-wide group-hover:text-orange-800 transition-colors duration-300">
-                        {step.title}
-                      </h4>
-                      <p className="text-neutral-600 leading-relaxed font-light text-base lg:text-lg">
-                        {step.description}
-                      </p>
-                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

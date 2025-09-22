@@ -12,6 +12,11 @@ const InteractiveBlobsSection: React.FC = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<SVGSVGElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = React.useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -27,12 +32,12 @@ const InteractiveBlobsSection: React.FC = () => {
 
       // --- SCROLL TRIGGER ---
       const tl = gsap.timeline({
-  scrollTrigger: {
-    trigger: mainRef.current,
-    start: "top bottom",
-    toggleActions: "play none none none",
-  },
-});
+        scrollTrigger: {
+          trigger: mainRef.current,
+          start: "top bottom",
+          toggleActions: "play none none none",
+        },
+      });
 
       // --- TIMELINE ---
       tl.to(blobs, {
@@ -94,8 +99,10 @@ const InteractiveBlobsSection: React.FC = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               animation: "gradient-flow 3s ease-in-out infinite"
-            }}>{t("interactiveBlobs.hash")}</span>
-            <span className="hero-line text-element">{t("interactiveBlobs.weAre")}</span>
+            }}>
+              {mounted ? t("interactiveBlobs.hash") : ""}
+            </span>
+            <span className="hero-line text-element">{mounted ? t("interactiveBlobs.weAre") : ""}</span>
             <span className="hero-gradient-text text-element" style={{
               background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
               backgroundSize: "200% 100%",
@@ -103,9 +110,11 @@ const InteractiveBlobsSection: React.FC = () => {
               WebkitTextFillColor: "transparent",
               animation: "gradient-flow 3s ease-in-out infinite",
               animationDelay: "0.5s"
-            }}>{t("interactiveBlobs.zonda")}</span>
+            }}>
+              {mounted ? t("interactiveBlobs.zonda") : ""}
+            </span>
           </h2>
-          <p className="text-xl text-element">{t("interactiveBlobs.description1")}</p>
+          <p className="text-xl text-element">{mounted ? t("interactiveBlobs.description1") : ""}</p>
         </div>
       </div>
 
