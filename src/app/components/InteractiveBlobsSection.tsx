@@ -3,28 +3,16 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const scrollToContact = () => {
-  const contactSection = document.getElementById('contact');
-  if (contactSection) {
-    contactSection.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
-};
-
 const InteractiveBlobsSection: React.FC = () => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const main = useRef<HTMLDivElement>(null);
   const logoRef = useRef<SVGSVGElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-
-  
   useEffect(() => {
     const ctx = gsap.context(() => {
       const blobs = gsap.utils.toArray<HTMLElement>(".blob");
@@ -32,7 +20,7 @@ const InteractiveBlobsSection: React.FC = () => {
       const textElements = gsap.utils.toArray<HTMLElement>(".text-element");
 
       // --- INITIAL STATES ---
-      gsap.set(blobs, { scale: 0.8, opacity: 0.3, filter: "blur(20px)" });
+      gsap.set(blobs, { scale: 0.8, opacity: 0.3 });
       gsap.set(logoRef.current, { scale: 0.6, opacity: 0, y: 30 });
       gsap.set(logoPaths, {
         opacity: 0,
@@ -42,7 +30,6 @@ const InteractiveBlobsSection: React.FC = () => {
       gsap.set(textElements, {
         opacity: 0,
         x: 50,
-        filter: "blur(4px)",
       });
 
       // --- SCROLL TIMELINE ---
@@ -51,14 +38,13 @@ const InteractiveBlobsSection: React.FC = () => {
           trigger: main.current,
           start: "top 80%",
           end: "center center",
-          scrub: 0.8,
+          once: true, // solo se dispara una vez
         },
       });
 
       tl.to(blobs, {
         scale: 1,
         opacity: 0.9,
-        filter: "blur(6px)",
         stagger: 0.15,
         duration: 2,
         ease: "power2.out",
@@ -94,55 +80,12 @@ const InteractiveBlobsSection: React.FC = () => {
           {
             opacity: 1,
             x: 0,
-            filter: "blur(0px)",
             stagger: 0.12,
             ease: "power2.out",
             duration: 1,
           },
           "-=1"
         );
-
-      gsap.to(logoRef.current, {
-        filter:
-          "drop-shadow(0 0 20px rgba(249, 115, 22, 0.6)) drop-shadow(0 0 40px rgba(251, 146, 60, 0.4)) drop-shadow(0 0 60px rgba(234, 88, 12, 0.2))",
-        duration: 0.5,
-        ease: "power2.out",
-        delay: 0.5,
-      });
-
-      gsap.to(logoRef.current, {
-        y: -8,
-        repeat: -1,
-        yoyo: true,
-        duration: 3,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".blob1", {
-        scale: 1.05,
-        repeat: -1,
-        yoyo: true,
-        duration: 4,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".blob2", {
-        scale: 0.95,
-        repeat: -1,
-        yoyo: true,
-        duration: 3.5,
-        ease: "sine.inOut",
-        delay: -1,
-      });
-
-      gsap.to(".blob3", {
-        scale: 1.03,
-        repeat: -1,
-        yoyo: true,
-        duration: 4.5,
-        ease: "sine.inOut",
-        delay: -2,
-      });
     }, main);
 
     return () => ctx.revert();
@@ -196,7 +139,7 @@ const InteractiveBlobsSection: React.FC = () => {
               ref={logoRef}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 500 500"
-              className="w-64 h-64"
+              className="w-64 h-64 glow-effect"
             >
               <path
                 className="logo-path"
@@ -222,7 +165,10 @@ const InteractiveBlobsSection: React.FC = () => {
           </div>
         </div>
 
-        <div ref={textRef} className="flex flex-col justify-center space-y-6 text-gray-800">
+        <div
+          ref={textRef}
+          className="flex flex-col justify-center space-y-6 text-gray-800"
+        >
           <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-8">
             <span
               className="hero-gradient-text text-element"
@@ -238,7 +184,9 @@ const InteractiveBlobsSection: React.FC = () => {
             >
               {t("interactiveBlobs.hash")}
             </span>
-            <span className="hero-line text-element">{t("interactiveBlobs.weAre")}</span>
+            <span className="hero-line text-element">
+              {t("interactiveBlobs.weAre")}
+            </span>
             <span
               className="hero-gradient-text text-element"
               style={{
@@ -256,12 +204,13 @@ const InteractiveBlobsSection: React.FC = () => {
             </span>
           </h2>
 
-          <p className="text-xl text-element">{t("interactiveBlobs.description1")}</p>
-
+          <p className="text-xl text-element">
+            {t("interactiveBlobs.description1")}
+          </p>
         </div>
       </div>
 
-      {/* Grain & blobs CSS */}
+      {/* Optimized CSS */}
       <style jsx global>{`
         :root {
           --cream-base: #f5f3ef;
@@ -274,98 +223,98 @@ const InteractiveBlobsSection: React.FC = () => {
           height: 100%;
           pointer-events: none;
           z-index: 2;
-          opacity: 0.4;
+          opacity: 0.25;
           mix-blend-mode: multiply;
+          background-image: url("/noise-texture.png");
+          background-size: 300px;
+          animation: grain-pan 8s linear infinite;
         }
-        .grain-overlay::before {
-          content: "";
-          position: absolute;
-          top: -100%;
-          left: -100%;
-          width: 300%;
-          height: 300%;
-          background-image: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="2"/></filter><rect width="100%" height="100%" filter="url(#noise)" opacity="0.7"/></svg>');
-          animation: grain-pan 8s steps(15) infinite;
-        }
-        .grain-overlay::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(
-            ellipse at center,
-            transparent 30%,
-            rgba(249, 115, 22, 0.05) 70%,
-            rgba(234, 88, 12, 0.08) 100%
-          );
-        }
-        @keyframes grain-pan { 
-          0%,100%{transform:translate(0,0);} 
-          10%{transform:translate(-3%,-6%);} 
-          20%{transform:translate(-8%,2%);} 
-          30%{transform:translate(4%,-12%);} 
-          40%{transform:translate(-3%,15%);} 
-          50%{transform:translate(-8%,5%);} 
-          60%{transform:translate(8%,0%);} 
-          70%{transform:translate(0%,8%);} 
-          80%{transform:translate(2%,18%);} 
-          90%{transform:translate(-5%,5%);} 
+        @keyframes grain-pan {
+          0%,
+          100% {
+            transform: translate(0, 0);
+          }
+          50% {
+            transform: translate(-10%, -10%);
+          }
         }
         @keyframes gradient-flow {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
-        .blob { 
-          position: absolute; 
-          top: 50%; 
-          left: 50%; 
-          transform: translate(-50%, -50%); 
-          mix-blend-mode: multiply; 
-          filter: blur(8px) saturate(1.2) contrast(1.3) brightness(1.1); 
-          background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); 
-          will-change: border-radius, transform; 
+        .blob {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          mix-blend-mode: multiply;
+          background: radial-gradient(
+            ellipse at 30% 20%,
+            var(--color1) 0%,
+            var(--color2) 35%,
+            var(--color3) 60%,
+            transparent 85%
+          );
+          will-change: transform, border-radius;
           opacity: 0.8;
         }
-        .blob1 { 
-          width: 450px; 
-          height: 450px; 
-          animation: morph-gentle 14s ease-in-out infinite; 
+        .blob1 {
+          width: 360px;
+          height: 360px;
+          animation: morph-gentle 14s ease-in-out infinite;
         }
-        .blob2 { 
-          width: 380px; 
-          height: 380px; 
-          animation: morph-gentle 11s ease-in-out infinite reverse; 
+        .blob2 {
+          width: 300px;
+          height: 300px;
+          animation: morph-gentle 11s ease-in-out infinite reverse;
           animation-delay: -3s;
         }
-        .blob3 { 
-          width: 500px; 
-          height: 500px; 
-          animation: morph-gentle 18s ease-in-out infinite; 
-          animation-delay: -7s; 
+        .blob3 {
+          width: 400px;
+          height: 400px;
+          animation: morph-gentle 18s ease-in-out infinite;
+          animation-delay: -7s;
         }
-        @keyframes morph-gentle { 
-          0%{
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%; 
+        @keyframes morph-gentle {
+          0% {
+            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
             transform: translate(-50%, -50%) rotate(0deg);
-          } 
-          25%{
-            border-radius: 45% 55% 45% 35% / 65% 45% 55% 35%; 
+          }
+          25% {
+            border-radius: 45% 55% 45% 35% / 65% 45% 55% 35%;
             transform: translate(-50%, -50%) rotate(90deg) scale(1.02);
-          } 
-          50%{
-            border-radius: 35% 55% 65% 45% / 45% 55% 35% 55%; 
+          }
+          50% {
+            border-radius: 35% 55% 65% 45% / 45% 55% 35% 55%;
             transform: translate(-50%, -50%) rotate(180deg) scale(0.98);
-          } 
-          75%{
-            border-radius: 65% 35% 45% 55% / 35% 65% 45% 55%; 
+          }
+          75% {
+            border-radius: 65% 35% 45% 55% / 35% 65% 45% 55%;
             transform: translate(-50%, -50%) rotate(270deg) scale(1.01);
-          } 
-          100%{
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%; 
+          }
+          100% {
+            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
             transform: translate(-50%, -50%) rotate(360deg) scale(1);
-          } 
+          }
+        }
+        .glow-effect {
+          filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.55));
+        }
+        .logo-path,
+        .text-element {
+          will-change: transform, opacity;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .blob,
+          .grain-overlay,
+          .hero-gradient-text {
+            animation: none !important;
+          }
         }
       `}</style>
     </section>
