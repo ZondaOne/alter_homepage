@@ -55,24 +55,79 @@ const BackgroundPlane = memo(({ product }: { product: { key: string; image: stri
         <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
         <primitive object={material} attach="material" />
       </mesh>
-      {/* ZONDA Text */}
+      {/* Logo */}
       <mesh position={[0, 0, -49]}>
-        <planeGeometry args={[200, 50]} />
-        <meshBasicMaterial transparent opacity={0.1}>
+        <planeGeometry args={[30, 30]} />
+        <meshBasicMaterial transparent opacity={0.2}>
           <canvasTexture 
             attach="map" 
             args={[(() => {
               const canvas = document.createElement('canvas');
-              canvas.width = 2048;
-              canvas.height = 512;
+              canvas.width = 1024;
+              canvas.height = 1024;
               const ctx = canvas.getContext('2d');
+              
               if (ctx) {
+                // Set up the canvas with transparent background
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Set the fill style to white
                 ctx.fillStyle = '#000000ff';
-                ctx.font = '100px AwareBold';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('ZONDA', canvas.width / 2, canvas.height / 2);
+                
+                // Scale and center the logo paths
+                const scale = 1.8;
+                const offsetX = canvas.width / 2;
+                const offsetY = canvas.height / 2;
+                
+                ctx.save();
+                ctx.translate(offsetX, offsetY);
+                ctx.scale(scale, scale);
+                ctx.translate(-250, -220); // Center the 500x500 viewBox
+                
+                // Draw the logo paths
+                ctx.beginPath();
+                // First path
+                ctx.moveTo(88.478, 186.141);
+                ctx.lineTo(147.278, 101.441);
+                ctx.lineTo(257.616, 101.606);
+                ctx.lineTo(316.242, 186.175);
+                ctx.lineTo(88.478, 186.141);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Second path
+                ctx.beginPath();
+                ctx.moveTo(151.162, 214.519);
+                ctx.lineTo(254.816, 214.785);
+                ctx.lineTo(123.855, 401.854);
+                ctx.lineTo(88.385, 304.265);
+                ctx.lineTo(151.162, 214.519);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Third path
+                ctx.beginPath();
+                ctx.moveTo(375.69, 100);
+                ctx.lineTo(412.058, 198.385);
+                ctx.lineTo(348.108, 288.629);
+                ctx.lineTo(243.925, 288.629);
+                ctx.lineTo(375.69, 100);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Fourth path
+                ctx.beginPath();
+                ctx.moveTo(183.137, 316.443);
+                ctx.lineTo(410.625, 316.222);
+                ctx.lineTo(353.087, 400.362);
+                ctx.lineTo(241.446, 400.15);
+                ctx.lineTo(183.137, 316.443);
+                ctx.closePath();
+                ctx.fill();
+                
+                ctx.restore();
               }
+              
               return canvas;
             })()]}
           />
