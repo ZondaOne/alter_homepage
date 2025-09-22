@@ -34,15 +34,103 @@ export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
+  const [isLowEndDevice, setIsLowEndDevice] = useState(false);
 
-  // Marcamos que el componente está montado
+  // Detectar dispositivos de bajo rendimiento
   useEffect(() => {
+    const detectLowEndDevice = () => {
+      // Verificar si es móvil
+      const isMobile = window.innerWidth < 768;
+      
+      // Verificar capacidades del hardware
+      const hardwareConcurrency = navigator.hardwareConcurrency || 1;
+      const deviceMemory = (navigator as unknown as { deviceMemory?: number }).deviceMemory ?? 1;
+
+      
+      // Detectar GPU débil
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
+      let isWeakGPU = false;
+      
+      if (gl) {
+        try {
+          const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+          if (debugInfo) {
+            const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+            // Lista de GPUs conocidas como de bajo rendimiento
+            const weakGPUs = [
+              'Intel HD Graphics 3000',
+              'Intel HD Graphics 4000',
+              'Intel UHD Graphics',
+              'AMD Radeon R5',
+              'AMD Radeon R4',
+              'PowerVR',
+              'Adreno 3',
+              'Adreno 4',
+              'Mali-4',
+              'Intel(R) HD Graphics'
+            ];
+            isWeakGPU = weakGPUs.some(gpu => renderer.toLowerCase().includes(gpu.toLowerCase()));
+          }
+        } catch {
+          // Si hay error obteniendo info de GPU, asumimos que es débil
+          isWeakGPU = true;
+        }
+      }
+      
+      // Detectar conexión lenta
+      type NetworkInformation = {
+      effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
+      downlink?: number;
+      rtt?: number;
+      saveData?: boolean;
+    };
+
+const connection = (navigator as unknown as { connection?: NetworkInformation }).connection;
+
+const isSlowConnection =
+  connection?.effectiveType === 'slow-2g' ||
+  connection?.effectiveType === '2g' ||
+  connection?.effectiveType === '3g';
+
+      
+      // Detectar si prefiere movimiento reducido
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // Determinar si es un dispositivo de bajo rendimiento
+      const isLowEnd = (
+        isMobile ||
+        hardwareConcurrency <= 2 ||
+        deviceMemory <= 2 ||
+        isWeakGPU ||
+        isSlowConnection ||
+        prefersReducedMotion
+      );
+      
+      setIsLowEndDevice(isLowEnd);
+      
+      // Log para debugging (remover en producción)
+      console.log('Device Performance Check:', {
+        isMobile,
+        hardwareConcurrency,
+        deviceMemory,
+        isWeakGPU,
+        isSlowConnection,
+        prefersReducedMotion,
+        isLowEnd
+      });
+    };
+    
+    detectLowEndDevice();
+    window.addEventListener('resize', detectLowEndDevice);
     setMounted(true);
+    
+    return () => window.removeEventListener('resize', detectLowEndDevice);
   }, []);
 
-  // Elegant entrance animations with GSAP
+  // Elegant entrance animations with GSAP (solo dispositivos de alto rendimiento)
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isLowEndDevice) return;
 
     const hero = heroRef.current;
     if (!hero) return;
@@ -171,7 +259,19 @@ export default function Hero() {
         clearProps: "all",
       });
     };
-  }, [mounted]);
+  }, [mounted, isLowEndDevice]);
+
+  // Para dispositivos de bajo rendimiento, mostrar elementos sin animación
+  useEffect(() => {
+    if (!mounted || !isLowEndDevice) return;
+
+    // En dispositivos de bajo rendimiento, simplemente hacer visibles todos los elementos
+    gsap.set([".hero-h1 .hero-line", ".hero-subtitle", ".hero-buttons", ".hero-logo"], {
+      opacity: 1,
+      y: 0,
+      rotationX: 0,
+    });
+  }, [mounted, isLowEndDevice]);
 
   return (
     <section
@@ -186,7 +286,7 @@ export default function Hero() {
           color={[0.98, 0.45, 0.14]}
           amplitude={0.5}
           distance={0.9}
-          enableMouseInteraction={false}
+          enableMouseInteraction={!isLowEndDevice} // Deshabilitar interacción en dispositivos de bajo rendimiento
         />
       </div>
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
@@ -200,7 +300,7 @@ export default function Hero() {
             </div>
             <div className="hero-line">
               <span
-                className="hero-gradient-text"
+                className={`hero-gradient-text ${isLowEndDevice ? 'low-end-gradient' : ''}`}
                 style={{
                   background:
                     "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
