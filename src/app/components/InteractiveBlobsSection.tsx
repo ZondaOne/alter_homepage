@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const InteractiveBlobsSection: React.FC = () => {
   const { t } = useTranslation();
-  const main = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<SVGSVGElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -20,73 +20,44 @@ const InteractiveBlobsSection: React.FC = () => {
       const textElements = gsap.utils.toArray<HTMLElement>(".text-element");
 
       // --- INITIAL STATES ---
-      gsap.set(blobs, { scale: 0.8, opacity: 0.3 });
-      gsap.set(logoRef.current, { scale: 0.6, opacity: 0, y: 30 });
-      gsap.set(logoPaths, {
-        opacity: 0,
-        scale: 0.8,
-        transformOrigin: "center center",
-      });
-      gsap.set(textElements, {
-        opacity: 0,
-        x: 50,
-      });
+      gsap.set(blobs, { scale: 0.8, autoAlpha: 0.3 });
+      gsap.set(logoRef.current, { scale: 0.6, autoAlpha: 0, y: 30 });
+      gsap.set(logoPaths, { scale: 0.8, autoAlpha: 0, transformOrigin: "center center" });
+      gsap.set(textElements, { x: 50, autoAlpha: 0 });
 
-      // --- SCROLL TIMELINE ---
+      // --- SCROLL TRIGGER ---
       const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: main.current,
-          start: "top 80%",
-          end: "center center",
-          once: true, // solo se dispara una vez
-        },
-      });
+  scrollTrigger: {
+    trigger: mainRef.current,
+    start: "top bottom",
+    toggleActions: "play none none none",
+  },
+});
 
+      // --- TIMELINE ---
       tl.to(blobs, {
         scale: 1,
-        opacity: 0.9,
+        autoAlpha: 0.9,
         stagger: 0.15,
-        duration: 2,
+        duration: 1.5,
         ease: "power2.out",
       })
         .to(
           logoRef.current,
-          {
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            ease: "back.out(1.2)",
-            duration: 1.5,
-          },
-          "-=1.5"
+          { scale: 1, autoAlpha: 1, y: 0, ease: "back.out(1.2)", duration: 1.2 },
+          "-=1"
         )
         .to(
           logoPaths,
-          {
-            opacity: 1,
-            scale: 1,
-            stagger: {
-              each: 0.08,
-              from: "center",
-              ease: "power2.out",
-            },
-            ease: "back.out(1.1)",
-            duration: 1.2,
-          },
-          "-=1.2"
+          { scale: 1, autoAlpha: 1, stagger: { each: 0.08, from: "center" }, ease: "back.out(1.1)", duration: 1 },
+          "-=1"
         )
         .to(
           textElements,
-          {
-            opacity: 1,
-            x: 0,
-            stagger: 0.12,
-            ease: "power2.out",
-            duration: 1,
-          },
-          "-=1"
+          { x: 0, autoAlpha: 1, stagger: 0.12, ease: "power2.out", duration: 0.8 },
+          "-=0.8"
         );
-    }, main);
+    }, mainRef);
 
     return () => ctx.revert();
   }, []);
@@ -94,228 +65,64 @@ const InteractiveBlobsSection: React.FC = () => {
   return (
     <section
       id="about"
-      ref={main}
+      ref={mainRef}
       className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-cream-base px-8"
     >
       <div className="grain-overlay" />
-
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         <div className="relative flex items-center justify-center h-full">
           <div className="absolute inset-0 z-0">
-            <div
-              className="blob blob1"
-              style={
-                {
-                  "--color1": "rgba(249, 115, 22, 0.8)",
-                  "--color2": "rgba(251, 146, 60, 0.5)",
-                  "--color3": "rgba(234, 88, 12, 0.6)",
-                } as React.CSSProperties
-              }
-            />
-            <div
-              className="blob blob2"
-              style={
-                {
-                  "--color1": "rgba(234, 88, 12, 0.7)",
-                  "--color2": "rgba(249, 115, 22, 0.4)",
-                  "--color3": "rgba(194, 65, 12, 0.5)",
-                } as React.CSSProperties
-              }
-            />
-            <div
-              className="blob blob3"
-              style={
-                {
-                  "--color1": "rgba(251, 146, 60, 0.6)",
-                  "--color2": "rgba(249, 115, 22, 0.5)",
-                  "--color3": "rgba(234, 88, 12, 0.4)",
-                } as React.CSSProperties
-              }
-            />
+            <div className="blob blob1" style={{ "--color1": "rgba(249,115,22,0.8)", "--color2": "rgba(251,146,60,0.5)", "--color3": "rgba(234,88,12,0.6)" } as React.CSSProperties} />
+            <div className="blob blob2" style={{ "--color1": "rgba(234,88,12,0.7)", "--color2": "rgba(249,115,22,0.4)", "--color3": "rgba(194,65,12,0.5)" } as React.CSSProperties} />
+            <div className="blob blob3" style={{ "--color1": "rgba(251,146,60,0.6)", "--color2": "rgba(249,115,22,0.5)", "--color3": "rgba(234,88,12,0.4)" } as React.CSSProperties} />
           </div>
-
           <div className="relative z-10">
-            <svg
-              ref={logoRef}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 500 500"
-              className="w-64 h-64 glow-effect"
-            >
-              <path
-                className="logo-path"
-                d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z"
-                fill="#fff"
-              />
-              <path
-                className="logo-path"
-                d="M 151.162 214.519 L 254.816 214.785 L 123.855 401.854 L 88.385 304.265 L 151.162 214.519 Z"
-                fill="#fff"
-              />
-              <path
-                className="logo-path"
-                d="M 375.69 100 L 412.058 198.385 L 348.108 288.629 L 243.925 288.629 L 375.69 100 Z"
-                fill="#fff"
-              />
-              <path
-                className="logo-path"
-                d="M 183.137 316.443 L 410.625 316.222 L 353.087 400.362 L 241.446 400.15 L 183.137 316.443 Z"
-                fill="#fff"
-              />
+            <svg ref={logoRef} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" className="w-64 h-64 glow-effect">
+              <path className="logo-path" d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z" fill="#fff" />
+              <path className="logo-path" d="M 151.162 214.519 L 254.816 214.785 L 123.855 401.854 L 88.385 304.265 L 151.162 214.519 Z" fill="#fff" />
+              <path className="logo-path" d="M 375.69 100 L 412.058 198.385 L 348.108 288.629 L 243.925 288.629 L 375.69 100 Z" fill="#fff" />
+              <path className="logo-path" d="M 183.137 316.443 L 410.625 316.222 L 353.087 400.362 L 241.446 400.15 L 183.137 316.443 Z" fill="#fff" />
             </svg>
           </div>
         </div>
 
-        <div
-          ref={textRef}
-          className="flex flex-col justify-center space-y-6 text-gray-800"
-        >
+        <div ref={textRef} className="flex flex-col justify-center space-y-6 text-gray-800">
           <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-8">
-            <span
-              className="hero-gradient-text text-element"
-              style={{
-                background:
-                  "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                animation: "gradient-flow 3s ease-in-out infinite",
-              }}
-            >
-              {t("interactiveBlobs.hash")}
-            </span>
-            <span className="hero-line text-element">
-              {t("interactiveBlobs.weAre")}
-            </span>
-            <span
-              className="hero-gradient-text text-element"
-              style={{
-                background:
-                  "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                animation: "gradient-flow 3s ease-in-out infinite",
-                animationDelay: "0.5s",
-              }}
-            >
-              {t("interactiveBlobs.zonda")}
-            </span>
+            <span className="hero-gradient-text text-element" style={{
+              background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+              backgroundSize: "200% 100%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              animation: "gradient-flow 3s ease-in-out infinite"
+            }}>{t("interactiveBlobs.hash")}</span>
+            <span className="hero-line text-element">{t("interactiveBlobs.weAre")}</span>
+            <span className="hero-gradient-text text-element" style={{
+              background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+              backgroundSize: "200% 100%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              animation: "gradient-flow 3s ease-in-out infinite",
+              animationDelay: "0.5s"
+            }}>{t("interactiveBlobs.zonda")}</span>
           </h2>
-
-          <p className="text-xl text-element">
-            {t("interactiveBlobs.description1")}
-          </p>
+          <p className="text-xl text-element">{t("interactiveBlobs.description1")}</p>
         </div>
       </div>
 
-      {/* Optimized CSS */}
+      {/* Global Styles */}
       <style jsx global>{`
-        :root {
-          --cream-base: #f5f3ef;
-        }
-        .grain-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 2;
-          opacity: 0.25;
-          mix-blend-mode: multiply;
-          background-image: url("/noise-texture.png");
-          background-size: 300px;
-          animation: grain-pan 8s linear infinite;
-        }
-        @keyframes grain-pan {
-          0%,
-          100% {
-            transform: translate(0, 0);
-          }
-          50% {
-            transform: translate(-10%, -10%);
-          }
-        }
-        @keyframes gradient-flow {
-          0%,
-          100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-        .blob {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          mix-blend-mode: multiply;
-          background: radial-gradient(
-            ellipse at 30% 20%,
-            var(--color1) 0%,
-            var(--color2) 35%,
-            var(--color3) 60%,
-            transparent 85%
-          );
-          will-change: transform, border-radius;
-          opacity: 0.8;
-        }
-        .blob1 {
-          width: 360px;
-          height: 360px;
-          animation: morph-gentle 14s ease-in-out infinite;
-        }
-        .blob2 {
-          width: 300px;
-          height: 300px;
-          animation: morph-gentle 11s ease-in-out infinite reverse;
-          animation-delay: -3s;
-        }
-        .blob3 {
-          width: 400px;
-          height: 400px;
-          animation: morph-gentle 18s ease-in-out infinite;
-          animation-delay: -7s;
-        }
-        @keyframes morph-gentle {
-          0% {
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
-            transform: translate(-50%, -50%) rotate(0deg);
-          }
-          25% {
-            border-radius: 45% 55% 45% 35% / 65% 45% 55% 35%;
-            transform: translate(-50%, -50%) rotate(90deg) scale(1.02);
-          }
-          50% {
-            border-radius: 35% 55% 65% 45% / 45% 55% 35% 55%;
-            transform: translate(-50%, -50%) rotate(180deg) scale(0.98);
-          }
-          75% {
-            border-radius: 65% 35% 45% 55% / 35% 65% 45% 55%;
-            transform: translate(-50%, -50%) rotate(270deg) scale(1.01);
-          }
-          100% {
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
-            transform: translate(-50%, -50%) rotate(360deg) scale(1);
-          }
-        }
-        .glow-effect {
-          filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.55));
-        }
-        .logo-path,
-        .text-element {
-          will-change: transform, opacity;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .blob,
-          .grain-overlay,
-          .hero-gradient-text {
-            animation: none !important;
-          }
-        }
+        :root { --cream-base: #f5f3ef; }
+        .grain-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0.25; mix-blend-mode: multiply; background-image:url("/noise-texture.png"); background-size:300px; animation: grain-pan 8s linear infinite; }
+        @keyframes grain-pan { 0%,100% {transform:translate(0,0);} 50%{transform:translate(-10%,-10%);} }
+        @keyframes gradient-flow {0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+        .blob { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); mix-blend-mode: multiply; background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); will-change: transform,border-radius; opacity:0.8; }
+        .blob1 { width:360px;height:360px;animation:morph-gentle 14s ease-in-out infinite; }
+        .blob2 { width:300px;height:300px;animation:morph-gentle 11s ease-in-out infinite reverse; animation-delay:-3s;}
+        .blob3 { width:400px;height:400px;animation:morph-gentle 18s ease-in-out infinite; animation-delay:-7s;}
+        @keyframes morph-gentle {0%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(0deg);}25%{border-radius:45%55%45%35%/65%45%55%35%; transform:translate(-50%,-50%) rotate(90deg) scale(1.02);}50%{border-radius:35%55%65%45%/45%55%35%55%; transform:translate(-50%,-50%) rotate(180deg) scale(0.98);}75%{border-radius:65%35%45%55%/35%65%45%55%; transform:translate(-50%,-50%) rotate(270deg) scale(1.01);}100%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(360deg) scale(1);}}
+        .glow-effect { filter: drop-shadow(0 0 25px rgba(249,115,22,0.55)); }
+        .logo-path,.text-element { will-change: transform, opacity; }
+        @media (prefers-reduced-motion: reduce) { .blob,.grain-overlay,.hero-gradient-text { animation:none !important; } }
       `}</style>
     </section>
   );

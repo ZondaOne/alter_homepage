@@ -178,7 +178,7 @@ export default function Hero() {
       id="hero"
       ref={heroRef}
       className="relative h-screen overflow-hidden hero-gradient"
-      style={{ backgroundColor: "#fffcfcff" }}
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label="Hero section - Zonda One"
     >
       <div className="absolute inset-0 w-screen h-screen z-0" style={{ opacity: 0.7 }}>

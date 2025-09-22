@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <button
             onClick={() => navigateToSection("hero")}
-            className="flex items-center py-2 px-3 group transition-all duration-300 ease-in-out"
+            className="flex items-center py-2 px-3 group transition-all duration-300 ease-in-out cursor-pointer"
           >
             <div className="w-10 h-10 flex items-center justify-center transform transition-transform duration-300 ease-in-out group-hover:scale-110">
               <Logo />

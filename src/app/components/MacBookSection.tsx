@@ -50,10 +50,35 @@ const BackgroundPlane = memo(({ product }: { product: { key: string; image: stri
   const material = BACKGROUND_MATERIALS[product.key as keyof typeof BACKGROUND_MATERIALS] || BACKGROUND_MATERIALS.default;
 
   return (
-    <mesh position={[0, 0, -50]} scale={[300, 200, 1]}>
-      <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
-      <primitive object={material} attach="material" />
-    </mesh>
+    <>
+      <mesh position={[0, 0, -50]} scale={[300, 200, 1]}>
+        <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
+        <primitive object={material} attach="material" />
+      </mesh>
+      {/* ZONDA Text */}
+      <mesh position={[0, 0, -49]}>
+        <planeGeometry args={[200, 50]} />
+        <meshBasicMaterial transparent opacity={0.1}>
+          <canvasTexture 
+            attach="map" 
+            args={[(() => {
+              const canvas = document.createElement('canvas');
+              canvas.width = 2048;
+              canvas.height = 512;
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                ctx.fillStyle = '#000000ff';
+                ctx.font = '100px AwareBold';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('ZONDA', canvas.width / 2, canvas.height / 2);
+              }
+              return canvas;
+            })()]}
+          />
+        </meshBasicMaterial>
+      </mesh>
+    </>
   );
 });
 BackgroundPlane.displayName = 'BackgroundPlane';
@@ -180,7 +205,7 @@ const MacContainer = memo(({
   });
 
   return (
-    <group position={[-2, -14, 20]} scale={0.9}>
+    <group position={[0, -14, 20]} scale={0.9}>
       <group ref={groupRef}>
         <primitive object={model.scene} />
       </group>
