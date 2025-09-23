@@ -7,6 +7,8 @@ import Footer from "./components/layout/Footer";
 import Loader from './components/Loader';
 import StructuredData from '../components/StructuredData';
 import "../i18n"; // inicializa i18n
+import ScrollToTop from "./components/layout/ScrollToTop";
+import CookieConsent from "./components/layout/CookieConsent";
 
 const crimsonText = Crimson_Text({
   variable: "--font-crimson",
@@ -109,6 +111,8 @@ export default function RootLayout({
 
         {/* Main content */}
         <main>{children}</main>
+        <ScrollToTop />
+        <CookieConsent />
         <Footer />
       </body>
     </html>
