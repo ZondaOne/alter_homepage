@@ -14,6 +14,7 @@ const InteractiveBlobsSection: React.FC = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const blobContainerRef = useRef<HTMLDivElement>(null);
+  const cardInnerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = React.useState(false);
 
   useEffect(() => {
@@ -27,14 +28,12 @@ const InteractiveBlobsSection: React.FC = () => {
       const textElements = gsap.utils.toArray<HTMLElement>(".text-element");
       const cardElements = gsap.utils.toArray<HTMLElement>(".card-element");
 
-      // --- INITIAL STATES ---
       gsap.set(blobs, { scale: 0.8, autoAlpha: 0.3 });
       gsap.set(logoRef.current, { scale: 0.6, autoAlpha: 0, y: 30 });
       gsap.set(logoPaths, { scale: 0.8, autoAlpha: 0, transformOrigin: "center center" });
       gsap.set(textElements, { x: 50, autoAlpha: 0 });
       gsap.set(cardElements, { y: 30, autoAlpha: 0 });
 
-      // --- SCROLL TRIGGER ---
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
@@ -43,7 +42,6 @@ const InteractiveBlobsSection: React.FC = () => {
         },
       });
 
-      // --- TIMELINE ---
       tl.to(blobs, {
         scale: 1,
         autoAlpha: 0.9,
@@ -71,6 +69,29 @@ const InteractiveBlobsSection: React.FC = () => {
           { y: 0, autoAlpha: 1, stagger: 0.1, ease: "power2.out", duration: 0.8 },
           "-=0.6"
         );
+
+      // Simple card hover effect
+      if (cardInnerRef.current) {
+        const cardInner = cardInnerRef.current;
+        
+        cardInner.addEventListener('mouseenter', () => {
+          gsap.to(cardInner, { 
+            y: -8,
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
+            duration: 0.3, 
+            ease: "power2.out" 
+          });
+        });
+
+        cardInner.addEventListener('mouseleave', () => {
+          gsap.to(cardInner, { 
+            y: 0,
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            duration: 0.3, 
+            ease: "power2.out" 
+          });
+        });
+      }
     }, mainRef);
 
     return () => ctx.revert();
@@ -84,8 +105,8 @@ const InteractiveBlobsSection: React.FC = () => {
     >
       <div className="grain-overlay" />
       <div className="container mx-auto space-y-16 relative z-10">
-        
-        {/* Original Text Content - Now Standalone */}
+
+        {/* Header Text */}
         <div className="max-w-4xl mx-auto text-center">
           <div ref={textRef} className="flex flex-col justify-center space-y-6 text-gray-800">
             <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-8">
@@ -114,14 +135,17 @@ const InteractiveBlobsSection: React.FC = () => {
           </div>
         </div>
 
-       
+        {/* Improved Card Section */}
         <div ref={cardRef} className="max-w-5xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden card-element transform hover:scale-[1.02] transition-all duration-300">
-            <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[400px]">
+          <div 
+            ref={cardInnerRef}
+            className="improved-card relative overflow-hidden card-element"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[450px] relative z-10">
               {/* Content Side */}
-              <div className="p-8 lg:p-12 flex flex-col justify-center space-y-8">
-                <div className="space-y-4 card-element">
-                  <h3 className="text-3xl lg:text-4xl xl:text-5xl font-semibold text-gray-900 leading-[0.9] tracking-tight font-display">
+              <div className="p-8 lg:p-12 flex flex-col justify-center space-y-8 relative">
+                <div className="space-y-6 card-element">
+                  <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight tracking-tight font-display">
                     <span className="hero-gradient-text" style={{
                       background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
                       backgroundSize: "200% 100%",
@@ -129,26 +153,27 @@ const InteractiveBlobsSection: React.FC = () => {
                       WebkitTextFillColor: "transparent",
                       animation: "gradient-flow 3s ease-in-out infinite"
                     }}>
-                      From Concept
-                    </span>
-                    {" "}
-                    <span>to Code</span>
+                      {t("card.fromConcept")}
+                    </span>{" "}
+                    <span>{t("card.toCode")}</span>
                   </h3>
+                  
                   <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                    We create integrated digital solutions and experiences that your audience loves to interact with.
+                    {t("card.digitalSolutionsDescription")}
                   </p>
                 </div>
               </div>
-              
-              {/* Blob and Logo Side */}
-              <div ref={blobContainerRef} className="relative overflow-hidden card-element flex items-center justify-center bg-cream-base min-h-[400px]">
+
+              {/* Blob & Logo Side */}
+              <div ref={blobContainerRef} className="relative overflow-hidden card-element flex items-center justify-center bg-gradient-to-br from-cream-base via-orange-50 to-cream-base min-h-[450px]">
                 <div className="absolute inset-0 z-0">
                   <div className="blob blob1" style={{ "--color1": "rgba(249,115,22,0.8)", "--color2": "rgba(251,146,60,0.5)", "--color3": "rgba(234,88,12,0.6)" } as React.CSSProperties} />
                   <div className="blob blob2" style={{ "--color1": "rgba(234,88,12,0.7)", "--color2": "rgba(249,115,22,0.4)", "--color3": "rgba(194,65,12,0.5)" } as React.CSSProperties} />
                   <div className="blob blob3" style={{ "--color1": "rgba(251,146,60,0.6)", "--color2": "rgba(249,115,22,0.5)", "--color3": "rgba(234,88,12,0.4)" } as React.CSSProperties} />
                 </div>
+                
                 <div className="relative z-10">
-                  <svg ref={logoRef} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" className="w-48 h-48 lg:w-56 lg:h-56 glow-effect">
+                  <svg ref={logoRef} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" className="w-56 h-56 lg:w-64 lg:h-64 glow-effect">
                     <path className="logo-path" d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z" fill="#fff" />
                     <path className="logo-path" d="M 151.162 214.519 L 254.816 214.785 L 123.855 401.854 L 88.385 304.265 L 151.162 214.519 Z" fill="#fff" />
                     <path className="logo-path" d="M 375.69 100 L 412.058 198.385 L 348.108 288.629 L 243.925 288.629 L 375.69 100 Z" fill="#fff" />
@@ -159,39 +184,54 @@ const InteractiveBlobsSection: React.FC = () => {
             </div>
           </div>
         </div>
+
       </div>
 
-      {/* Global Styles */}
+      {/* Clean Styles */}
       <style jsx global>{`
         :root { --cream-base: #f5f3ef; }
         .grain-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0.25; mix-blend-mode: multiply; background-image:url("/noise-texture.png"); background-size:300px; animation: grain-pan 8s linear infinite; }
         @keyframes grain-pan { 0%,100% {transform:translate(0,0);} 50%{transform:translate(-10%,-10%);} }
         @keyframes gradient-flow {0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+        
+        .improved-card {
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          transition: all 0.3s ease;
+          will-change: transform, box-shadow;
+        }
+
+        .simple-cta {
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #f97316, #ea580c);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .simple-cta:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(249,115,22,0.3);
+        }
+
         .blob { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); mix-blend-mode: multiply; background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); will-change: transform,border-radius; opacity:0.8; }
         .blob1 { width:300px;height:300px;animation:morph-gentle 14s ease-in-out infinite; }
         .blob2 { width:270px;height:270px;animation:morph-gentle 11s ease-in-out infinite reverse; animation-delay:-3s;}
         .blob3 { width:250px;height:250px;animation:morph-gentle 18s ease-in-out infinite; animation-delay:-7s;}
-        @keyframes morph-gentle {0%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(0deg);}25%{border-radius:45%55%45%35%/65%45%55%35%; transform:translate(-50%,-50%) rotate(90deg) scale(1.02);}50%{border-radius:35%55%65%45%/45%55%35%55%; transform:translate(-50%,-50%) rotate(180deg) scale(0.98);}75%{border-radius:65%35%45%55%/35%65%45%55%; transform:translate(-50%,-50%) rotate(270deg) scale(1.01);}100%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(360deg) scale(1);}}
+        @keyframes morph-gentle {0%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(0deg);}25%{border-radius:45%55%45%35%/65%45%55%35%; transform:translate(-50%,-50%) rotate(90deg) scale(1.02);}50%{border-radius:35%55%65%45%/45%55%35%55%; transform:translate(-50%,-50%) rotate(180deg) scale(0.98);}75%{border-radius:65%35%45%55%/35%65%45%55%; transform:translate(-50%,-50%) rotate(270deg) scale(1.01);}100%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(360deg) scale(1);} }
         .glow-effect { filter: drop-shadow(0 0 25px rgba(249,115,22,0.55)); }
         .logo-path,.text-element,.card-element { will-change: transform, opacity; }
-        .ocean-waves { 
-          background: linear-gradient(45deg, 
-            rgba(255,255,255,0.1) 25%, 
-            transparent 25%, 
-            transparent 50%, 
-            rgba(255,255,255,0.1) 50%, 
-            rgba(255,255,255,0.1) 75%, 
-            transparent 75%, 
-            transparent
-          );
-          background-size: 60px 60px;
-          animation: wave-move 4s linear infinite;
+        
+        @media (prefers-reduced-motion: reduce) { 
+          .blob,.grain-overlay,.hero-gradient-text { 
+            animation: none !important; 
+          } 
         }
-        @keyframes wave-move {
-          0% { transform: translateX(0) translateY(0); }
-          100% { transform: translateX(60px) translateY(60px); }
-        }
-        @media (prefers-reduced-motion: reduce) { .blob,.grain-overlay,.hero-gradient-text,.ocean-waves { animation:none !important; } }
       `}</style>
     </section>
   );

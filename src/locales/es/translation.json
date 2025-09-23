@@ -144,5 +144,10 @@
       "success": "¡Gracias por contactarnos! Te responderemos pronto.",
       "error": "Algo salió mal. Por favor intenta de nuevo."
     }
+  },
+  "card": {
+    "fromConcept": "Del Concepto",
+    "toCode": "al Código",
+    "digitalSolutionsDescription": "Creamos soluciones y experiencias digitales integradas que tu audiencia ama interactuar."
   }
 }
