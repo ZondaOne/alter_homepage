@@ -52,7 +52,7 @@ export default function ContactSection() {
     });
 
     masterTL
-      .to(".contact-title .title-line", {
+      .to(".contact-title", {
         opacity: 1,
         y: 0,
         rotationX: 0,

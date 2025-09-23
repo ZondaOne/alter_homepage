@@ -37,7 +37,7 @@ const InteractiveBlobsSection: React.FC = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "top bottom",
+           start: "top 105%",
           toggleActions: "play none none none",
         },
       });
@@ -146,21 +146,26 @@ const InteractiveBlobsSection: React.FC = () => {
               <div className="p-8 lg:p-12 flex flex-col justify-center space-y-8 relative">
                 <div className="space-y-6 card-element">
                   <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight tracking-tight font-display">
-                    <span className="hero-gradient-text" style={{
-                      background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                      backgroundSize: "200% 100%",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      animation: "gradient-flow 3s ease-in-out infinite"
-                    }}>
-                      {t("card.fromConcept")}
-                    </span>{" "}
-                    <span>{t("card.toCode")}</span>
-                  </h3>
-                  
-                  <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                    {t("card.digitalSolutionsDescription")}
-                  </p>
+                <span
+                  className="hero-gradient-text"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                    backgroundSize: "200% 100%",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    animation: "gradient-flow 3s ease-in-out infinite",
+                  }}
+                >
+                  {mounted ? t("card.fromConcept") : ""}
+                </span>{" "}
+                <span>{mounted ? t("card.toCode") : ""}</span>
+              </h3>
+
+              <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+                {mounted ? t("card.digitalSolutionsDescription") : ""}
+              </p>
+
                 </div>
               </div>
 
@@ -190,7 +195,7 @@ const InteractiveBlobsSection: React.FC = () => {
       {/* Clean Styles */}
       <style jsx global>{`
         :root { --cream-base: #f5f3ef; }
-        .grain-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0.25; mix-blend-mode: multiply; background-image:url("/noise-texture.png"); background-size:300px; animation: grain-pan 8s linear infinite; }
+        .grain-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0.25; mix-blend-mode: multiply; background-size:300px; animation: grain-pan 8s linear infinite; }
         @keyframes grain-pan { 0%,100% {transform:translate(0,0);} 50%{transform:translate(-10%,-10%);} }
         @keyframes gradient-flow {0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
         

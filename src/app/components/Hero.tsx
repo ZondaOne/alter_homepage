@@ -57,7 +57,7 @@ export default function Hero() {
           const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
           if (debugInfo) {
             const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
-            // Lista de GPUs conocidas como de bajo rendimiento
+        
             const weakGPUs = [
               'Intel HD Graphics 3000',
               'Intel HD Graphics 4000',
@@ -109,16 +109,8 @@ const isSlowConnection =
       
       setIsLowEndDevice(isLowEnd);
       
-      // Log para debugging (remover en producción)
-      console.log('Device Performance Check:', {
-        isMobile,
-        hardwareConcurrency,
-        deviceMemory,
-        isWeakGPU,
-        isSlowConnection,
-        prefersReducedMotion,
-        isLowEnd
-      });
+     
+     
     };
     
     detectLowEndDevice();

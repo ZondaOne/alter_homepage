@@ -27,127 +27,50 @@ export default function HomePage() {
 
   // Apply Hero-style animations to parallax section
   useEffect(() => {
-    if (!mounted) return;
+  if (!mounted) return;
 
-    const parallaxSection = parallaxRef.current;
-    const mobileSection = mobileRef.current;
-    
-    if (parallaxSection) {
-      // Set initial states with Hero styling
-      gsap.set([".parallax-eyebrow", ".parallax-title .title-line", ".parallax-subtitle", ".parallax-button"], {
-        opacity: 0,
-        y: 60,
-        rotationX: 15,
-        force3D: true,
-      });
+  const parallaxSection = parallaxRef.current;
+  const mobileSection = mobileRef.current;
+  
+  if (parallaxSection) {
+    // Set initial states without eyebrow
+    gsap.set([".parallax-subtitle", ".parallax-button"], {
+      opacity: 0,
+      y: 60,
+      rotationX: 15,
+      force3D: true,
+    });
 
-      gsap.set([".parallax-eyebrow", ".parallax-title", ".parallax-subtitle", ".parallax-button", ".parallax-gradient-text"], {
-        willChange: "transform, opacity",
-      });
+    gsap.set([".parallax-subtitle", ".parallax-button", ".parallax-gradient-text"], {
+      willChange: "transform, opacity",
+    });
 
-      // Master timeline for entrance
-      const masterTL = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: parallaxSection,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      });
+    const masterTL = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: {
+        trigger: parallaxSection,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-      masterTL
-        .to(".parallax-eyebrow", {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.6,
-          transformOrigin: "center bottom"
-        })
-        .to(".parallax-title .title-line", {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.8,
-          stagger: {
-            amount: 0.2,
-            from: "start"
-          },
-          transformOrigin: "center bottom"
-        }, "-=0.3")
-        .to(".parallax-subtitle", {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.6,
-          transformOrigin: "center bottom"
-        }, "-=0.5")
-        .to(".parallax-button", {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.5,
-          transformOrigin: "center bottom"
-        }, "-=0.3");
+    masterTL
+      .to(".parallax-subtitle", {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.6,
+        transformOrigin: "center bottom"
+      }, "-=0.5")
+ 
+  }
 
-      // Gradient text animation
-      gsap.to(".parallax-gradient-text", {
-        backgroundPosition: "200% 50%",
-        repeat: -1,
-        yoyo: true,
-        duration: 8,
-        ease: "sine.inOut",
-      });
 
-      // Floating animation
-      gsap.to(".parallax-gradient-text", {
-        y: -4,
-        scale: 1.01,
-        repeat: -1,
-        yoyo: true,
-        duration: 4,
-        ease: "sine.inOut",
-      });
-    }
+  return () => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  };
+}, [mounted]);
 
-    // Mobile section animations
-    if (mobileSection) {
-      gsap.set([".mobile-title", ".mobile-subtitle", ".mobile-button"], {
-        opacity: 0,
-        y: 40,
-        force3D: true,
-      });
-
-      const mobileTL = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: mobileSection,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      mobileTL
-        .to(".mobile-title", {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-        })
-        .to(".mobile-subtitle", {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-        }, "-=0.4")
-        .to(".mobile-button", {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-        }, "-=0.3");
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [mounted]);
 
   return (
     <>
@@ -167,7 +90,8 @@ export default function HomePage() {
             src="/banner.webp"
             alt="Zonda One team collaborating on custom software development projects with modern technology stack"
             width={1200}          // ancho inicial
-            height={600}          // alto inicial
+            height={600}
+            priority     
             className="w-full h-auto object-cover rounded-lg shadow-xl"
           />
 

@@ -88,7 +88,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    gsap.set([".parallax-title-line", ".parallax-subtitle"], {
+    gsap.set([".parallax-subtitle"], {
       opacity: 0,
       y: 60,
       rotationX: 15,
@@ -101,18 +101,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       },
       defaults: { ease: "power3.out" },
     });
-
-    tl.to(".parallax-title-line", {
-      opacity: 1,
-      y: 0,
-      rotationX: 0,
-      duration: 0.8,
-      stagger: 0.2,
-    }).to(
-      ".parallax-subtitle",
-      { opacity: 1, y: 0, rotationX: 0, duration: 0.6 },
-      "-=0.4"
-    );
+  
   }, []);
 
   // === Texto por defecto (sin botones) ===
@@ -206,7 +195,9 @@ const MyParallax: React.FC<MyParallaxProps> = ({
             <Image
                         src="/banner.webp"
                         alt="Zonda One team collaborating on custom software development projects with modern technology stack"
-                        fill          // alto inicial
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority        
                         className="w-full h-auto object-cover rounded-lg shadow-xl"
                       />
             <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-2xl"></div>

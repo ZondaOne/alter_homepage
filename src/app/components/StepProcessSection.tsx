@@ -70,13 +70,7 @@ const StepProcessSection: React.FC = () => {
       "-=0.5"
     );
 
-    // Animación de Lottie con fade up
-    tl.fromTo(
-      ".lottie-container",
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-      "-=0.5"
-    );
+   
 
     // Bloques de pasos con stagger + fade up
     tl.fromTo(
