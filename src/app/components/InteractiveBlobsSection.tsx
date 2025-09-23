@@ -136,7 +136,7 @@ const InteractiveBlobsSection: React.FC = () => {
         </div>
 
         {/* Improved Card Section */}
-        <div ref={cardRef} className="max-w-5xl mx-auto">
+        <div ref={cardRef} className="max-w-8xl mx-auto">
           <div 
             ref={cardInnerRef}
             className="improved-card relative overflow-hidden card-element"
@@ -201,7 +201,6 @@ const InteractiveBlobsSection: React.FC = () => {
         
         .improved-card {
           background: white;
-          border-radius: 20px;
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
           transition: all 0.3s ease;
           will-change: transform, box-shadow;
