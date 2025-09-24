@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useState, forwardRef, useImperativeHandle } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
 interface ThreadsProps {
@@ -9,6 +9,16 @@ interface ThreadsProps {
   maxLines?: number;
   resolutionScale?: number | 'auto';
   targetFPS?: number;
+  quality?: 'low' | 'medium' | 'high';
+}
+
+// Expose methods that can be called via ref
+export interface ThreadsRef {
+  pause: () => void;
+  play: () => void;
+  isPlaying: () => boolean;
+  container: HTMLDivElement | null;
+  
 }
 
 const vertexShader = `
@@ -144,7 +154,7 @@ void main() {
 }
 `;
 
-const Threads: React.FC<ThreadsProps> = ({
+const Threads = forwardRef<ThreadsRef, ThreadsProps>(({
   color = [1, 1, 1],
   amplitude = 1,
   distance = 0,
@@ -152,11 +162,13 @@ const Threads: React.FC<ThreadsProps> = ({
   maxLines = 25,
   resolutionScale = 'auto',
   targetFPS = 60,
+  quality = 'medium',
   ...rest
-}) => {
+}, ref) => {
   // ALL HOOKS MUST BE AT THE TOP, BEFORE ANY CONDITIONAL LOGIC
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isLowEndDevice, setIsLowEndDevice] = useState<boolean | undefined>(undefined);
+  const [isPlaying, setIsPlaying] = useState(true);
   
   const rendererRef = useRef<Renderer | null>(null);
   const programRef = useRef<Program | null>(null);
@@ -167,6 +179,25 @@ const Threads: React.FC<ThreadsProps> = ({
   const uResolution = useRef(new Float32Array([1, 1, 1]));
   const uColor = useRef(new Float32Array([1, 1, 1]));
   const uMouse = useRef(new Float32Array([0.5, 0.5]));
+
+  // Expose methods via ref
+
+useImperativeHandle(ref, () => ({
+  pause: () => {
+    setIsPlaying(false);
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  },
+  play: () => {
+    setIsPlaying(true);
+  },
+  isPlaying: () => isPlaying,
+  container: containerRef.current
+}), [isPlaying]);
+
+
 
   // Mouse handlers - defined as callbacks before any conditional returns
   const handleMouseMove = useCallback((e: MouseEvent, container: HTMLDivElement) => {
@@ -182,8 +213,47 @@ const Threads: React.FC<ThreadsProps> = ({
     lastMousePosition.current[1] = 0.5;
   }, []);
 
+  // Animation loop function
+  const startAnimationLoop = useCallback(() => {
+    if (!rendererRef.current || !meshRef.current || !programRef.current) return;
+
+    let lastT = performance.now();
+    const targetInterval = 1000 / targetFPS;
+
+    const update = (t: number) => {
+      if (!isPlaying) return;
+      
+      const dt = t - lastT;
+      if (dt >= targetInterval) {
+        lastT = t;
+        // smooth mouse
+        const smoothing = 0.12;
+        const tx = lastMousePosition.current[0];
+        const ty = lastMousePosition.current[1];
+        currentMouse.current[0] += (tx - currentMouse.current[0]) * smoothing;
+        currentMouse.current[1] += (ty - currentMouse.current[1]) * smoothing;
+        uMouse.current[0] = currentMouse.current[0];
+        uMouse.current[1] = currentMouse.current[1];
+        programRef.current!.uniforms.uMouse.value = uMouse.current;
+
+        programRef.current!.uniforms.iTime.value = t * 0.001;
+
+        rendererRef.current!.render({ scene: meshRef.current! });
+      }
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    rafRef.current = requestAnimationFrame(update);
+  }, [targetFPS, isPlaying]);
+
   // Device detection effect
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      setIsLowEndDevice(false);
+      return;
+    }
+
     const detectLowEndDevice = () => {
       const isMobile = window.innerWidth < 768;
       const hardwareConcurrency = navigator.hardwareConcurrency || 1;
@@ -216,7 +286,18 @@ const Threads: React.FC<ThreadsProps> = ({
 
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      const lowEnd = isMobile || hardwareConcurrency <= 2 || deviceMemory <= 2 || isWeakGPU || isSlowConnection || prefersReducedMotion;
+      // Less aggressive low-end detection
+      const lowEnd = (isMobile && hardwareConcurrency <= 2) || deviceMemory <= 1 || isWeakGPU || isSlowConnection || prefersReducedMotion;
+
+      console.log('Device detection:', { 
+        isMobile, 
+        hardwareConcurrency, 
+        deviceMemory, 
+        isWeakGPU, 
+        isSlowConnection, 
+        prefersReducedMotion, 
+        lowEnd 
+      });
 
       setIsLowEndDevice(lowEnd);
     };
@@ -228,106 +309,117 @@ const Threads: React.FC<ThreadsProps> = ({
 
   // Initialize OGL effect
   useEffect(() => {
-    // Don't initialize if we haven't detected the device type yet or if it's a low-end device
-    if (isLowEndDevice === undefined || isLowEndDevice) return;
+    // Don't initialize if we haven't detected the device type yet
+    if (isLowEndDevice === undefined) {
+      console.log('Device detection not ready yet');
+      return;
+    }
+
+    // Don't initialize for low-end devices
+    if (isLowEndDevice) {
+      console.log('Skipping Threads init for low-end device');
+      return;
+    }
 
     const container = containerRef.current;
-    if (!container) return;
+    if (!container) {
+      console.log('Container not ready');
+      return;
+    }
+
+    console.log('Initializing Threads component');
 
     let pixelRatio = window.devicePixelRatio || 1;
     if (resolutionScale === 'auto') pixelRatio = Math.min(pixelRatio, 1.5);
     else if (typeof resolutionScale === 'number') pixelRatio = Math.max(0.3, Math.min(2, resolutionScale));
 
-    const renderer = new Renderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    });
-    rendererRef.current = renderer;
-    const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    container.appendChild(gl.canvas);
+    try {
+      const renderer = new Renderer({
+        alpha: true,
+        antialias: quality !== 'low',
+        powerPreference: 'high-performance',
+      });
+      rendererRef.current = renderer;
+      const gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      
+      // Set canvas styles
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
+      gl.canvas.style.position = 'absolute';
+      gl.canvas.style.top = '0';
+      gl.canvas.style.left = '0';
+      
+      container.appendChild(gl.canvas);
 
-    const geometry = new Triangle(gl);
+      const geometry = new Triangle(gl);
 
-    const program = new Program(gl, {
-      vertex: vertexShader,
-      fragment: fragmentShader,
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: { value: uResolution.current },
-        uColor: { value: uColor.current },
-        uAmplitude: { value: amplitude },
-        uDistance: { value: distance },
-        uMouse: { value: uMouse.current },
-        u_line_count: { value: Math.max(1, Math.min(50, Math.round(maxLines))) },
-        u_pixel: { value: 1 / Math.max(1, Math.max(window.innerWidth, window.innerHeight)) },
-        u_static_mode: { value: false }
+      const adjustedMaxLines = quality === 'low' ? Math.min(maxLines, 15) : 
+                             quality === 'medium' ? Math.min(maxLines, 25) : 
+                             maxLines;
+
+      const program = new Program(gl, {
+        vertex: vertexShader,
+        fragment: fragmentShader,
+        uniforms: {
+          iTime: { value: 0 },
+          iResolution: { value: uResolution.current },
+          uColor: { value: uColor.current },
+          uAmplitude: { value: amplitude },
+          uDistance: { value: distance },
+          uMouse: { value: uMouse.current },
+          u_line_count: { value: Math.max(1, Math.min(50, Math.round(adjustedMaxLines))) },
+          u_pixel: { value: 1 / Math.max(1, Math.max(window.innerWidth, window.innerHeight)) },
+          u_static_mode: { value: false }
+        }
+      });
+      programRef.current = program;
+
+      const mesh = new Mesh(gl, { geometry, program });
+      meshRef.current = mesh;
+
+      const setSize = () => {
+        const width = container.clientWidth || 300;
+        const height = container.clientHeight || 150;
+        renderer.setSize(width * pixelRatio, height * pixelRatio);
+
+        uResolution.current[0] = width * pixelRatio;
+        uResolution.current[1] = height * pixelRatio;
+        uResolution.current[2] = width / Math.max(1, height);
+        program.uniforms.iResolution.value = uResolution.current;
+        program.uniforms.u_pixel.value = 1 / Math.max(width, height);
+      };
+
+      const resizeObserver = new ResizeObserver(setSize);
+      resizeObserver.observe(container);
+      setSize();
+
+      if (enableMouseInteraction) {
+        container.addEventListener('mousemove', (e) => handleMouseMove(e, container));
+        container.addEventListener('mouseleave', handleMouseLeave);
       }
-    });
-    programRef.current = program;
 
-    const mesh = new Mesh(gl, { geometry, program });
-    meshRef.current = mesh;
+      // Start animation loop
+      startAnimationLoop();
 
-    const setSize = () => {
-      const width = container.clientWidth || 300;
-      const height = container.clientHeight || 150;
-      renderer.setSize(width * pixelRatio, height * pixelRatio);
+      console.log('Threads component initialized successfully');
 
-      uResolution.current[0] = width * pixelRatio;
-      uResolution.current[1] = height * pixelRatio;
-      uResolution.current[2] = width / Math.max(1, height);
-      program.uniforms.iResolution.value = uResolution.current;
-      program.uniforms.u_pixel.value = 1 / Math.max(width, height);
-    };
-
-    const resizeObserver = new ResizeObserver(setSize);
-    resizeObserver.observe(container);
-    setSize();
-
-    if (enableMouseInteraction) {
-      container.addEventListener('mousemove', (e) => handleMouseMove(e, container));
-      container.addEventListener('mouseleave', handleMouseLeave);
+      return () => {
+        console.log('Cleaning up Threads component');
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        resizeObserver.disconnect();
+        if (container.contains(gl.canvas)) {
+          container.removeChild(gl.canvas);
+        }
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      };
+    } catch (error) {
+      console.error('Failed to initialize Threads component:', error);
+      setIsLowEndDevice(true); // Fallback to low-end mode
     }
-
-    let lastT = performance.now();
-    const targetInterval = 1000 / targetFPS;
-
-    const update = (t: number) => {
-      const dt = t - lastT;
-      if (dt >= targetInterval) {
-        lastT = t;
-        // smooth mouse
-        const smoothing = 0.12;
-        const tx = lastMousePosition.current[0];
-        const ty = lastMousePosition.current[1];
-        currentMouse.current[0] += (tx - currentMouse.current[0]) * smoothing;
-        currentMouse.current[1] += (ty - currentMouse.current[1]) * smoothing;
-        uMouse.current[0] = currentMouse.current[0];
-        uMouse.current[1] = currentMouse.current[1];
-        program.uniforms.uMouse.value = uMouse.current;
-
-        program.uniforms.iTime.value = t * 0.001;
-
-        renderer.render({ scene: mesh });
-      }
-      rafRef.current = requestAnimationFrame(update);
-    };
-
-    rafRef.current = requestAnimationFrame(update);
-
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      resizeObserver.disconnect();
-      if (container.contains(gl.canvas)) {
-        container.removeChild(gl.canvas);
-      }
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
-    };
-  }, [amplitude, distance, enableMouseInteraction, handleMouseLeave, handleMouseMove, maxLines, resolutionScale, targetFPS, isLowEndDevice]);
+  }, [amplitude, distance, enableMouseInteraction, handleMouseLeave, handleMouseMove, maxLines, resolutionScale, targetFPS, isLowEndDevice, quality, startAnimationLoop]);
 
   // Update uniforms effect
   useEffect(() => {
@@ -339,19 +431,28 @@ const Threads: React.FC<ThreadsProps> = ({
     programRef.current.uniforms.uColor.value = uColor.current;
     programRef.current.uniforms.uAmplitude.value = amplitude;
     programRef.current.uniforms.uDistance.value = distance;
-    programRef.current.uniforms.u_line_count.value = Math.max(1, Math.min(50, Math.round(maxLines)));
-  }, [color, amplitude, distance, maxLines, isLowEndDevice]);
+    
+    const adjustedMaxLines = quality === 'low' ? Math.min(maxLines, 15) : 
+                           quality === 'medium' ? Math.min(maxLines, 25) : 
+                           maxLines;
+    programRef.current.uniforms.u_line_count.value = Math.max(1, Math.min(50, Math.round(adjustedMaxLines)));
+  }, [color, amplitude, distance, maxLines, isLowEndDevice, quality]);
 
   // CONDITIONAL RENDERING MUST HAPPEN AFTER ALL HOOKS
   if (isLowEndDevice === undefined) {
-    return <div ref={containerRef} className="w-full h-full relative" {...rest} />;
+    console.log('Rendering loading state');
+    return <div ref={containerRef} className="w-full h-full relative bg-transparent" {...rest} />;
   }
   
   if (isLowEndDevice) {
+    console.log('Rendering null for low-end device');
     return null;
   }
 
-  return <div ref={containerRef} className="w-full h-full relative" {...rest} />;
-};
+  console.log('Rendering Threads component');
+  return <div ref={containerRef} className="w-full h-full relative bg-transparent" {...rest} />;
+});
+
+Threads.displayName = 'Threads';
 
 export default Threads;

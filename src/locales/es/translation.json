@@ -64,8 +64,8 @@
   },
 
   "faq": {
-    "title": "En qué estás",
-    "titleHighlight": "Pensando",
+    "title": "Preguntas",
+    "titleHighlight": "Frecuentes",
     "questions": [
       {
         "question": "¿Cómo es su proceso?",
@@ -129,7 +129,7 @@
   },
 
   "contact": {
-    "title": "Empezemos a",
+    "title": "Empecemos a",
     "titleHighlight": "construir juntos",
     "subtitle": "¿Tienes un proyecto en mente? Nos encantaría conocerlo. Envíanos un mensaje y hablemos sobre cómo podemos ayudarte a hacer realidad tus ideas.",
     "form": {

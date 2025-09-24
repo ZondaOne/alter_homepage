@@ -94,13 +94,6 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       rotationX: 15,
     });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-      },
-      defaults: { ease: "power3.out" },
-    });
   
   }, []);
 

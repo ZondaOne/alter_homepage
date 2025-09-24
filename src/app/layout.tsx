@@ -98,23 +98,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        
-        <StructuredData />
-      </head>
-      <body
+  <head>
+    <StructuredData />
 
-        className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
-      ><Loader duration={1500} />
-        {/* Navbar es Client Component */}
-        <Navbar />
+   
+    
+  </head>
+  <body
+    className={`${crimsonText.variable} ${sourceSans.variable} ${awareBold.variable} antialiased bg-background text-foreground`}
+  >
+    <Loader duration={1500} />
+    <Navbar />
 
-        {/* Main content */}
-        <main>{children}</main>
-        <ScrollToTop />
-        <CookieConsent />
-        <Footer />
-      </body>
-    </html>
+    <main>{children}</main>
+
+    <ScrollToTop />
+    <CookieConsent />
+    <Footer />
+  </body>
+</html>
+
   );
 }

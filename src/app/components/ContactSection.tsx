@@ -24,53 +24,74 @@ export default function ContactSection() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !ready) return;
 
     const contactSection = contactRef.current;
     if (!contactSection) return;
 
-    // Set initial states
-    gsap.set([".contact-title .title-line", ".contact-subtitle", ".contact-form"], {
-      opacity: 0,
-      y: 60,
-      rotationX: 15,
-      force3D: true,
-    });
-
-    gsap.set([".contact-title", ".contact-subtitle", ".contact-form"], {
-      willChange: "transform, opacity",
-    });
-
-    // Master timeline for entrance
-    const masterTL = gsap.timeline({
-      defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: contactSection,
-        start: "top 80%",
-        toggleActions: "play none none reverse"
+    // Cleanup previous ScrollTriggers
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.trigger === contactSection) {
+        trigger.kill();
       }
     });
 
-    masterTL
-      .to(".contact-title", {
+    // Wait a frame to ensure DOM is ready
+    const initAnimation = () => {
+      const titleLines = contactSection.querySelectorAll(".title-line");
+      const subtitle = contactSection.querySelector(".contact-subtitle");
+      const form = contactSection.querySelector(".contact-form");
+
+      if (!titleLines.length || !subtitle || !form) {
+        setTimeout(initAnimation, 100);
+        return;
+      }
+
+      // Set initial states
+      gsap.set(titleLines, {
+        opacity: 0,
+        y: 60,
+        rotationX: 15,
+        force3D: true,
+      });
+
+      gsap.set([subtitle, form], {
+        opacity: 0,
+        y: 60,
+        rotationX: 15,
+        force3D: true,
+      });
+
+      // Create timeline with ScrollTrigger
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: contactSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+          onToggle: self => {
+            console.log("ScrollTrigger toggled:", self.isActive);
+          }
+        }
+      });
+
+      tl.to(titleLines, {
         opacity: 1,
         y: 0,
         rotationX: 0,
         duration: 0.8,
-        stagger: {
-          amount: 0.2,
-          from: "start"
-        },
+        stagger: 0.2,
         transformOrigin: "center bottom"
       })
-      .to(".contact-subtitle", {
+      .to(subtitle, {
         opacity: 1,
         y: 0,
         rotationX: 0,
         duration: 0.6,
         transformOrigin: "center bottom"
       }, "-=0.5")
-      .to(".contact-form", {
+      .to(form, {
         opacity: 1,
         y: 0,
         rotationX: 0,
@@ -78,10 +99,27 @@ export default function ContactSection() {
         transformOrigin: "center bottom"
       }, "-=0.4");
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Fallback: trigger animation manually if not triggered by scroll
+      setTimeout(() => {
+        const rect = contactSection.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight * 0.8;
+        if (inView && gsap.getProperty(titleLines[0], "opacity") === 0) {
+          tl.play();
+        }
+      }, 1000);
     };
-  }, [mounted]);
+
+    // Start animation initialization
+    requestAnimationFrame(initAnimation);
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === contactSection) {
+          trigger.kill();
+        }
+      });
+    };
+  }, [mounted, ready]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -114,11 +152,10 @@ export default function ContactSection() {
         throw new Error("Form submission failed");
       }
     } catch (error) {
-  console.error("Form submission error:", error);
-  setSubmitType("error");
-  setSubmitMessage(t("contact.form.error"));
-}
- finally {
+      console.error("Form submission error:", error);
+      setSubmitType("error");
+      setSubmitMessage(t("contact.form.error"));
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -216,7 +253,7 @@ export default function ContactSection() {
                 disabled={isSubmitting}
                 className="bg-gray-900 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-sm text-sm font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 w-full sm:w-auto min-w-[160px]"
               >
-                {isSubmitting
+                {isSubmitting 
                   ? (mounted && ready ? t("contact.form.sending") : "Sending...")
                   : (mounted && ready ? t("contact.form.submit") : "Send message")
                 }

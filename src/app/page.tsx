@@ -30,7 +30,7 @@ export default function HomePage() {
   if (!mounted) return;
 
   const parallaxSection = parallaxRef.current;
-  const mobileSection = mobileRef.current;
+
   
   if (parallaxSection) {
     // Set initial states without eyebrow

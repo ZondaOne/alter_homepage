@@ -22,80 +22,83 @@ const InteractiveBlobsSection: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const blobs = gsap.utils.toArray<HTMLElement>(".blob");
-      const logoPaths = gsap.utils.toArray<SVGPathElement>(".logo-path");
-      const textElements = gsap.utils.toArray<HTMLElement>(".text-element");
-      const cardElements = gsap.utils.toArray<HTMLElement>(".card-element");
+  if (!mounted) return; // Esperamos a que el DOM esté listo
 
-      gsap.set(blobs, { scale: 0.8, autoAlpha: 0.3 });
-      gsap.set(logoRef.current, { scale: 0.6, autoAlpha: 0, y: 30 });
-      gsap.set(logoPaths, { scale: 0.8, autoAlpha: 0, transformOrigin: "center center" });
-      gsap.set(textElements, { x: 50, autoAlpha: 0 });
-      gsap.set(cardElements, { y: 30, autoAlpha: 0 });
+  const ctx = gsap.context(() => {
+    const blobs = gsap.utils.toArray<HTMLElement>(".blob");
+    const logoPaths = gsap.utils.toArray<SVGPathElement>(".logo-path");
+    const textElements = gsap.utils.toArray<HTMLElement>(".text-element");
+    const cardElements = gsap.utils.toArray<HTMLElement>(".card-element");
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-           start: "top 105%",
-          toggleActions: "play none none none",
-        },
+    // Inicializamos estados
+    gsap.set(blobs, { scale: 0.8, autoAlpha: 0.3 });
+    gsap.set(logoRef.current, { scale: 0.6, autoAlpha: 0, y: 30 });
+    gsap.set(logoPaths, { scale: 0.8, autoAlpha: 0, transformOrigin: "center center" });
+    gsap.set(textElements, { x: 50, autoAlpha: 0 });
+    gsap.set(cardElements, { y: 30, autoAlpha: 0 });
+
+    // Timeline de scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: mainRef.current,
+        start: "top 105%", // Más seguro que 105%
+        toggleActions: "play none none none",
+      },
+    });
+
+    tl.to(blobs, {
+      scale: 1,
+      autoAlpha: 0.9,
+      stagger: 0.15,
+      duration: 1.5,
+      ease: "power2.out",
+    })
+      .to(
+        logoRef.current,
+        { scale: 1, autoAlpha: 1, y: 0, ease: "back.out(1.2)", duration: 1.2 },
+        "-=1"
+      )
+      .to(
+        logoPaths,
+        { scale: 1, autoAlpha: 1, stagger: { each: 0.08, from: "center" }, ease: "back.out(1.1)", duration: 1 },
+        "-=1"
+      )
+      .to(
+        textElements,
+        { x: 0, autoAlpha: 1, stagger: 0.12, ease: "power2.out", duration: 0.8 },
+        "-=0.8"
+      )
+      .to(
+        cardElements,
+        { y: 0, autoAlpha: 1, stagger: 0.1, ease: "power2.out", duration: 0.8 },
+        "-=0.6"
+      );
+
+    // Hover cards
+    if (cardInnerRef.current) {
+      const cardInner = cardInnerRef.current;
+      cardInner.addEventListener("mouseenter", () => {
+        gsap.to(cardInner, {
+          y: -8,
+          boxShadow: "0 25px 50px -12px rgba(0,0,0,0.15)",
+          duration: 0.3,
+          ease: "power2.out",
+        });
       });
-
-      tl.to(blobs, {
-        scale: 1,
-        autoAlpha: 0.9,
-        stagger: 0.15,
-        duration: 1.5,
-        ease: "power2.out",
-      })
-        .to(
-          logoRef.current,
-          { scale: 1, autoAlpha: 1, y: 0, ease: "back.out(1.2)", duration: 1.2 },
-          "-=1"
-        )
-        .to(
-          logoPaths,
-          { scale: 1, autoAlpha: 1, stagger: { each: 0.08, from: "center" }, ease: "back.out(1.1)", duration: 1 },
-          "-=1"
-        )
-        .to(
-          textElements,
-          { x: 0, autoAlpha: 1, stagger: 0.12, ease: "power2.out", duration: 0.8 },
-          "-=0.8"
-        )
-        .to(
-          cardElements,
-          { y: 0, autoAlpha: 1, stagger: 0.1, ease: "power2.out", duration: 0.8 },
-          "-=0.6"
-        );
-
-      // Simple card hover effect
-      if (cardInnerRef.current) {
-        const cardInner = cardInnerRef.current;
-        
-        cardInner.addEventListener('mouseenter', () => {
-          gsap.to(cardInner, { 
-            y: -8,
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
-            duration: 0.3, 
-            ease: "power2.out" 
-          });
+      cardInner.addEventListener("mouseleave", () => {
+        gsap.to(cardInner, {
+          y: 0,
+          boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)",
+          duration: 0.3,
+          ease: "power2.out",
         });
+      });
+    }
+  }, mainRef);
 
-        cardInner.addEventListener('mouseleave', () => {
-          gsap.to(cardInner, { 
-            y: 0,
-            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-            duration: 0.3, 
-            ease: "power2.out" 
-          });
-        });
-      }
-    }, mainRef);
+  return () => ctx.revert();
+}, [mounted]); 
 
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section
