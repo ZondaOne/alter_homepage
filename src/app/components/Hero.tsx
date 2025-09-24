@@ -245,7 +245,7 @@ export default function Hero() {
 
         <div className="relative h-full hidden lg:block">
           <div className="w-full h-full object-cover hero-logo">
-            <SoftwareLogo scale={0.8} />
+            <SoftwareLogo scale={1} />
           </div>
         </div> 
       </div>
