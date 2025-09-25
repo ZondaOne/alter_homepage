@@ -227,9 +227,9 @@ const InteractiveBlobsSection: React.FC = () => {
         }
 
         .blob { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); mix-blend-mode: multiply; background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); will-change: transform,border-radius; opacity:0.8; }
-        .blob1 { width:300px;height:300px;animation:morph-gentle 14s ease-in-out infinite; }
-        .blob2 { width:270px;height:270px;animation:morph-gentle 11s ease-in-out infinite reverse; animation-delay:-3s;}
-        .blob3 { width:250px;height:250px;animation:morph-gentle 18s ease-in-out infinite; animation-delay:-7s;}
+        .blob1 { width:370px;height:370px;animation:morph-gentle 14s ease-in-out infinite; }
+        .blob2 { width:370px;height:370px;animation:morph-gentle 11s ease-in-out infinite reverse; animation-delay:-3s;}
+        .blob3 { width:370px;height:370px;animation:morph-gentle 18s ease-in-out infinite; animation-delay:-7s;}
         @keyframes morph-gentle {0%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(0deg);}25%{border-radius:45%55%45%35%/65%45%55%35%; transform:translate(-50%,-50%) rotate(90deg) scale(1.02);}50%{border-radius:35%55%65%45%/45%55%35%55%; transform:translate(-50%,-50%) rotate(180deg) scale(0.98);}75%{border-radius:65%35%45%55%/35%65%45%55%; transform:translate(-50%,-50%) rotate(270deg) scale(1.01);}100%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(360deg) scale(1);} }
         .glow-effect { filter: drop-shadow(0 0 25px rgba(249,115,22,0.55)); }
         .logo-path,.text-element,.card-element { will-change: transform, opacity; }

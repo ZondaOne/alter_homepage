@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
 import SoftwareLogo from "./SoftwareLogo";
-
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,31 +31,94 @@ const scrollToProjects = () => {
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   // Marcamos que el componente está montado
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Throttled scroll handler para optimizar el rendimiento
+  const handleScroll = useCallback(() => {
+    if (!logoRef.current || !heroRef.current) return;
+
+    // Use requestAnimationFrame for smoother animations
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      const heroHeight = heroRef.current!.offsetHeight;
+      const progress = Math.min(scrollY / heroHeight, 1);
+      
+      // Smoother easing function
+      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+      const easedProgress = easeOutQuart(progress);
+      
+      // Apply transformations with GPU-optimized properties
+      const logoElement = logoRef.current!;
+      const translateY = -80 * easedProgress;
+      const scale = 1 + (0.1 * easedProgress);
+      const rotateY = -5 * easedProgress;
+      
+      logoElement.style.transform = `translate3d(0, ${translateY}px, 0) scale3d(${scale}, ${scale}, 1) rotateY(${rotateY}deg)`;
+      logoElement.style.willChange = progress > 0 && progress < 1 ? 'transform' : 'auto';
+    });
+  }, []);
+
+  // Debounced scroll end detection
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const onScroll = () => {
+      setIsScrolling(true);
+      handleScroll();
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setIsScrolling(false);
+        // Reset willChange when not scrolling for better performance
+        if (logoRef.current) {
+          logoRef.current.style.willChange = 'auto';
+        }
+      }, 150);
+    };
+
+    // Use passive listener for better performance
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [handleScroll]);
+
   // Elegant entrance animations with GSAP
   useEffect(() => {
     if (!mounted) return;
 
     const hero = heroRef.current;
-    if (!hero) return;
+    const logo = logoRef.current;
+    if (!hero || !logo) return;
 
     // Set initial states and optimize for performance
-    gsap.set([".hero-h1 .hero-line", ".hero-subtitle", ".hero-buttons", ".hero-logo"], {
+    gsap.set([".hero-h1 .hero-line", ".hero-subtitle", ".hero-buttons"], {
       opacity: 0,
       y: 60,
       rotationX: 15,
       force3D: true, // GPU acceleration
     });
 
+    // Set initial state for logo separately
+    gsap.set(logo, {
+      opacity: 0,
+      y: 60,
+      rotationX: 15,
+      force3D: true,
+    });
+
     // Performance optimizations
-    gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-logo", ".hero-gradient-text"], {
+    gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-gradient-text"], {
       willChange: "transform, opacity",
     });
 
@@ -93,12 +155,18 @@ export default function Hero() {
         duration: 0.5,
         transformOrigin: "center bottom"
       }, "-=0.3")
-      .to(".hero-logo", {
+      .to(logo, {
         opacity: 1,
         y: 0,
         rotationX: 0,
         duration: 0.8,
-        transformOrigin: "center bottom"
+        transformOrigin: "center bottom",
+        onComplete: () => {
+          // Reset willChange after initial animation
+          gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons"], {
+            willChange: "auto",
+          });
+        }
       }, "-=0.6");
 
     // Enhanced gradient text animations
@@ -140,36 +208,30 @@ export default function Hero() {
       gradientText.addEventListener("mouseleave", () => hoverTL.reverse());
     }
 
-    // Smooth parallax with momentum
-    gsap.to(".hero-logo", {
-      y: -80,
-      rotationY: -5,
-      scale: 1.1,
-      scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1.5,
-      },
-    });
-
-    // Subtle background elements animation
+    // REMOVED: The problematic GSAP ScrollTrigger animation for logo
+    // This was causing lag because it was constantly updating the Lottie animation
+    
+    // Keep only the background parallax (less intensive)
     gsap.to(hero, {
-      backgroundPosition: "50% 100%",
-      scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: "bottom top",
-        scrub: 2,
-      },
-    });
+  backgroundPosition: "50% 100%",
+  scrollTrigger: {
+    trigger: hero,
+    start: "top top",
+    end: "bottom top",
+    scrub: true, // ← Más suave que cualquier número
+  },
+});
 
-    // Cleanup function for performance
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-logo", ".hero-gradient-text"], {
+      gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-gradient-text"], {
         clearProps: "all",
       });
+      // Clean up logo transforms
+      if (logo) {
+        logo.style.transform = '';
+        logo.style.willChange = 'auto';
+      }
     };
   }, [mounted]);
 
@@ -244,8 +306,20 @@ export default function Hero() {
         </div>
 
         <div className="relative h-full hidden lg:block">
-          <div className="w-full h-full object-cover hero-logo">
-            <SoftwareLogo scale={1.1} />
+          <div 
+            ref={logoRef}
+            className="w-full h-full object-cover hero-logo"
+            style={{
+              // Initial GPU optimization
+              transform: 'translate3d(0, 0, 0)',
+              backfaceVisibility: 'hidden',
+              perspective: '1000px'
+            }}
+          >
+            <SoftwareLogo 
+              scale={1} 
+              
+            />
           </div>
         </div> 
       </div>
