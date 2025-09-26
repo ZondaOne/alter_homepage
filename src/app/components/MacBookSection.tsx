@@ -425,6 +425,7 @@ const ProductInfo = ({
   </div>
 );
 
+useGLTF.preload("./models/mac.glb");
 // --- Main Component ---
 const MacBookSection = () => {
   const { t, ready } = useTranslation();
@@ -507,7 +508,7 @@ const MacBookSection = () => {
     if (!products.length) return;
 
     // Immediate preload for critical assets
-    useGLTF.preload("./models/mac.glb");
+
 
     // Staggered texture preloading to avoid blocking
     const preloadTextures = async () => {

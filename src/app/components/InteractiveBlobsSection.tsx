@@ -72,25 +72,6 @@ const InteractiveBlobsSection: React.FC = () => {
           "-=0.6"
         );
 
-      if (cardInnerRef.current) {
-        const cardInner = cardInnerRef.current;
-        cardInner.addEventListener("mouseenter", () => {
-          gsap.to(cardInner, {
-            y: -8,
-            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.15)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-        cardInner.addEventListener("mouseleave", () => {
-          gsap.to(cardInner, {
-            y: 0,
-            boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-      }
     }, mainRef);
 
     return () => ctx.revert();
@@ -99,39 +80,44 @@ const InteractiveBlobsSection: React.FC = () => {
 
 
 const renderGrayBackgroundText = (text: string) => {
-  const words = text.split(" ");
-  return words.map((word, idx) => {
-    const isLast = idx === words.length - 1;
-    return (
-      <span
-        key={idx}
-        className={`inline-block px-2 mx-1 mb-2 bg-orange-100 ${
-          isLast ? "" : "text-gray-800"
-        }`}
-        style={
-          isLast
-            ? {
-                color: "transparent",
-                backgroundImage:
-                  "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradient-flow 3s ease-in-out infinite",
-                backgroundClip: "text",
-              }
-            : {}
-        }
-      >
-        {word}
-      </span>
-    );
-  });
-};
-
-
-
-
+    const words = text.split(" ");
+    
+ 
+    const isEnglish = text.includes("Code");
+    
+    return words.map((word, idx) => {
+      const isLast = idx === words.length - 1;
+      // En inglés, agregar salto de línea antes de "to"
+      const shouldBreak = isEnglish && word.toLowerCase() === "to";
+      
+      return (
+        <React.Fragment key={idx}>
+          {shouldBreak && <br />}
+          <span
+            className={`inline-block px-2 mx-1 mb-2 bg-orange-100 ${
+              isLast ? "" : "text-gray-800"
+            }`}
+            style={
+              isLast
+                ? {
+                    color: "transparent",
+                    backgroundImage:
+                      "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
+                    backgroundSize: "200% 100%",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    animation: "gradient-flow 3s ease-in-out infinite",
+                    backgroundClip: "text",
+                  }
+                : {}
+            }
+          >
+            {word}
+          </span>
+        </React.Fragment>
+      );
+    });
+  };
 
 
   return (
@@ -171,24 +157,21 @@ const renderGrayBackgroundText = (text: string) => {
           </div>
         </div>
 
-        {/* Enhanced Card Section */}
+        {/* Enhanced Card Section  */}
         <div ref={cardRef} className="max-w-8xl mx-auto">
           <div 
             ref={cardInnerRef}
-            className="enhanced-card relative overflow-hidden card-element"
+            className="relative overflow-hidden card-element"
+            style={{ boxShadow: 'none' }}
           >            
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] relative z-10">
               {/* Content Side */}
               <div className="content-side p-8 lg:p-12 flex flex-col justify-center space-y-8 relative">                
-                <div className="space-y-8 card-element">
+                <div className="space-y-8">
                   <div className="space-y-6">
                     <h3 className="text-4xl lg:text-5xl xl:text-8xl font-bold leading-tight tracking-tight font-display">
-  {mounted && renderGrayBackgroundText(`${t("card.fromConcept")} ${t("card.toCode")}`)}
-</h3>
-
-
-
-
+                    {mounted && renderGrayBackgroundText(`${t("card.fromConcept")} ${t("card.toCode")}`)}
+                </h3>
 
                     <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
                       {mounted ? t("card.digitalSolutionsDescription") : ""}
@@ -197,8 +180,8 @@ const renderGrayBackgroundText = (text: string) => {
                 </div>
               </div>
 
-              {/* Blob & Logo Side */}
-              <div ref={blobContainerRef} className="blob-side relative overflow-hidden card-element flex items-center justify-center min-h-[500px]">
+              {/* Blob & Logo Side - Sin recuadros ni sombras */}
+              <div ref={blobContainerRef} className="relative overflow-hidden flex items-center justify-center min-h-[500px]">
                 <div className="absolute inset-0 z-0">
                   <div className="blob blob1" style={{ "--color1": "rgba(249,115,22,0.8)", "--color2": "rgba(251,146,60,0.5)", "--color3": "rgba(234,88,12,0.6)" } as React.CSSProperties} />
                   <div className="blob blob2" style={{ "--color1": "rgba(234,88,12,0.7)", "--color2": "rgba(249,115,22,0.4)", "--color3": "rgba(194,65,12,0.5)" } as React.CSSProperties} />
@@ -220,36 +203,83 @@ const renderGrayBackgroundText = (text: string) => {
 
       </div>
 
-      {/* Clean Styles */}
+      {/* Clean Styles  */}
       <style jsx global>{`
-        :root { --cream-base: #f5f3ef; }
-        .grain-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0.25; mix-blend-mode: multiply; background-size:300px; animation: grain-pan 8s linear infinite; }
-        @keyframes grain-pan { 0%,100% {transform:translate(0,0);} 50%{transform:translate(-10%,-10%);} }
-        @keyframes gradient-flow {0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
-
         .blob-side {
-          background: linear-gradient(135deg, #f5f3ef 0%, rgba(249,243,240,0.8) 30%, rgba(251,241,236,0.9) 100%);
           position: relative;
         }
-
-        .blob { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); mix-blend-mode: multiply; background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); will-change: transform,border-radius; opacity:0.8; }
-        .blob1 { width:370px;height:370px;animation:morph-gentle 14s ease-in-out infinite; }
-        .blob2 { width:370px;height:370px;animation:morph-gentle 11s ease-in-out infinite reverse; animation-delay:-3s;}
-        .blob3 { width:370px;height:370px;animation:morph-gentle 18s ease-in-out infinite; animation-delay:-7s;}
-        @keyframes morph-gentle {0%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(0deg);}25%{border-radius:45%55%45%35%/65%45%55%35%; transform:translate(-50%,-50%) rotate(90deg) scale(1.02);}50%{border-radius:35%55%65%45%/45%55%35%55%; transform:translate(-50%,-50%) rotate(180deg) scale(0.98);}75%{border-radius:65%35%45%55%/35%65%45%55%; transform:translate(-50%,-50%) rotate(270deg) scale(1.01);}100%{border-radius:55%45%35%65%/55%35%65%45%; transform:translate(-50%,-50%) rotate(360deg) scale(1);} }
-        .glow-effect { filter: drop-shadow(0 0 25px rgba(249,115,22,0.55)); }
-        .logo-path,.text-element,.card-element { will-change: transform, opacity; }
+        
+        .blob { 
+          position: absolute; 
+          top: 50%; 
+          left: 50%; 
+          transform: translate(-50%,-50%); 
+          mix-blend-mode: multiply; 
+          background: radial-gradient(ellipse at 30% 20%, var(--color1) 0%, var(--color2) 35%, var(--color3) 60%, transparent 85%); 
+          will-change: transform,border-radius; 
+          opacity: 0.8; 
+        }
+        
+        .blob1 { 
+          width: 370px;
+          height: 370px;
+          animation: morph-gentle 14s ease-in-out infinite; 
+        }
+        
+        .blob2 { 
+          width: 370px;
+          height: 370px;
+          animation: morph-gentle 11s ease-in-out infinite reverse; 
+          animation-delay: -3s;
+        }
+        
+        .blob3 { 
+          width: 370px;
+          height: 370px;
+          animation: morph-gentle 18s ease-in-out infinite; 
+          animation-delay: -7s;
+        }
+        
+        @keyframes morph-gentle {
+          0% {
+            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%; 
+            transform: translate(-50%,-50%) rotate(0deg);
+          }
+          25% {
+            border-radius: 45% 55% 45% 35% / 65% 45% 55% 35%; 
+            transform: translate(-50%,-50%) rotate(90deg) scale(1.02);
+          }
+          50% {
+            border-radius: 35% 55% 65% 45% / 45% 55% 35% 55%; 
+            transform: translate(-50%,-50%) rotate(180deg) scale(0.98);
+          }
+          75% {
+            border-radius: 65% 35% 45% 55% / 35% 65% 45% 55%; 
+            transform: translate(-50%,-50%) rotate(270deg) scale(1.01);
+          }
+          100% {
+            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%; 
+            transform: translate(-50%,-50%) rotate(360deg) scale(1);
+          } 
+        }
+        
+        .glow-effect { 
+          filter: drop-shadow(0 0 25px rgba(249,115,22,0.55)); 
+        }
+        
+        .logo-path, .text-element, .card-element { 
+          will-change: transform, opacity; 
+        }
+        
+        /* Eliminar cualquier sombra por defecto */
+        .card-element {
+          box-shadow: none !important;
+        }
         
         @media (max-width: 1024px) {
           .content-side {
             clip-path: none;
           }
-        }
-        
-        @media (prefers-reduced-motion: reduce) { 
-          .blob,.grain-overlay,.hero-gradient-text { 
-            animation: none !important; 
-          } 
         }
       `}</style>
     </section>
