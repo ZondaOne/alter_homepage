@@ -34,7 +34,7 @@ export default function Hero() {
   const logoRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [, setIsScrolling] = useState(false);
 
   // Marcamos que el componente está montado
   useEffect(() => {

@@ -14,6 +14,7 @@ import FAQ from './components/layout/FAQ';
 import Image from "next/image";
 
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {

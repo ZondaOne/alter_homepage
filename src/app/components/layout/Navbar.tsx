@@ -7,6 +7,8 @@ import { Menu, X, Globe2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Logo from "../Logo";
 
+import Link from "next/link";
+
 const Navbar: React.FC = () => {
   const navRef = useRef<HTMLElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -106,10 +108,13 @@ const Navbar: React.FC = () => {
           {/* Nav items */}
           <div className="flex-1 ml-10 hidden lg:flex items-center gap-8">
             {[
+              { key: "Home", label: t("home"), navigateToSection: ("hero") },
               { key: "products", label: t("products"), isProductsLink: true },
               { key: "consulting", label: t("consulting") },
               { key: "support", label: t("support") },
               { key: "about", label: t("about") },
+              { key: "blog", label: <Link href="/blog">{t("Blog")}</Link> }
+
             ].map((item) => (
               <div key={item.key} className="relative">
                 <button
