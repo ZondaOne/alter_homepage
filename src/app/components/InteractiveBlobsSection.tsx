@@ -64,7 +64,7 @@ const InteractiveBlobsSection: React.FC = () => {
     setIsTyping(true);
     let currentWordIndex = 0;
     let currentCharIndex = 0;
-    let revealedWords: WordData[] = [];
+    const revealedWords: WordData[] = [];
     
     const typeNextChar = () => {
       if (currentWordIndex < wordsWithStyles.length) {
