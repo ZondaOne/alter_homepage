@@ -102,6 +102,8 @@ export default function Blog() {
     const blog = blogRef.current;
     if (!blog) return;
 
+     if (hasAnimated) return;
+
     // Cleanup previous animations
     ScrollTrigger.getAll().forEach(trigger => {
       if (trigger.vars.trigger === blog) {
@@ -132,8 +134,8 @@ export default function Blog() {
       if (isInViewport) {
         // If already in viewport, animate immediately
         const immediateTL = gsap.timeline({
-          onComplete: () => setHasAnimated(true)
-        });
+  onComplete: () => setHasAnimated(true)
+});
 
         immediateTL
           .to(".blog-title .hero-line", {
@@ -215,7 +217,7 @@ export default function Blog() {
         }
       });
     };
-  }, [mounted, ready]); // Added 'ready' as dependency
+  }, [mounted, ready, hasAnimated]); // Added 'ready' as dependency
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -7,7 +7,7 @@ import { Menu, X, Globe2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Logo from "../Logo";
 import Link from "next/link";
-import Loader from "../Loader";
+
 
 const Navbar: React.FC = () => {
   const navRef = useRef<HTMLElement>(null);
@@ -17,6 +17,9 @@ const Navbar: React.FC = () => {
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const loaderTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { t, i18n } = useTranslation();
   const router = useRouter();
@@ -30,43 +33,123 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Mostrar loader si venimos de otra página
+  // Handle navigation from other pages to home with scroll
   useEffect(() => {
-    const previousPath = sessionStorage.getItem("previousPath");
-    if (previousPath && previousPath !== "/" && pathname === "/") {
-      setShowLoader(true);
+    if (pathname === "/" && isNavigating) {
+      const sectionId = sessionStorage.getItem("scrollToSection");
+      if (sectionId) {
+        // Add a longer delay to ensure the page is fully loaded
+        const timeoutId = setTimeout(() => {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+          sessionStorage.removeItem("scrollToSection");
+          setIsNavigating(false); // Reset navigation state
+        }, 300); // Increased delay
+
+        return () => clearTimeout(timeoutId);
+      } else {
+        setIsNavigating(false);
+      }
     }
-    sessionStorage.setItem("previousPath", pathname);
-  }, [pathname]);
+  }, [pathname, isNavigating]);
 
-  const navigateToSection = (sectionId: string) => {
-  setIsMobileMenuOpen(false);
-  setActiveDropdown(null);
+  // Reset states when pathname changes and handle navigation completion
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
+    setIsLangMenuOpen(false);
+    
+    // Reset navigation state when we reach the home page
+    if (pathname === "/" && isNavigating) {
+      // Keep isNavigating true until scrolling is complete
+      // This will be handled by the scroll effect
+    } else {
+      setIsNavigating(false);
+    }
+  }, [pathname, isNavigating]);
 
-  if (pathname === "/") {
-    const element = document.getElementById(sectionId);
-    if (element) element.scrollIntoView({ behavior: "smooth" });
-  } else {
-    sessionStorage.setItem("scrollToSection", sectionId);
-    setShowLoader(true); // siempre activamos loader
-    router.push("/"); 
-  }
-};
+  const scrollToSection = (sectionId: string) => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
 
+    if (pathname === "/") {
+      // Already on home - just scroll, no loader
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Coming from another page - show loader and navigate
+      console.log("Starting navigation with loader...", sectionId); // Debug log
+      sessionStorage.setItem("scrollToSection", sectionId);
+      
+      // Clear any existing timeouts
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+      if (loaderTimeoutRef.current) {
+        clearTimeout(loaderTimeoutRef.current);
+      }
+      
+      // Set states in the right order
+      setIsNavigating(true);
+      setShowLoader(true);
+      
+      // Navigate after a short delay
+      navigationTimeoutRef.current = setTimeout(() => {
+        console.log("Navigating to home..."); // Debug log
+        router.push("/");
+      }, 100);
 
+      // Hide loader after minimum duration (independent of Loader component)
+      loaderTimeoutRef.current = setTimeout(() => {
+        console.log("Hiding loader after timeout"); // Debug log
+        setShowLoader(false);
+      }, 2000); // 2 seconds minimum
+    }
+  };
 
-
-  const scrollToProjects = () => {
+  const scrollToProducts = () => {
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
     const targetId = window.innerWidth < 768 ? "gallery-section" : "macbook-section";
 
     if (pathname === "/") {
+      // Already on home - just scroll, no loader
       const element = document.getElementById(targetId);
-      if (element) element.scrollIntoView({ behavior: "smooth" });
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     } else {
+      // Coming from another page - show loader and navigate
+      console.log("Starting products navigation with loader...", targetId); // Debug log
       sessionStorage.setItem("scrollToSection", targetId);
-      router.push("/");
+      
+      // Clear any existing timeouts
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+      if (loaderTimeoutRef.current) {
+        clearTimeout(loaderTimeoutRef.current);
+      }
+      
+      // Set states in the right order
+      setIsNavigating(true);
+      setShowLoader(true);
+      
+      // Navigate after a short delay
+      navigationTimeoutRef.current = setTimeout(() => {
+        console.log("Navigating to home for products..."); // Debug log
+        router.push("/");
+      }, 100);
+
+      // Hide loader after minimum duration (independent of Loader component)
+      loaderTimeoutRef.current = setTimeout(() => {
+        console.log("Hiding loader after timeout"); // Debug log
+        setShowLoader(false);
+      }, 2000); // 2 seconds minimum
     }
   };
 
@@ -75,22 +158,53 @@ const Navbar: React.FC = () => {
     setIsLangMenuOpen(false);
   };
 
+  const handleLoaderComplete = () => {
+    console.log("Loader component completed, but keeping visible"); // Debug log
+    // Don't hide the loader immediately when the component completes
+    // We'll control it manually with our timeout
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsLangMenuOpen(false);
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Debug effect to monitor showLoader state
+  useEffect(() => {
+    console.log("showLoader state changed:", showLoader);
+  }, [showLoader]);
+
   return (
     <>
-      {/* Loader */}
-      <AnimatePresence>
+   
+      <AnimatePresence mode="wait">
         {showLoader && (
-          <Loader
-            onLoadingComplete={() => {
-              const sectionId = sessionStorage.getItem("scrollToSection");
-              if (sectionId) {
-                const element = document.getElementById(sectionId);
-                if (element) element.scrollIntoView({ behavior: "smooth" });
-                sessionStorage.removeItem("scrollToSection");
-              }
-              setShowLoader(false);
-            }}
-          />
+          <motion.div
+            key="loader"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[9999] bg-white"
+          >
+            {/* Primary fallback loader */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-orange-500 mx-auto mb-4"></div>
+                <p className="text-gray-600 text-lg">Loading...</p>
+              </div>
+            </div>
+            
+          
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -109,8 +223,11 @@ const Navbar: React.FC = () => {
         <div className="w-full h-full max-w-[1440px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <button
-            onClick={() => navigateToSection("hero")}
-            className="flex items-center py-2 px-3 group transition-all duration-300 ease-in-out cursor-pointer"
+            onClick={() => scrollToSection("hero")}
+            disabled={isNavigating}
+            className={`flex items-center py-2 px-3 group transition-all duration-300 ease-in-out cursor-pointer hover:opacity-80 ${
+              isNavigating ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             <div className="w-10 h-10 flex items-center justify-center transform transition-transform duration-300 ease-in-out group-hover:scale-110">
               <Logo />
@@ -139,19 +256,26 @@ const Navbar: React.FC = () => {
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="relative text-[15px] font-normal text-gray-800 py-2 px-1 transition-colors duration-200 hover:text-[color:var(--color-accent)] flex items-center gap-1 group"
+                    className={`relative text-[15px] font-normal text-gray-800 py-2 px-1 transition-colors duration-200 hover:text-[color:var(--color-accent)] flex items-center gap-1 group ${
+                      isNavigating ? 'pointer-events-none opacity-50' : ''
+                    }`}
                   >
                     {item.label}
                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[color:var(--color-accent)] transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                 ) : (
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (item.isProductsLink) scrollToProjects();
-                      else if (item.sectionId) navigateToSection(item.sectionId);
+                    onClick={() => {
+                      if (item.isProductsLink) {
+                        scrollToProducts();
+                      } else if (item.sectionId) {
+                        scrollToSection(item.sectionId);
+                      }
                     }}
-                    className="relative text-[15px] font-normal text-gray-800 py-2 px-1 transition-colors duration-200 hover:text-[color:var(--color-accent)] flex items-center gap-1 group"
+                    disabled={isNavigating}
+                    className={`relative text-[15px] font-normal text-gray-800 py-2 px-1 transition-colors duration-200 hover:text-[color:var(--color-accent)] flex items-center gap-1 group cursor-pointer ${
+                      isNavigating ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                   >
                     {item.label}
                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[color:var(--color-accent)] transition-all duration-300 group-hover:w-full"></span>
@@ -167,13 +291,16 @@ const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-500 hover:bg-orange-600 transition-all duration-300 shadow-md"
+                disabled={isNavigating}
+                className={`flex items-center justify-center w-10 h-10 rounded-full bg-orange-500 hover:bg-orange-600 transition-all duration-300 shadow-md ${
+                  isNavigating ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 <Globe2 size={20} className="text-white" />
               </button>
 
               <AnimatePresence>
-                {isLangMenuOpen && mounted && (
+                {isLangMenuOpen && mounted && !isNavigating && (
                   <motion.div
                     className="absolute top-full right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg flex flex-col z-[2000] overflow-hidden"
                     initial={{ opacity: 0, y: -10 }}
@@ -199,8 +326,11 @@ const Navbar: React.FC = () => {
 
             {/* CTA button */}
             <button
-              className="bg-neutral-900 text-white py-2 px-4 rounded-sm text-sm font-medium transition-transform duration-200 hover:scale-105"
-              onClick={() => navigateToSection("contact")}
+              className={`bg-neutral-900 text-white py-2 px-4 rounded-sm text-sm font-medium transition-transform duration-200 hover:scale-105 cursor-pointer ${
+                isNavigating ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              disabled={isNavigating}
+              onClick={() => scrollToSection("contact")}
             >
               {mounted ? t("workWithUs") : " "}
             </button>
@@ -208,7 +338,10 @@ const Navbar: React.FC = () => {
 
           {/* Mobile menu toggle */}
           <motion.button
-            className="lg:hidden text-gray-700"
+            className={`lg:hidden text-gray-700 ${
+              isNavigating ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={isNavigating}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
             animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
@@ -221,7 +354,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen && !isNavigating && (
           <motion.div
             className="fixed top-16 left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg z-[999] lg:hidden"
             initial={{ opacity: 0, height: 0 }}
@@ -233,21 +366,34 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col space-y-1">
                 {[
                   { key: "products", label: t("products"), isProductsLink: true },
-                  { key: "consulting", label: t("consulting") },
-                  { key: "support", label: t("support") },
-                  { key: "blog", label: t("blog") },
-                  { key: "about", label: t("about") },
+                  { key: "consulting", label: t("consulting"), sectionId: "consulting" },
+                  { key: "support", label: t("support"), sectionId: "support" },
+                  { key: "blog", label: t("blog"), href: "/blog" },
+                  { key: "about", label: t("about"), sectionId: "about" },
                 ].map((item) => (
                   <div key={item.key} className="border-b border-gray-100 last:border-b-0">
-                    <button
-                      onClick={() => {
-                        if (item.isProductsLink) scrollToProjects();
-                        else navigateToSection(item.key);
-                      }}
-                      className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between"
-                    >
-                      {mounted ? item.label : " "}
-                    </button>
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {mounted ? item.label : " "}
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          if (item.isProductsLink) {
+                            scrollToProducts();
+                          } else if (item.sectionId) {
+                            scrollToSection(item.sectionId);
+                          }
+                        }}
+                        className="w-full text-left py-3 text-base font-medium text-gray-800 hover:text-[color:var(--color-accent)] transition-colors duration-200 flex items-center justify-between cursor-pointer"
+                      >
+                        {mounted ? item.label : " "}
+                      </button>
+                    )}
                   </div>
                 ))}
 
@@ -305,7 +451,7 @@ const Navbar: React.FC = () => {
                 <div className="pt-2">
                   <button
                     className="w-full bg-neutral-900 text-white py-3 px-4 rounded-md text-base font-medium transition-colors duration-200 hover:bg-neutral-800"
-                    onClick={() => navigateToSection("contact")}
+                    onClick={() => scrollToSection("contact")}
                   >
                     {mounted ? t("workWithUs") : " "}
                   </button>
