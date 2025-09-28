@@ -302,12 +302,13 @@ export default function BlogPostCloud() {
                 </button>
               </div>
             </div>
-            <a 
+            <Link
               href="/blog" 
               className="text-orange-600 hover:text-orange-700 font-medium text-sm transition-colors duration-200 flex items-center gap-2"
             >
               ← {(ready && mounted) ? t("cloudPostBackToBlog") : "Back to Blog"}
-            </a>
+           
+            </Link>
           </div>
         </footer>
       </div>

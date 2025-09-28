@@ -1,12 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface BlogPost {
   id: string;
@@ -85,10 +81,11 @@ const getBlogPosts = (t: (key: string) => string, ready: boolean, mounted: boole
 ];
 
 export default function Blog() {
-  const blogRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
   const blogPosts = getBlogPosts(t, ready, mounted);
 
@@ -96,128 +93,33 @@ export default function Blog() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted || !ready) return;
-
-    const blog = blogRef.current;
-    if (!blog) return;
-
-     if (hasAnimated) return;
-
-    // Cleanup previous animations
-    ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.vars.trigger === blog) {
-        trigger.kill();
-      }
-    });
-
-    // Always set initial state first
-    gsap.set([".blog-title .hero-line", ".blog-subtitle", ".blog-card"], {
-      opacity: 0,
-      y: 60,
-      rotationX: 15,
-      force3D: true,
-    });
-
-    // Ensure gradient is always visible immediately
-    gsap.set(".hero-gradient-text", {
-      opacity: 1,
-      force3D: true,
-    });
-
-    // Small delay to ensure DOM is ready
-    const timer = setTimeout(() => {
-      // Check if we're in viewport after a short delay
-      const rect = blog.getBoundingClientRect();
-      const isInViewport = rect.top < window.innerHeight * 0.8;
-      
-      if (isInViewport) {
-        // If already in viewport, animate immediately
-        const immediateTL = gsap.timeline({
-  onComplete: () => setHasAnimated(true)
-});
-
-        immediateTL
-          .to(".blog-title .hero-line", {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.8,
-            stagger: {
-              amount: 0.2,
-              from: "start"
-            },
-            transformOrigin: "center bottom",
-            ease: "power3.out"
-          })
-          .to(".blog-subtitle", {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.6,
-            transformOrigin: "center bottom",
-            ease: "power3.out"
-          }, "-=0.4")
-          .to(".blog-card", {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "power3.out"
-          }, "-=0.3");
-      } else {
-        // Create scroll-triggered animation for later
-        const blogTL = gsap.timeline({
-          scrollTrigger: {
-            trigger: blog,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse",
-            once: true
-          },
-          onComplete: () => setHasAnimated(true)
-        });
-
-        blogTL
-          .to(".blog-title .hero-line", {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.8,
-            stagger: {
-              amount: 0.2,
-              from: "start"
-            },
-            transformOrigin: "center bottom",
-            ease: "power3.out"
-          })
-          .to(".blog-subtitle", {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.6,
-            transformOrigin: "center bottom",
-            ease: "power3.out"
-          }, "-=0.4")
-          .to(".blog-card", {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "power3.out"
-          }, "-=0.3");
-      }
-    }, 50); // Reduced timeout for faster response
-
-    return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.vars.trigger === blog) {
-          trigger.kill();
-        }
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage('');
+    
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'newsletter',
+          'email': email
+        }).toString()
       });
-    };
-  }, [mounted, ready, hasAnimated]); // Added 'ready' as dependency
+      
+      if (response.ok) {
+        setMessage('Successfully subscribed! Thank you.');
+        setEmail('');
+      } else {
+        setMessage('Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      setMessage('Error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -231,22 +133,21 @@ export default function Blog() {
   return (
     <section
       id="blog"
-      ref={blogRef}
       className="py-20 lg:py-32 bg-white"
       aria-label="Technology Insights Blog"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 xl:px-20">
         {/* Blog Header */}
         <div className="text-center max-w-4xl mx-auto mb-16 lg:mb-20">
-          <h2 className="blog-title text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
-            <div className="hero-line">{mounted && ready ? t("blogTitleLine1") : "Technology"}</div>
-            <div className="hero-line">
-              <span className="hero-gradient-text">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
+            <div>{mounted && ready ? t("blogTitleLine1") : "Technology"}</div>
+            <div>
+              <span className="hero-text-gradient">
                 {mounted && ready ? t("blogTitleLine2") : "Insights"}
               </span>
             </div>
           </h2>
-          <p className="blog-subtitle text-lg sm:text-xl text-gray-600 font-light leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-600 font-light leading-relaxed">
             {mounted && ready ? t("blogSubtitle") : "Explore cutting-edge perspectives on digital transformation, enterprise architecture, and the future of technology. Stay ahead with insights that drive business innovation."}
           </p>
         </div>
@@ -255,7 +156,7 @@ export default function Blog() {
         {blogPosts.filter(post => post.featured).map((post) => (
           <Link href={`/blog/${post.slug}`} key={post.id}>
             <article
-              className="blog-card mb-16 lg:mb-20 bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer"
+              className="mb-16 lg:mb-20 bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer"
             >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
               <div className="relative overflow-hidden">
@@ -320,7 +221,7 @@ export default function Blog() {
           {blogPosts.filter(post => !post.featured).map((post) => (
             <Link href={`/blog/${post.slug}`} key={post.id}>
               <article
-                className="blog-card bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                className="bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer"
               >
               <div className="relative overflow-hidden">
                 <Image
@@ -383,17 +284,44 @@ export default function Blog() {
             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
               {mounted && ready ? t("blogNewsletterSubtitle") : "Get the latest insights on digital transformation, emerging technologies, and industry best practices delivered directly to your inbox."}
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            <form 
+              name="newsletter" 
+              method="POST" 
+              data-netlify="true"
+              onSubmit={handleSubscribe}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto"
+            >
+              <input type="hidden" name="form-name" value="newsletter" />
               <input
                 type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={mounted && ready ? t("blogEmailPlaceholder") : "Enter your email address"}
                 className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                 aria-label="Email address for newsletter subscription"
+                required
               />
-              <button className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto whitespace-nowrap">
-                {mounted && ready ? t("blogSubscribeButton") : "Subscribe"}
+              <button 
+                type="submit"
+                disabled={isLoading}
+                className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto whitespace-nowrap disabled:opacity-50"
+              >
+                {isLoading 
+                  ? (mounted && ready ? t("blogSubscribing") : "Subscribing...") 
+                  : (mounted && ready ? t("blogSubscribeButton") : "Subscribe")
+                }
               </button>
-            </div>
+            </form>
+            {message && (
+              <p className={`mt-4 text-sm text-center ${
+                message.includes('Successfully') 
+                  ? 'text-green-600' 
+                  : 'text-red-600'
+              }`}>
+                {message}
+              </p>
+            )}
           </div>
         </div>
       </div>
