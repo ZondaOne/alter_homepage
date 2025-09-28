@@ -20,8 +20,6 @@ interface BlogPost {
   featured?: boolean;
 }
 
-
-
 const getBlogPosts = (t: (key: string) => string, ready: boolean, mounted: boolean): BlogPost[] => [
   {
     id: "1",
@@ -90,6 +88,7 @@ export default function Blog() {
   const blogRef = useRef<HTMLDivElement>(null);
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   const blogPosts = getBlogPosts(t, ready, mounted);
 
@@ -98,12 +97,19 @@ export default function Blog() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !ready) return;
 
     const blog = blogRef.current;
     if (!blog) return;
 
-    // Set initial states for animations
+    // Cleanup previous animations
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.vars.trigger === blog) {
+        trigger.kill();
+      }
+    });
+
+    // Always set initial state first
     gsap.set([".blog-title .hero-line", ".blog-subtitle", ".blog-card"], {
       opacity: 0,
       y: 60,
@@ -111,49 +117,105 @@ export default function Blog() {
       force3D: true,
     });
 
-    // Create scroll-triggered animation
-    const blogTL = gsap.timeline({
-      scrollTrigger: {
-        trigger: blog,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
-      }
+    // Ensure gradient is always visible immediately
+    gsap.set(".hero-gradient-text", {
+      opacity: 1,
+      force3D: true,
     });
 
-    blogTL
-      .to(".blog-title .hero-line", {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.8,
-        stagger: {
-          amount: 0.2,
-          from: "start"
-        },
-        transformOrigin: "center bottom",
-        ease: "power3.out"
-      })
-      .to(".blog-subtitle", {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.6,
-        transformOrigin: "center bottom",
-        ease: "power3.out"
-      }, "-=0.4")
-      .to(".blog-card", {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out"
-      }, "-=0.3");
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      // Check if we're in viewport after a short delay
+      const rect = blog.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight * 0.8;
+      
+      if (isInViewport) {
+        // If already in viewport, animate immediately
+        const immediateTL = gsap.timeline({
+          onComplete: () => setHasAnimated(true)
+        });
+
+        immediateTL
+          .to(".blog-title .hero-line", {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: {
+              amount: 0.2,
+              from: "start"
+            },
+            transformOrigin: "center bottom",
+            ease: "power3.out"
+          })
+          .to(".blog-subtitle", {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.6,
+            transformOrigin: "center bottom",
+            ease: "power3.out"
+          }, "-=0.4")
+          .to(".blog-card", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power3.out"
+          }, "-=0.3");
+      } else {
+        // Create scroll-triggered animation for later
+        const blogTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: blog,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+            once: true
+          },
+          onComplete: () => setHasAnimated(true)
+        });
+
+        blogTL
+          .to(".blog-title .hero-line", {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: {
+              amount: 0.2,
+              from: "start"
+            },
+            transformOrigin: "center bottom",
+            ease: "power3.out"
+          })
+          .to(".blog-subtitle", {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.6,
+            transformOrigin: "center bottom",
+            ease: "power3.out"
+          }, "-=0.4")
+          .to(".blog-card", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power3.out"
+          }, "-=0.3");
+      }
+    }, 50); // Reduced timeout for faster response
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.trigger === blog) {
+          trigger.kill();
+        }
+      });
     };
-  }, [mounted]);
+  }, [mounted, ready]); // Added 'ready' as dependency
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -177,16 +239,7 @@ export default function Blog() {
           <h2 className="blog-title text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
             <div className="hero-line">{mounted && ready ? t("blogTitleLine1") : "Technology"}</div>
             <div className="hero-line">
-              <span
-                className="hero-gradient-text"
-                style={{
-                  background: "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                  backgroundSize: "200% 100%",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <span className="hero-gradient-text">
                 {mounted && ready ? t("blogTitleLine2") : "Insights"}
               </span>
             </div>
@@ -210,7 +263,7 @@ export default function Blog() {
                   src={post.image}
                   alt={post.title}
                   className="w-full h-64 lg:h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
+                  priority={post.featured}
                 />
                 <div className="absolute top-4 left-4">
                   <span className="inline-block bg-orange-500 text-white px-3 py-1 rounded-sm text-sm font-medium">
