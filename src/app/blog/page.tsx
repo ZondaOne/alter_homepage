@@ -83,43 +83,12 @@ const getBlogPosts = (t: (key: string) => string, ready: boolean, mounted: boole
 export default function Blog() {
   const { t, ready } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
 
   const blogPosts = getBlogPosts(t, ready, mounted);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setMessage('');
-    
-    try {
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'newsletter',
-          'email': email
-        }).toString()
-      });
-      
-      if (response.ok) {
-        setMessage('Successfully subscribed! Thank you.');
-        setEmail('');
-      } else {
-        setMessage('Something went wrong. Please try again.');
-      }
-    } catch (error) {
-      setMessage('Error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -142,7 +111,7 @@ export default function Blog() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-6">
             <div>{mounted && ready ? t("blogTitleLine1") : "Technology"}</div>
             <div>
-              <span className="hero-text-gradient">
+              <span className="hero-gradient-text">
                 {mounted && ready ? t("blogTitleLine2") : "Insights"}
               </span>
             </div>
@@ -276,54 +245,7 @@ export default function Blog() {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-16 lg:mt-20">
-          <div className="bg-gray-50 rounded-lg p-8 lg:p-12">
-            <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-4">
-              {mounted && ready ? t("blogNewsletterTitle") : "Stay Updated with Technology Trends"}
-            </h3>
-            <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-              {mounted && ready ? t("blogNewsletterSubtitle") : "Get the latest insights on digital transformation, emerging technologies, and industry best practices delivered directly to your inbox."}
-            </p>
-            <form 
-              name="newsletter" 
-              method="POST" 
-              data-netlify="true"
-              onSubmit={handleSubscribe}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto"
-            >
-              <input type="hidden" name="form-name" value="newsletter" />
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={mounted && ready ? t("blogEmailPlaceholder") : "Enter your email address"}
-                className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                aria-label="Email address for newsletter subscription"
-                required
-              />
-              <button 
-                type="submit"
-                disabled={isLoading}
-                className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto whitespace-nowrap disabled:opacity-50"
-              >
-                {isLoading 
-                  ? (mounted && ready ? t("blogSubscribing") : "Subscribing...") 
-                  : (mounted && ready ? t("blogSubscribeButton") : "Subscribe")
-                }
-              </button>
-            </form>
-            {message && (
-              <p className={`mt-4 text-sm text-center ${
-                message.includes('Successfully') 
-                  ? 'text-green-600' 
-                  : 'text-red-600'
-              }`}>
-                {message}
-              </p>
-            )}
-          </div>
-        </div>
+      
       </div>
     </section>
   );
