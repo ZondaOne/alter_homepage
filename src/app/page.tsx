@@ -22,6 +22,15 @@ export default function HomePage() {
   const mobileRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
+   useEffect(() => {
+    const sectionId = sessionStorage.getItem("scrollToSection");
+    if (sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+      sessionStorage.removeItem("scrollToSection");
+    }
+  }, []);
+
   useEffect(() => {
     setMounted(true);
   }, []);
