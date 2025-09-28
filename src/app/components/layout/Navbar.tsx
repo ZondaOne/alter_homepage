@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
       }
     } else {
       // Coming from another page - show loader and navigate
-      console.log("Starting navigation with loader...", sectionId); // Debug log
+    
       sessionStorage.setItem("scrollToSection", sectionId);
       
       // Clear any existing timeouts
@@ -99,13 +99,13 @@ const Navbar: React.FC = () => {
       
       // Navigate after a short delay
       navigationTimeoutRef.current = setTimeout(() => {
-        console.log("Navigating to home..."); // Debug log
+       
         router.push("/");
       }, 100);
 
       // Hide loader after minimum duration (independent of Loader component)
       loaderTimeoutRef.current = setTimeout(() => {
-        console.log("Hiding loader after timeout"); // Debug log
+        
         setShowLoader(false);
       }, 2000); // 2 seconds minimum
     }
@@ -124,7 +124,7 @@ const Navbar: React.FC = () => {
       }
     } else {
       // Coming from another page - show loader and navigate
-      console.log("Starting products navigation with loader...", targetId); // Debug log
+      
       sessionStorage.setItem("scrollToSection", targetId);
       
       // Clear any existing timeouts
@@ -141,13 +141,13 @@ const Navbar: React.FC = () => {
       
       // Navigate after a short delay
       navigationTimeoutRef.current = setTimeout(() => {
-        console.log("Navigating to home for products..."); // Debug log
+    
         router.push("/");
       }, 100);
 
       // Hide loader after minimum duration (independent of Loader component)
       loaderTimeoutRef.current = setTimeout(() => {
-        console.log("Hiding loader after timeout"); // Debug log
+     
         setShowLoader(false);
       }, 2000); // 2 seconds minimum
     }
@@ -158,11 +158,7 @@ const Navbar: React.FC = () => {
     setIsLangMenuOpen(false);
   };
 
-  const handleLoaderComplete = () => {
-    console.log("Loader component completed, but keeping visible"); // Debug log
-    // Don't hide the loader immediately when the component completes
-    // We'll control it manually with our timeout
-  };
+
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -179,7 +175,7 @@ const Navbar: React.FC = () => {
 
   // Debug effect to monitor showLoader state
   useEffect(() => {
-    console.log("showLoader state changed:", showLoader);
+   
   }, [showLoader]);
 
   return (

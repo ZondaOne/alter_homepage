@@ -33,8 +33,8 @@ export default function CookieConsent() {
   };
 
   const enableScripts = (consentObj) => {
-    if (consentObj.analytics) console.log("Analytics enabled");
-    if (consentObj.marketing) console.log("Marketing enabled");
+    if (consentObj.analytics);
+    if (consentObj.marketing);
   };
 
   if (!showBanner) return null;

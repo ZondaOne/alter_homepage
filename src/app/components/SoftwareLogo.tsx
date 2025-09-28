@@ -56,11 +56,11 @@ export default function SoftwareLogo({ path = "/Software.lottie", scale = 1 }: S
           const jsonFiles = Object.keys(zipContent.files).filter(name => 
             name.endsWith('.json') && !name.includes('manifest')
           );
-          console.log('Archivos JSON encontrados:', jsonFiles);
+   
           
           if (jsonFiles.length > 0) {
             animationFile = zipContent.file(jsonFiles[0]);
-            console.log('Usando archivo:', jsonFiles[0]);
+            
           }
         }
         
@@ -70,17 +70,10 @@ export default function SoftwareLogo({ path = "/Software.lottie", scale = 1 }: S
 
         // Extraer y parsear el JSON
         const animationJson = await animationFile.async("text");
-        console.log('JSON content preview:', animationJson.substring(0, 200));
+       
         
         const animationData = JSON.parse(animationJson);
-        console.log('Parsed animation data:', {
-          hasV: !!animationData.v,
-          hasFr: !!animationData.fr,
-          hasIp: !!animationData.ip,
-          hasOp: !!animationData.op,
-          hasLayers: !!animationData.layers,
-          layersLength: animationData.layers?.length
-        });
+       
 
         // Validar que el JSON tiene la estructura correcta de Lottie
         if (!animationData || typeof animationData !== 'object') {

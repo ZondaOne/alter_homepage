@@ -70,9 +70,7 @@ export default function ContactSection() {
           start: "top 80%",
           end: "bottom 20%",
           toggleActions: "play none none reverse",
-          onToggle: self => {
-            console.log("ScrollTrigger toggled:", self.isActive);
-          }
+          
         }
       });
 
