@@ -59,7 +59,7 @@ export default function FAQ() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-8 sm:space-y-12 lg:space-y-16">
         {/* Header */}
         <div className="text-center">
-          <h1 className="faq-h1 m-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+          <h1 className="faq-h1 m-0 text-5xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             {mounted && ready ? t('faq.title') : 'What You\'re'}
             <br />
             <span

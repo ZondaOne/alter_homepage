@@ -361,10 +361,11 @@ const Navbar: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-6 py-4">
               <div className="flex flex-col space-y-1">
                 {[
+                  { key: "home", label: t("Home"), href: "/" },
                   { key: "products", label: t("products"), isProductsLink: true },
                   { key: "consulting", label: t("consulting"), sectionId: "consulting" },
                   { key: "support", label: t("support"), sectionId: "support" },
-                  { key: "blog", label: t("blog"), href: "/blog" },
+                  { key: "blog", label: t("Blog"), href: "/blog" },
                   { key: "about", label: t("about"), sectionId: "about" },
                 ].map((item) => (
                   <div key={item.key} className="border-b border-gray-100 last:border-b-0">

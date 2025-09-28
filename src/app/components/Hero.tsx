@@ -245,7 +245,7 @@ export default function Hero() {
     >
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
         <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20">
-          <h1 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+          <h1 className="hero-h1 mt-32 text-6xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             <div className="hero-line">
               {mounted && ready ? t("heroTitleLine1") : "Your idea"}
             </div>
@@ -305,10 +305,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative h-full hidden lg:block">
+        {/* Logo visible tanto en desktop como mobile, más grande en mobile */}
+        <div className="relative h-full flex items-center justify-center lg:block mt-8 lg:mt-0">
           <div 
             ref={logoRef}
-            className="w-full h-full object-cover hero-logo"
+            className="w-full h-full lg:h-full hero-logo flex items-center justify-center lg:block"
             style={{
               // Initial GPU optimization
               transform: 'translate3d(0, 0, 0)',
@@ -316,10 +317,11 @@ export default function Hero() {
               perspective: '1000px'
             }}
           >
-            <SoftwareLogo 
-              scale={1} 
-              
-            />
+            <div className="w-[80vw] h-[80vw] max-w-[400px] max-h-[400px] lg:w-full lg:h-full lg:max-w-none lg:max-h-none">
+              <SoftwareLogo 
+                scale={1} 
+              />
+            </div>
           </div>
         </div> 
       </div>
