@@ -306,7 +306,7 @@ export default function Hero() {
         </div>
 
      
-        <div className="relative h-full flex items-center justify-center lg:block mt-24 lg:mt-0">
+        <div className="relative h-full flex items-center justify-center lg:block mt-24 mb-24 lg:mt-0 lg:mt-0">
           <div 
             ref={logoRef}
             className="w-full h-full lg:h-full hero-logo flex items-center justify-center lg:block"

@@ -167,7 +167,7 @@ export default function ContactSection() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="contact-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-4 sm:mb-6">
+          <h2 className="contact-title text-5xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-4 sm:mb-6">
             <div className="title-line">
               {mounted && ready ? t("contact.title") : "Let's start"}
             </div>
