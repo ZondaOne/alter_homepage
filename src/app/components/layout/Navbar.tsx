@@ -230,7 +230,7 @@ const Navbar: React.FC = () => {
             </div>
             <div className="overflow-hidden ml-2">
               <span
-                className="text-base text-[color:var(--foreground)] whitespace-nowrap block transform -translate-x-5 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
+                className="text-lg text-[color:var(--foreground)] whitespace-nowrap block transform transition-all duration-300 ease-out lg:-translate-x-5 lg:opacity-0 lg:group-hover:translate-x-0 lg:group-hover:opacity-100 translate-x-0 opacity-100"
                 style={{ fontFamily: "AwareBold, sans-serif" }}
               >
                 ZONDA
@@ -402,7 +402,7 @@ const Navbar: React.FC = () => {
                   >
                     <div className="flex items-center gap-2">
                       <Globe2 size={20} className="text-orange-500" />
-                      <span>{t("language")}</span>
+                      <span>{t("Language")}</span>
                     </div>
                     <svg
                       className={`w-5 h-5 transition-transform duration-200 ease-in-out ${
