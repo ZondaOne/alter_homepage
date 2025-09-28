@@ -305,11 +305,11 @@ export default function Hero() {
           </div>
         </div>
 
-     
-        <div className="relative h-full flex items-center justify-center lg:block mt-24 mb-24 lg:mt-0 lg:mt-0">
+        {/* Logo visible tanto en desktop como mobile, más grande en mobile */}
+        <div className="relative flex items-center justify-center lg:block lg:h-full mt-24 mb-24 lg:mt-0 lg:mb-0">
           <div 
             ref={logoRef}
-            className="w-full h-full lg:h-full hero-logo flex items-center justify-center lg:block"
+            className="w-full lg:h-full hero-logo flex items-center justify-center lg:block"
             style={{
               // Initial GPU optimization
               transform: 'translate3d(0, 0, 0)',
@@ -327,4 +327,4 @@ export default function Hero() {
       </div>
     </section>
   );
-} 
+}
