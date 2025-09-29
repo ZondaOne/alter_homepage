@@ -32,10 +32,15 @@ const InteractiveBlobsSection: React.FC = () => {
     setMounted(true);
   }, []);
 
+  // Track if typing animation has been completed to prevent re-triggering
+  const [typingCompleted, setTypingCompleted] = useState(false);
+  const [typingTriggered, setTypingTriggered] = useState(false);
+
   // Typing effect function
   const startTypingEffect = () => {
-    if (!mounted || isTyping || typingCompleted) return;
+    if (!mounted || isTyping || typingCompleted || typingTriggered) return;
     
+    setTypingTriggered(true);
     const fullText = `${t("card.fromConcept")} ${t("card.toCode")}`;
     const words = fullText.split(" ");
     const isEnglish = fullText.includes("Code");
@@ -78,14 +83,14 @@ const InteractiveBlobsSection: React.FC = () => {
           tempWords[currentWordIndex] = { ...currentWordData, word: partialWord };
           setDisplayedText(tempWords);
           currentCharIndex++;
-          setTimeout(typeNextChar, 110); // Faster typing: 50ms per character
+          setTimeout(typeNextChar, 150); // Faster typing: 110ms per character
         } else {
           // Finished current word
           revealedWords[currentWordIndex] = currentWordData;
           setDisplayedText([...revealedWords]);
           currentWordIndex++;
           currentCharIndex = 0;
-          setTimeout(typeNextChar, 100); // Shorter pause between words: 100ms
+          setTimeout(typeNextChar, 120); // Shorter pause between words: 100ms
         }
       } else {
         // Finished typing
@@ -94,8 +99,8 @@ const InteractiveBlobsSection: React.FC = () => {
       }
     };
     
-    // Start typing with shorter initial delay
-    setTimeout(typeNextChar, 150);
+    // Start typing immediately when triggered
+    typeNextChar();
   };
 
   const renderTypingText = (wordsData: WordData[]) => {
@@ -143,10 +148,6 @@ const InteractiveBlobsSection: React.FC = () => {
           trigger: mainRef.current,
           start: "top 105%",
           toggleActions: "play none none none",
-          onEnter: () => {
-            // Start typing effect after other animations
-            setTimeout(startTypingEffect, 1500);
-          }
         },
       });
 
@@ -178,27 +179,32 @@ const InteractiveBlobsSection: React.FC = () => {
           "-=0.6"
         );
 
+      // Separate ScrollTrigger specifically for the typing animation
+      ScrollTrigger.create({
+        trigger: typingH3Ref.current,
+        start: "top 80%", // Trigger when the h3 element is 80% into the viewport
+        toggleActions: "play none none none",
+        onEnter: () => {
+          // Small delay to ensure the element is visible
+          setTimeout(startTypingEffect, 200);
+        }
+      });
+
     }, mainRef);
 
     return () => ctx.revert();
   }, [mounted]); // Remove 't' to prevent GSAP animations from re-running
 
-  // Track if typing animation has been completed to prevent re-triggering
-  const [typingCompleted, setTypingCompleted] = useState(false);
-
   // Handle typing effect restart when language changes (only if not completed)
   useEffect(() => {
-    if (mounted && !typingCompleted) {
-      // Only restart typing if it hasn't been completed yet
-      if (displayedText.length > 0) {
-        setDisplayedText([]);
-        setIsTyping(false);
-        setTimeout(() => {
-          startTypingEffect();
-        }, 100);
-      }
+    if (mounted && typingCompleted) {
+      // Reset typing states when language changes
+      setDisplayedText([]);
+      setIsTyping(false);
+      setTypingCompleted(false);
+      setTypingTriggered(false);
     }
-  }, [t, mounted, typingCompleted]);
+  }, [t, mounted]);
 
   const renderGrayBackgroundText = (text: string) => {
     const words = text.split(" ");
