@@ -60,6 +60,11 @@
         "title": "ComChat",
         "description": "Your own AI assistant that understands your business. It learns from your content and helps your customers get answers fast."
       }
+      ,
+      "rhivo": {
+        "title": "Rhivo",
+        "description": "Manage bookings and schedules for service businesses with simple, reliable tools — calendars, staff management and client bookings in one place."
+      }
     }
   },
 

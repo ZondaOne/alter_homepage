@@ -27,6 +27,12 @@ const getProducts = (t: (key: string) => string) => [
     description: t('macbook.products.comchat.description'),
     key: 'comchat'
   },
+  {
+    image: "/bg4.png",
+    title: t('macbook.products.rhivo.title'),
+    description: t('macbook.products.rhivo.description'),
+    key: 'rhivo'
+  },
 ];
 
 // --- Constants ---
@@ -42,6 +48,7 @@ const BACKGROUND_MATERIALS = {
   pixelperfect: new THREE.MeshBasicMaterial({ color: "#83a7ea" }),
   comerzia: new THREE.MeshBasicMaterial({ color: "#fe7b3e" }),
   comchat: new THREE.MeshBasicMaterial({ color: "#dedede" }),
+  rhivo: new THREE.MeshBasicMaterial({ color: "#14b8a6" }),
   default: new THREE.MeshBasicMaterial({ color: "black" })
 };
 
@@ -151,7 +158,7 @@ const MacContainer = memo(({
   flipDirection: number;
 }) => {
   const model = useGLTF("./models/mac.glb");
-  const textures = useTexture(["/bg.png", "/bg2.png", "/bg3.png"]);
+  const textures = useTexture(["/bg.png", "/bg2.png", "/bg3.png", "/bg4.png"]);
 
   const screenRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
@@ -181,7 +188,7 @@ const MacContainer = memo(({
   }, [model.scene]);
 
   // Pre-configured texture map for faster lookups
-  const imageMap = useMemo(() => ({ "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2 } as Record<string, number>), []);
+  const imageMap = useMemo(() => ({ "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2, "/bg4.png": 3 } as Record<string, number>), []);
 
   useEffect(() => {
     if (!meshes.matte) return;
@@ -339,8 +346,12 @@ const ProductInfo = ({
   onPrev: () => void;
   isFlipping: boolean;
   isVisible: boolean;
-}) => (
-  <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 relative overflow-hidden">
+}) => {
+  // Use a custom launch URL for Rhivo; keep existing convention for other products
+  const launchHref = product.key === 'rhivo' ? 'https://rhivo.app' : `https://${product.title.toLowerCase()}.zonda.one`;
+
+  return (
+    <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 relative overflow-hidden">
     <div
       className={`transform transition-all duration-700 ease-out ${
         isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
@@ -372,7 +383,7 @@ const ProductInfo = ({
         style={{ transitionDelay: isVisible ? "500ms" : "0ms" }}
       >
         <a
-          href={`https://${product.title.toLowerCase()}.zonda.one`}
+          href={launchHref}
           target="_blank"
           rel="noopener noreferrer"
           className="group inline-flex items-center gap-3 px-8 py-4 text-black font-medium text-lg rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
@@ -423,7 +434,8 @@ const ProductInfo = ({
       </button>
     </div>
   </div>
-);
+  );
+};
 
 useGLTF.preload("./models/mac.glb");
 // --- Main Component ---

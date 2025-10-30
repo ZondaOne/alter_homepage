@@ -60,6 +60,11 @@
         "title": "ComChat",
         "description": "Il tuo assistente AI personale che capisce il tuo business. Impara dai tuoi contenuti e aiuta i tuoi clienti a ottenere risposte velocemente."
       }
+      ,
+      "rhivo": {
+        "title": "Rhivo",
+        "description": "Gestisci prenotazioni e orari per attività di servizi con strumenti semplici e affidabili: calendari, gestione del personale e appuntamenti clienti in un unico posto."
+      }
     }
   },
 
