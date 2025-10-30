@@ -33,7 +33,8 @@ export default function ScrollToTopArrow() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-xl z-50 group"
+          // Move the arrow above the WhatsApp button to avoid overlap and keep it on top
+          className="fixed bottom-20 right-6 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-xl z-[3000] group"
           aria-label="Scroll to top"
         >
           <ArrowUp 

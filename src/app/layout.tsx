@@ -9,6 +9,7 @@ import StructuredData from '../components/StructuredData';
 import "../i18n"; // inicializa i18n
 import ScrollToTop from "./components/layout/ScrollToTop";
 import CookieConsent from "./components/layout/CookieConsent";
+import WhatsAppSupport from "../components/WhatsAppSupport";
 
 const crimsonText = Crimson_Text({
   variable: "--font-crimson",
@@ -115,6 +116,7 @@ export default function RootLayout({
     <ScrollToTop />
     <CookieConsent />
     <Footer />
+    <WhatsAppSupport />
   </body>
 </html>
 
