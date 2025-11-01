@@ -15,7 +15,7 @@ export default function WhatsAppSupport() {
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Contact support on WhatsApp"
-  className="fixed bottom-6 left-6 z-[2000] w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg hover:scale-105 transition-transform duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#128C7E]"
+  className="fixed bottom-20 left-6 z-[2000] w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg hover:scale-105 transition-transform duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#128C7E]"
 >
   <svg
   xmlns="http://www.w3.org/2000/svg"
