@@ -115,10 +115,14 @@ const InteractiveBlobsSection: React.FC = () => {
         <React.Fragment key={idx}>
           {shouldBreak && <br />}
           <span
-            className={`inline-block px-2 mx-1 mb-2 bg-orange-100 ${
+            className={`inline-block px-2 mx-1 bg-orange-100 ${
               isLast ? "" : "text-gray-800"
             }`}
-            style={style}
+            style={{
+              ...style,
+              transition: 'all 0.2s ease-out',
+              animation: 'fadeIn 0.3s ease-out'
+            }}
           >
             {word}
           </span>
@@ -218,7 +222,7 @@ const InteractiveBlobsSection: React.FC = () => {
         <React.Fragment key={idx}>
           {shouldBreak && <br />}
           <span
-            className={`inline-block px-2 mx-1 mb-2 bg-orange-100 ${
+            className={`inline-block px-2 mx-1 bg-orange-100 ${
               isLast ? "" : "text-gray-800"
             }`}
             style={
@@ -294,7 +298,8 @@ const InteractiveBlobsSection: React.FC = () => {
                   <div className="space-y-6">
                     <h3 
                       ref={typingH3Ref}
-                      className="text-4xl lg:text-5xl xl:text-8xl font-bold leading-tight tracking-tight font-display pr-16 typing-container"
+                      className="text-4xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-bold leading-tight tracking-tight font-display typing-container"
+                      style={{ minHeight: '2.4em', maxWidth: '90%' }}
                     >
                       {mounted && (typingCompleted ? 
                         renderGrayBackgroundText(`${t("card.fromConcept")} ${t("card.toCode")}`) :
@@ -404,8 +409,16 @@ const InteractiveBlobsSection: React.FC = () => {
         
         /* Typing effect styles */
         .typing-container {
-          min-height: 1em;
+          min-height: 2.4em;
           position: relative;
+          display: block;
+          white-space: normal;
+          word-wrap: break-word;
+          transition: all 0.3s ease-out;
+        }
+        
+        .typing-container span {
+          transition: all 0.2s ease-out;
         }
         
         .typing-cursor {
@@ -427,6 +440,17 @@ const InteractiveBlobsSection: React.FC = () => {
         @keyframes cursor-blink {
           0%, 60% { opacity: 1; }
           61%, 100% { opacity: 0; }
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-2px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
         /* Eliminar cualquier sombra por defecto */
