@@ -83,14 +83,14 @@ const InteractiveBlobsSection: React.FC = () => {
           tempWords[currentWordIndex] = { ...currentWordData, word: partialWord };
           setDisplayedText(tempWords);
           currentCharIndex++;
-          setTimeout(typeNextChar, 150); // Faster typing: 110ms per character
+          setTimeout(typeNextChar, 100); 
         } else {
           // Finished current word
           revealedWords[currentWordIndex] = currentWordData;
           setDisplayedText([...revealedWords]);
           currentWordIndex++;
           currentCharIndex = 0;
-          setTimeout(typeNextChar, 120); // Shorter pause between words: 100ms
+          setTimeout(typeNextChar, 150); // Shorter pause between words: 100ms
         }
       } else {
         // Finished typing
@@ -294,7 +294,7 @@ const InteractiveBlobsSection: React.FC = () => {
                   <div className="space-y-6">
                     <h3 
                       ref={typingH3Ref}
-                      className="text-4xl lg:text-5xl xl:text-8xl font-bold leading-tight tracking-tight font-display typing-container"
+                      className="text-4xl lg:text-5xl xl:text-8xl font-bold leading-tight tracking-tight font-display pr-16 typing-container"
                     >
                       {mounted && (typingCompleted ? 
                         renderGrayBackgroundText(`${t("card.fromConcept")} ${t("card.toCode")}`) :
