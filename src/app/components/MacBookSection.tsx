@@ -351,7 +351,7 @@ const ProductInfo = ({
   const launchHref = product.key === 'rhivo' ? 'https://rhivo.app' : `https://${product.title.toLowerCase()}.zonda.one`;
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 relative overflow-hidden">
+    <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 2xl:p-24 relative overflow-hidden">
     <div
       className={`transform transition-all duration-700 ease-out ${
         isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
@@ -359,7 +359,7 @@ const ProductInfo = ({
       style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
     >
       <h1
-        className={`text-4xl md:text-6xl font-bold mb-4 transform transition-all duration-500 ease-out ${
+        className={`text-4xl md:text-6xl 2xl:text-8xl font-bold mb-4 2xl:mb-8 transform transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
         style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
@@ -367,7 +367,7 @@ const ProductInfo = ({
         {product.title}
       </h1>
       <p
-        className={`text-md md:text-lg text-gray-300 max-w-md mb-8 transform transition-all duration-500 ease-out ${
+        className={`text-md md:text-lg 2xl:text-2xl text-gray-300 max-w-md 2xl:max-w-2xl mb-8 2xl:mb-12 transform transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
         style={{ transitionDelay: isVisible ? "350ms" : "0ms" }}
@@ -386,11 +386,11 @@ const ProductInfo = ({
           href={launchHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-3 px-8 py-4 text-black font-medium text-lg rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
+          className="group inline-flex items-center gap-3 px-8 md:px-8 2xl:px-12 py-4 2xl:py-6 text-black font-medium text-lg 2xl:text-2xl rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
         >
           <span className="relative z-10">Launch {product.title}</span>
           <svg
-            className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+            className="relative z-10 w-5 h-5 2xl:w-7 2xl:h-7 transition-transform duration-300 group-hover:translate-x-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -402,7 +402,7 @@ const ProductInfo = ({
     </div>
 
     <div
-      className={`absolute bottom-10 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4 transform transition-all duration-700 ease-out ${
+      className={`absolute bottom-10 2xl:bottom-16 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4 2xl:gap-8 transform transition-all duration-700 ease-out ${
         isVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95"
       }`}
       style={{ transitionDelay: isVisible ? "800ms" : "0ms" }}
@@ -415,7 +415,7 @@ const ProductInfo = ({
         }`}
         style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))" }}
       >
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24">
           <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
@@ -428,7 +428,7 @@ const ProductInfo = ({
         }`}
         style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))" }}
       >
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24">
           <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>

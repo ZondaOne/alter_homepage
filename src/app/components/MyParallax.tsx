@@ -1,20 +1,20 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
+'use client'
+import React, { useState, useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useTranslation } from 'react-i18next'
+import Image from 'next/image'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 interface MyParallaxProps {
-  scale?: number;
-  minScale?: number;
-  children?: React.ReactNode;
-  text?: React.ReactNode;
-  preStartOffset?: number;
-  mobileRef?: React.RefObject<HTMLDivElement | null>;
-  leftLimit?: string; // New prop to control how far left the image can go
+  scale?: number
+  minScale?: number
+  children?: React.ReactNode
+  text?: React.ReactNode
+  preStartOffset?: number
+  mobileRef?: React.RefObject<HTMLDivElement | null>
+  leftLimit?: string // New prop to control how far left the image can go
 }
 
 const MyParallax: React.FC<MyParallaxProps> = ({
@@ -24,83 +24,85 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   text,
   preStartOffset = 150,
   mobileRef,
-  leftLimit = "-25vw", // Default value, but now customizable
+  leftLimit = '-25vw' // Default value, but now customizable
 }) => {
-  const { t, ready } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const { t, ready } = useTranslation()
+  const [mounted, setMounted] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   // === GSAP Parallax Animation ===
   useEffect(() => {
-    if (!containerRef.current || !imageRef.current || !textRef.current) return;
+    if (!containerRef.current || !imageRef.current || !textRef.current) return
 
     // Set initial states
     gsap.set(imageRef.current, {
       scale: scale,
-      x: "0vw",
-      width: "85vw",
-      transformOrigin: "center center"
-    });
+      x: '0vw',
+      width: '85vw',
+      transformOrigin: 'center center'
+    })
 
     gsap.set(textRef.current, {
       opacity: 0,
       x: 100
-    });
+    })
 
     // Create main parallax timeline with later start and earlier end point
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: `top+=${preStartOffset + 200} bottom`, // Added 200px delay to start later
-        end: "top 20%",
+        end: 'top 20%',
         scrub: 2
       }
-    });
+    })
 
     // Image animations: scale down, move left (with limit), shrink width
     tl.to(imageRef.current, {
       scale: minScale,
       x: leftLimit, // Use the customizable left limit
-      width: "55vw",
+      width: '55vw',
       duration: 1,
-      ease: "power2.out"
+      ease: 'power2.out'
     })
-    // Text animation: fade in and slide from right
-    .to(textRef.current, {
-      opacity: 1,
-      x: 0,
-      duration: 0.6,
-      ease: "power2.out"
-    }, 0.25); // Start text animation 25% through
+      // Text animation: fade in and slide from right
+      .to(
+        textRef.current,
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        },
+        0.25
+      ) // Start text animation 25% through
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [scale, minScale, preStartOffset, leftLimit]);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [scale, minScale, preStartOffset, leftLimit])
 
   // === Animaciones GSAP tipo Hero ===
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
 
-    gsap.set([".parallax-subtitle"], {
+    gsap.set(['.parallax-subtitle'], {
       opacity: 0,
       y: 60,
-      rotationX: 15,
-    });
-
-  
-  }, []);
+      rotationX: 15
+    })
+  }, [])
 
   // === Texto por defecto (sin botones) ===
   const defaultText = (
-    <div className="text-gray-900 space-y-6">
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-tight font-display">
+    <div className="text-gray-900 space-y-6 2xl:space-y-10">
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight font-display">
         <div className="parallax-title-line">
           {mounted && ready ? t('parallax.desktop.line1') : 'Turning complex'}
         </div>
@@ -112,60 +114,65 @@ const MyParallax: React.FC<MyParallaxProps> = ({
             className="hero-gradient-text"
             style={{
               background:
-                "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-              backgroundSize: "200% 100%",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+                'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
+              backgroundSize: '200% 100%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}
           >
-            {mounted && ready ? t('parallax.desktop.line3') : 'simple solutions'}
+            {mounted && ready
+              ? t('parallax.desktop.line3')
+              : 'simple solutions'}
           </span>
         </div>
       </h1>
-      <p className="parallax-subtitle text-lg sm:text-xl text-gray-600 max-w-lg font-light leading-relaxed">
-        {mounted && ready ? t('parallax.desktop.subtitle') : 'Every challenge is an opportunity to build something meaningful. We take what\'s complicated and make it work beautifully.'}
+      <p className="parallax-subtitle text-lg sm:text-xl 2xl:text-3xl text-gray-600 max-w-lg 2xl:max-w-2xl font-light leading-relaxed">
+        {mounted && ready
+          ? t('parallax.desktop.subtitle')
+          : "Every challenge is an opportunity to build something meaningful. We take what's complicated and make it work beautifully."}
       </p>
     </div>
-  );
+  )
 
   // === Mobile version (también sin botones) ===
   const defaultMobileText = (
     <>
-      <h1 className="text-3xl font-semibold text-gray-900 font-display tracking-tight">
-        {mounted && ready ? t('parallax.mobile.title') : 'Simple solutions for'}{" "}
+      <h1 className="text-3xl 2xl:text-5xl font-semibold text-gray-900 font-display tracking-tight">
+        {mounted && ready ? t('parallax.mobile.title') : 'Simple solutions for'}{' '}
         <span
           className="block hero-gradient-text"
           style={{
             background:
-              "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-            backgroundSize: "200% 100%",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+              'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
+            backgroundSize: '200% 100%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
           }}
         >
-          {mounted && ready ? t('parallax.mobile.highlight') : 'complex problems'}
+          {mounted && ready
+            ? t('parallax.mobile.highlight')
+            : 'complex problems'}
         </span>
       </h1>
-      <p className="text-lg text-gray-600 leading-relaxed font-light">
-        {mounted && ready ? t('parallax.mobile.subtitle') : 'We take the complicated stuff and make it work beautifully. That\'s what good software should do.'}
+      <p className="text-lg 2xl:text-2xl text-gray-600 leading-relaxed font-light">
+        {mounted && ready
+          ? t('parallax.mobile.subtitle')
+          : "We take the complicated stuff and make it work beautifully. That's what good software should do."}
       </p>
     </>
-  );
+  )
 
   return (
     <>
       {/* Desktop */}
       <div
         ref={containerRef}
-        className="hidden md:block relative w-full min-h-screen bg-white"
+        className="hidden md:block relative w-full min-h-screen bg-white lg:p-32"
       >
         <div className="relative w-full min-h-screen flex items-center justify-center overflow-visible">
-          <div
-            ref={imageRef}
-            className="relative max-w-none"
-          >
+          <div ref={imageRef} className="relative max-w-none">
             <div className="w-full h-auto">{children}</div>
           </div>
 
@@ -180,26 +187,26 @@ const MyParallax: React.FC<MyParallaxProps> = ({
 
       {/* Mobile */}
       <section
-        className="block md:hidden px-6 py-16 bg-gradient-to-br from-gray-50 to-gray-100"
+        className="block md:hidden px-6 2xl:px-12 py-16 2xl:py-32 bg-gradient-to-br from-gray-50 to-gray-100"
         ref={mobileRef}
       >
-        <div className="max-w-md mx-auto text-center space-y-8">
-          <div className="relative w-64 h-64 mx-auto">
+        <div className="max-w-md 2xl:max-w-2xl mx-auto text-center space-y-8 2xl:space-y-12">
+          <div className="relative w-64 2xl:w-[500px] h-64 2xl:h-[500px] mx-auto">
             <Image
-                        src="/banner.webp"
-                        alt="Zonda One team collaborating on custom software development projects with modern technology stack"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority        
-                        className="w-full h-auto object-cover rounded-lg shadow-xl"
-                      />
+              src="/banner.webp"
+              alt="Zonda One team collaborating on custom software development projects with modern technology stack"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
+              className="w-full h-auto object-cover rounded-lg shadow-xl"
+            />
             <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-2xl"></div>
           </div>
-          <div className="space-y-4">{defaultMobileText}</div>
+          <div className="space-y-4 2xl:space-y-6">{defaultMobileText}</div>
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default MyParallax;
+export default MyParallax

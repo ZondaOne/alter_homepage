@@ -1,140 +1,138 @@
-"use client";
+'use client'
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import { useTranslation } from 'react-i18next'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const scrollToContact = () => {
-  const contactSection = document.getElementById('contact');
+  const contactSection = document.getElementById('contact')
   if (contactSection) {
     contactSection.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    });
+    })
   }
-};
+}
 
 const scrollToProjects = () => {
-  const isMobile = window.innerWidth < 768; // md breakpoint
-  const targetId = isMobile ? 'gallery-section' : 'macbook-section';
-  const targetSection = document.getElementById(targetId);
+  const isMobile = window.innerWidth < 768 // md breakpoint
+  const targetId = isMobile ? 'gallery-section' : 'macbook-section'
+  const targetSection = document.getElementById(targetId)
   if (targetSection) {
     targetSection.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    });
+    })
   }
-};
+}
 
 const StepProcessSection: React.FC = () => {
-  const { t } = useTranslation();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [animationData, setAnimationData] = useState<object | null>(null);
-  const lottieRef = useRef<LottieRefCurrentProps | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation()
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const [animationData, setAnimationData] = useState<object | null>(null)
+  const lottieRef = useRef<LottieRefCurrentProps | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true); // marca que estamos en el cliente
-  }, []);
+    setMounted(true) // marca que estamos en el cliente
+  }, [])
 
   useEffect(() => {
-    fetch("/WebCoding.json")
-      .then((res) => res.json())
-      .then(setAnimationData);
+    fetch('/WebCoding.json')
+      .then(res => res.json())
+      .then(setAnimationData)
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 90%",
-        toggleActions: "play none none none",
-      },
-    });
+        start: 'top 90%',
+        toggleActions: 'play none none none'
+      }
+    })
 
     // Título principal con fade up
     tl.fromTo(
-      ".main-title",
+      '.main-title',
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-      "-=0.3"
-    );
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
+      '-=0.3'
+    )
 
     // Descripción con fade up
     tl.fromTo(
-      ".hero-description",
+      '.hero-description',
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-      "-=0.5"
-    );
-
-   
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
+      '-=0.5'
+    )
 
     // Bloques de pasos con stagger + fade up
     tl.fromTo(
-      ".step-block",
+      '.step-block',
       { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out" },
-      "-=0.5"
-    );
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
+      '-=0.5'
+    )
 
     // Animación infinita del gradiente
-    gsap.to(".gradient-text", {
-      backgroundPosition: "200% 50%",
+    gsap.to('.gradient-text', {
+      backgroundPosition: '200% 50%',
       repeat: -1,
       yoyo: true,
       duration: 12,
-      ease: "none",
-    });
-  }, []);
+      ease: 'none'
+    })
+  }, [])
 
   return (
     <section
       id="consulting"
       ref={sectionRef}
-      className="relative py-20 lg:py-32 bg-white overflow-hidden"
+      className="relative py-20 lg:py-32 2xl:py-48 bg-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl 2xl:max-w-6xl mx-auto px-6 2xl:px-12">
         {/* Header principal */}
-        <div className="text-center lg:mb-20">
-          <div className="mb-10">
-            <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900">
-              {mounted ? t("solutions") : ""}
+        <div className="text-center lg:mb-20 2xl:mb-32">
+          <div className="mb-10 2xl:mb-16">
+            <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-gray-900">
+              {mounted ? t('solutions') : ''}
               <br />
               <span
                 className="gradient-text"
                 style={{
                   background:
-                    "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                  backgroundSize: "200% 100%",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
+                    'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
+                  backgroundSize: '200% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
                 }}
               >
-                {mounted ? t("engineered") : ""}
+                {mounted ? t('engineered') : ''}
               </span>
             </h2>
           </div>
 
-          <div className="max-w-2xl mx-auto">
-            <p className="hero-description text-xl lg:text-2xl text-neutral-700 leading-[1.6] font-light">
-              {mounted ? t("hero.description") : ""}
+          <div className="max-w-3xl 2xl:max-w-5xl mx-auto">
+            <p className="hero-description text-xl lg:text-2xl 2xl:text-3xl text-neutral-700 leading-[1.6] font-light">
+              {mounted ? t('hero.description') : ''}
             </p>
           </div>
         </div>
 
         {/* Layout principal */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 2xl:gap-32 items-start">
           {/* Columna izquierda */}
-          <div className="lg:col-span-5 xl:col-span-6 space-y-12">
+          <div className="lg:col-span-5 xl:col-span-6 space-y-12 2xl:space-y-20">
             <div className="relative">
               <div className="relative group">
-                <div className="hidden md:flex absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
+                <div className="hidden md:flex absolute -top-6 -left-6 w-24 2xl:w-32 h-24 2xl:h-32 border-l-2 border-t-2 border-orange-200 opacity-60"></div>
                 {animationData && (
-                  <div className="lottie-container rounded-2xl p-12">
+                  <div className="lottie-container rounded-2xl p-12 2xl:p-20">
                     <Lottie
                       lottieRef={lottieRef}
                       animationData={animationData}
@@ -142,11 +140,11 @@ const StepProcessSection: React.FC = () => {
                       autoplay
                       onDOMLoaded={() => {
                         if (lottieRef.current) {
-                          lottieRef.current.setSpeed(0.4);
+                          lottieRef.current.setSpeed(0.4)
                         }
                       }}
                       className="w-full h-auto"
-                      style={{ transform: "scale(1.8)" }}
+                      style={{ transform: 'scale(1.8)' }}
                     />
                   </div>
                 )}
@@ -154,38 +152,38 @@ const StepProcessSection: React.FC = () => {
             </div>
 
             {/* CTA */}
-            <div className="space-y-8">
+            <div className="space-y-8 2xl:space-y-12">
               <div className="flex items-center gap-4">
                 <div className="h-px bg-gradient-to-r from-orange-500 via-orange-400 to-transparent flex-1"></div>
               </div>
 
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <h4 className="text-xl font-bold text-neutral-900">
-                    {mounted ? t("cta.title") : ""}
+              <div className="space-y-6 2xl:space-y-8">
+                <div className="space-y-3 2xl:space-y-4">
+                  <h4 className="text-xl 2xl:text-3xl font-bold text-neutral-900">
+                    {mounted ? t('cta.title') : ''}
                   </h4>
-                  <p className="text-neutral-600 leading-relaxed">
-                    {mounted ? t("cta.description") : ""}
+                  <p className="text-neutral-600 2xl:text-lg leading-relaxed">
+                    {mounted ? t('cta.description') : ''}
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 2xl:gap-6">
                   <button
                     onClick={scrollToContact}
-                    className="group bg-neutral-900 text-white px-8 py-4 font-medium tracking-wide uppercase text-sm border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg"
+                    className="group bg-neutral-900 text-white px-8 2xl:px-12 py-4 2xl:py-6 font-medium tracking-wide uppercase text-sm 2xl:text-base border-2 border-neutral-900 hover:bg-transparent hover:text-neutral-900 transition-all duration-300 rounded-lg"
                   >
                     <span className="flex items-center justify-center gap-3">
-                      {mounted ? t("cta.initiate") : ""}
+                      {mounted ? t('cta.initiate') : ''}
                       <span className="w-4 h-px bg-current group-hover:w-8 transition-all duration-300"></span>
                     </span>
                   </button>
 
                   <button
                     onClick={scrollToProjects}
-                    className="group border-2 border-neutral-300 px-8 py-4 font-medium tracking-wide uppercase text-sm text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg"
+                    className="group border-2 border-neutral-300 px-8 2xl:px-12 py-4 2xl:py-6 font-medium tracking-wide uppercase text-sm 2xl:text-base text-neutral-700 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 rounded-lg"
                   >
                     <span className="flex items-center justify-center gap-3">
-                      {mounted ? t("cta.portfolio") : ""}
+                      {mounted ? t('cta.portfolio') : ''}
                       <span className="transform group-hover:translate-x-1 transition-transform duration-300">
                         →
                       </span>
@@ -197,53 +195,55 @@ const StepProcessSection: React.FC = () => {
           </div>
 
           {/* Columna derecha: proceso */}
-          <div className="lg:col-span-7 xl:col-span-6 space-y-16">
-            <div className="space-y-6">
+          <div className="lg:col-span-7 xl:col-span-6 space-y-16 2xl:space-y-24">
+            <div className="space-y-6 2xl:space-y-8">
               <div className="flex items-center gap-4">
-                <h3 className="text-sm font-bold text-neutral-500 tracking-[0.3em] uppercase">
-                  {mounted ? t("process.title") : ""}
+                <h3 className="text-sm 2xl:text-base font-bold text-neutral-500 tracking-[0.3em] uppercase">
+                  {mounted ? t('process.title') : ''}
                 </h3>
               </div>
-              <p className="text-lg text-neutral-600 leading-relaxed max-w-xl">
-                {mounted ? t("process.description") : ""}
+              <p className="text-lg 2xl:text-2xl text-neutral-600 leading-relaxed max-w-xl">
+                {mounted ? t('process.description') : ''}
               </p>
             </div>
 
             {/* Bloques de proceso */}
             <div className="space-y-1">
-              {[0, 1, 2].map((i) => {
-                const stepKeys = ["analysis", "engineering", "performance"];
+              {[0, 1, 2].map(i => {
+                const stepKeys = ['analysis', 'engineering', 'performance']
                 const step = {
                   number: `0${i + 1}`,
-                  title: mounted ? t(`process.steps.${stepKeys[i]}.title`) : "",
-                  description: mounted ? t(`process.steps.${stepKeys[i]}.description`) : "",
-                };
+                  title: mounted ? t(`process.steps.${stepKeys[i]}.title`) : '',
+                  description: mounted
+                    ? t(`process.steps.${stepKeys[i]}.description`)
+                    : ''
+                }
                 return (
                   <div key={i} className="step-block group">
-                    <div className="grid grid-cols-12 gap-6 py-8 lg:py-10 border-t border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:bg-orange-50/30 -mx-6 px-6 rounded-lg">
+                    <div className="grid grid-cols-12 gap-6 2xl:gap-8 py-8 lg:py-10 2xl:py-16 border-t border-neutral-200 hover:border-orange-300 transition-all duration-500 hover:bg-orange-50/30 -mx-6 2xl:-mx-8 px-6 2xl:px-8 rounded-lg">
                       <div className="col-span-3 sm:col-span-2">
-                        <div className="text-2xl lg:text-3xl font-black text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
+                        <div className="text-2xl lg:text-3xl 2xl:text-5xl font-black text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
                           {step.number}
                         </div>
                       </div>
-                      <div className="col-span-9 sm:col-span-10 space-y-4">
-                        <h4 className="text-lg lg:text-xl font-bold text-neutral-900 tracking-wide group-hover:text-orange-800 transition-colors duration-300">
+                      <div className="col-span-9 sm:col-span-10 space-y-4 2xl:space-y-6">
+                        <h4 className="text-lg lg:text-xl 2xl:text-3xl font-bold text-neutral-900 tracking-wide group-hover:text-orange-800 transition-colors duration-300">
                           {step.title}
                         </h4>
-                        <p className="text-neutral-600 leading-relaxed font-light text-base lg:text-lg">
+                        <p className="text-neutral-600 leading-relaxed font-light text-base lg:text-lg 2xl:text-xl">
                           {step.description}
                         </p>
                       </div>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default StepProcessSection;
+export default StepProcessSection

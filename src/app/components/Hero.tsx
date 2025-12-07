@@ -1,297 +1,322 @@
-"use client";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslation } from "react-i18next";
-import SoftwareLogo from "./SoftwareLogo";
+'use client'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useTranslation } from 'react-i18next'
+import SoftwareLogo from './SoftwareLogo'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const scrollToContact = () => {
-  const contactSection = document.getElementById('contact');
+  const contactSection = document.getElementById('contact')
   if (contactSection) {
     contactSection.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    });
+    })
   }
-};
+}
 
 const scrollToProjects = () => {
-  const isMobile = window.innerWidth < 768; // md breakpoint
-  const targetId = isMobile ? 'gallery-section' : 'macbook-section';
-  const targetSection = document.getElementById(targetId);
+  const isMobile = window.innerWidth < 768 // md breakpoint
+  const targetId = isMobile ? 'gallery-section' : 'macbook-section'
+  const targetSection = document.getElementById(targetId)
   if (targetSection) {
     targetSection.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    });
+    })
   }
-};
+}
 
 export default function Hero() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const { t, ready } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const [, setIsScrolling] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
+  const { t, ready } = useTranslation()
+  const [mounted, setMounted] = useState(false)
+  const [, setIsScrolling] = useState(false)
 
   // Marcamos que el componente está montado
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   // Throttled scroll handler para optimizar el rendimiento
   const handleScroll = useCallback(() => {
-    if (!logoRef.current || !heroRef.current) return;
+    if (!logoRef.current || !heroRef.current) return
 
     // Use requestAnimationFrame for smoother animations
     requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      const heroHeight = heroRef.current!.offsetHeight;
-      const progress = Math.min(scrollY / heroHeight, 1);
-      
+      const scrollY = window.scrollY
+      const heroHeight = heroRef.current!.offsetHeight
+      const progress = Math.min(scrollY / heroHeight, 1)
+
       // Smoother easing function
-      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
-      const easedProgress = easeOutQuart(progress);
-      
+      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4)
+      const easedProgress = easeOutQuart(progress)
+
       // Apply transformations with GPU-optimized properties
-      const logoElement = logoRef.current!;
-      const translateY = -80 * easedProgress;
-      const scale = 1 + (0.1 * easedProgress);
-      const rotateY = -5 * easedProgress;
-      
-      logoElement.style.transform = `translate3d(0, ${translateY}px, 0) scale3d(${scale}, ${scale}, 1) rotateY(${rotateY}deg)`;
-      logoElement.style.willChange = progress > 0 && progress < 1 ? 'transform' : 'auto';
-    });
-  }, []);
+      const logoElement = logoRef.current!
+      const translateY = -80 * easedProgress
+      const scale = 1 + 0.1 * easedProgress
+      const rotateY = -5 * easedProgress
+
+      logoElement.style.transform = `translate3d(0, ${translateY}px, 0) scale3d(${scale}, ${scale}, 1) rotateY(${rotateY}deg)`
+      logoElement.style.willChange =
+        progress > 0 && progress < 1 ? 'transform' : 'auto'
+    })
+  }, [])
 
   // Debounced scroll end detection
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
-    
+    let scrollTimeout: NodeJS.Timeout
+
     const onScroll = () => {
-      setIsScrolling(true);
-      handleScroll();
-      
-      clearTimeout(scrollTimeout);
+      setIsScrolling(true)
+      handleScroll()
+
+      clearTimeout(scrollTimeout)
       scrollTimeout = setTimeout(() => {
-        setIsScrolling(false);
+        setIsScrolling(false)
         // Reset willChange when not scrolling for better performance
         if (logoRef.current) {
-          logoRef.current.style.willChange = 'auto';
+          logoRef.current.style.willChange = 'auto'
         }
-      }, 150);
-    };
+      }, 150)
+    }
 
     // Use passive listener for better performance
-    window.addEventListener('scroll', onScroll, { passive: true });
-    
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      clearTimeout(scrollTimeout);
-    };
-  }, [handleScroll]);
+      window.removeEventListener('scroll', onScroll)
+      clearTimeout(scrollTimeout)
+    }
+  }, [handleScroll])
 
   // Elegant entrance animations with GSAP
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted) return
 
-    const hero = heroRef.current;
-    const logo = logoRef.current;
-    if (!hero || !logo) return;
+    const hero = heroRef.current
+    const logo = logoRef.current
+    if (!hero || !logo) return
 
     // Set initial states and optimize for performance
-    gsap.set([".hero-h1 .hero-line", ".hero-subtitle", ".hero-buttons"], {
+    gsap.set(['.hero-h1 .hero-line', '.hero-subtitle', '.hero-buttons'], {
       opacity: 0,
       y: 60,
       rotationX: 15,
-      force3D: true, // GPU acceleration
-    });
+      force3D: true // GPU acceleration
+    })
 
     // Set initial state for logo separately
     gsap.set(logo, {
       opacity: 0,
       y: 60,
       rotationX: 15,
-      force3D: true,
-    });
+      force3D: true
+    })
 
     // Performance optimizations
-    gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-gradient-text"], {
-      willChange: "transform, opacity",
-    });
+    gsap.set(
+      ['.hero-h1', '.hero-subtitle', '.hero-buttons', '.hero-gradient-text'],
+      {
+        willChange: 'transform, opacity'
+      }
+    )
 
     // Master timeline for orchestrated entrance
     const masterTL = gsap.timeline({
-      defaults: { ease: "power3.out" },
+      defaults: { ease: 'power3.out' },
       delay: 0.1
-    });
+    })
 
     // Sophisticated text reveal animation
     masterTL
-      .to(".hero-h1 .hero-line", {
+      .to('.hero-h1 .hero-line', {
         opacity: 1,
         y: 0,
         rotationX: 0,
         duration: 0.8,
         stagger: {
           amount: 0.2,
-          from: "start"
+          from: 'start'
         },
-        transformOrigin: "center bottom"
+        transformOrigin: 'center bottom'
       })
-      .to(".hero-subtitle", {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.6,
-        transformOrigin: "center bottom"
-      }, "-=0.5")
-      .to(".hero-buttons", {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.5,
-        transformOrigin: "center bottom"
-      }, "-=0.3")
-      .to(logo, {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 0.8,
-        transformOrigin: "center bottom",
-        onComplete: () => {
-          // Reset willChange after initial animation
-          gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons"], {
-            willChange: "auto",
-          });
-        }
-      }, "-=0.6");
+      .to(
+        '.hero-subtitle',
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.6,
+          transformOrigin: 'center bottom'
+        },
+        '-=0.5'
+      )
+      .to(
+        '.hero-buttons',
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.5,
+          transformOrigin: 'center bottom'
+        },
+        '-=0.3'
+      )
+      .to(
+        logo,
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.8,
+          transformOrigin: 'center bottom',
+          onComplete: () => {
+            // Reset willChange after initial animation
+            gsap.set(['.hero-h1', '.hero-subtitle', '.hero-buttons'], {
+              willChange: 'auto'
+            })
+          }
+        },
+        '-=0.6'
+      )
 
     // Enhanced gradient text animations
-    gsap.to(".hero-gradient-text", {
-      backgroundPosition: "200% 50%",
+    gsap.to('.hero-gradient-text', {
+      backgroundPosition: '200% 50%',
       repeat: -1,
       yoyo: true,
       duration: 8,
-      ease: "sine.inOut",
-    });
+      ease: 'sine.inOut'
+    })
 
     // Subtle floating animation with breathing effect
-    gsap.to(".hero-gradient-text", {
+    gsap.to('.hero-gradient-text', {
       y: -4,
       scale: 1.01,
       repeat: -1,
       yoyo: true,
       duration: 4,
-      ease: "sine.inOut",
-    });
+      ease: 'sine.inOut'
+    })
 
     // Advanced hover interactions
-    const gradientText = document.querySelector(".hero-gradient-text");
+    const gradientText = document.querySelector('.hero-gradient-text')
     if (gradientText) {
-      const hoverTL = gsap.timeline({ paused: true });
+      const hoverTL = gsap.timeline({ paused: true })
       hoverTL
-        .to(".hero-gradient-text", {
+        .to('.hero-gradient-text', {
           scale: 1.05,
           rotationY: 2,
           duration: 0.4,
-          ease: "back.out(1.7)",
+          ease: 'back.out(1.7)'
         })
-        .to(".hero-gradient-text", {
-          textShadow: "0 8px 32px rgba(249, 115, 22, 0.3)",
-          duration: 0.3,
-        }, "<");
+        .to(
+          '.hero-gradient-text',
+          {
+            textShadow: '0 8px 32px rgba(249, 115, 22, 0.3)',
+            duration: 0.3
+          },
+          '<'
+        )
 
-      gradientText.addEventListener("mouseenter", () => hoverTL.play());
-      gradientText.addEventListener("mouseleave", () => hoverTL.reverse());
+      gradientText.addEventListener('mouseenter', () => hoverTL.play())
+      gradientText.addEventListener('mouseleave', () => hoverTL.reverse())
     }
 
     // REMOVED: The problematic GSAP ScrollTrigger animation for logo
     // This was causing lag because it was constantly updating the Lottie animation
-    
+
     // Keep only the background parallax (less intensive)
     gsap.to(hero, {
-  backgroundPosition: "50% 100%",
-  scrollTrigger: {
-    trigger: hero,
-    start: "top top",
-    end: "bottom top",
-    scrub: true, // ← Más suave que cualquier número
-  },
-});
+      backgroundPosition: '50% 100%',
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true // ← Más suave que cualquier número
+      }
+    })
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      gsap.set([".hero-h1", ".hero-subtitle", ".hero-buttons", ".hero-gradient-text"], {
-        clearProps: "all",
-      });
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      gsap.set(
+        ['.hero-h1', '.hero-subtitle', '.hero-buttons', '.hero-gradient-text'],
+        {
+          clearProps: 'all'
+        }
+      )
       // Clean up logo transforms
       if (logo) {
-        logo.style.transform = '';
-        logo.style.willChange = 'auto';
+        logo.style.transform = ''
+        logo.style.willChange = 'auto'
       }
-    };
-  }, [mounted]);
+    }
+  }, [mounted])
 
   return (
     <section
       id="hero"
       ref={heroRef}
       className="relative h-screen overflow-hidden hero-gradient"
-      style={{ backgroundColor: "#FFFFFF" }}
+      style={{ backgroundColor: '#FFFFFF' }}
       aria-label="Hero section - Zonda One"
     >
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[55%_45%] h-full">
-        <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20">
-          <h1 className="hero-h1 mt-32 text-6xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[60%_40%] gap-0 h-full">
+        <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-16">
+          <h1 className="hero-h1 mt-32 text-5xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             <div className="hero-line">
-              {mounted && ready ? t("heroTitleLine1") : "Your idea"}
+              {mounted && ready ? t('heroTitleLine1') : 'Your idea'}
             </div>
             <div className="hero-line">
-              {mounted && ready ? t("heroTitleLine2") : "deserves"}
+              {mounted && ready ? t('heroTitleLine2') : 'deserves'}
             </div>
             <div className="hero-line">
               <span
                 className="hero-gradient-text"
                 style={{
                   background:
-                    "linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)",
-                  backgroundSize: "200% 100%",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
+                    'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
+                  backgroundSize: '200% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
                 }}
               >
-                {mounted && ready ? t("heroTitleHighlight") : "better code"}
+                {mounted && ready ? t('heroTitleHighlight') : 'better code'}
               </span>
             </div>
           </h1>
 
-          <p className="hero-subtitle text-lg sm:text-xl lg:text-xl text-gray-600 max-w-lg mt-6 sm:mt-8 font-light leading-relaxed">
-            {mounted && ready ? t("heroSubtitle") : "Small team. Big ideas. We build software that people actually want to use."}
+          <p className="hero-subtitle text-lg sm:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-gray-600 max-w-2xl 2xl:max-w-3xl mt-8 sm:mt-10 lg:mt-12 2xl:mt-10 font-light leading-relaxed">
+            {mounted && ready
+              ? t('heroSubtitle')
+              : 'Small team. Big ideas. We build software that people actually want to use.'}
           </p>
 
-          <div className="hero-buttons flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
+          <div className="hero-buttons flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 2xl:gap-6 mt-10 sm:mt-12 lg:mt-14 2xl:mt-12">
             <button
               onClick={scrollToContact}
-              className="bg-gray-900 text-white px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
+              className="bg-gray-900 text-white px-8 2xl:px-12 py-3 2xl:py-4 rounded-sm text-sm 2xl:text-lg font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
             >
-              {mounted && ready ? t("heroButtonWork") : "Work with us"}
+              {mounted && ready ? t('heroButtonWork') : 'Work with us'}
             </button>
 
             <button
               onClick={scrollToProjects}
-              className="text-gray-700 text-sm font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
+              className="text-gray-700 text-sm 2xl:text-lg font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
             >
-              {mounted && ready ? t("heroButtonSee") : "See what we've made"}
+              {mounted && ready ? t('heroButtonSee') : "See what we've made"}
               <svg
                 width="14"
                 height="14"
                 viewBox="0 0 16 16"
                 fill="none"
-                className="transition-transform duration-200 group-hover:translate-x-1"
+                className="transition-transform duration-200 group-hover:translate-x-1 2xl:w-5 2xl:h-5"
               >
                 <path
                   d="M6 3L11 8L6 13"
@@ -305,9 +330,9 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Logo visible tanto en desktop como mobile, más grande en mobile */}
-        <div className="relative flex items-center justify-center lg:block lg:h-full mt-24 mb-24 lg:mt-0 lg:mb-0">
-          <div 
+        {/* Logo visible tanto en desktop como mobile, más grande en pantallas grandes */}
+        <div className="relative flex items-center justify-center lg:block lg:h-full mt-24 mb-24 lg:mt-0 lg:mb-0 2xl:mt-0 2xl:mb-0">
+          <div
             ref={logoRef}
             className="w-full lg:h-full hero-logo flex items-center justify-center lg:block"
             style={{
@@ -317,14 +342,12 @@ export default function Hero() {
               perspective: '1000px'
             }}
           >
-            <div className="w-[80vw] h-[80vw] max-w-[400px] max-h-[400px] lg:w-full lg:h-full lg:max-w-none lg:max-h-none">
-              <SoftwareLogo 
-                scale={1} 
-              />
+            <div className="w-[80vw] h-[80vw] max-w-[350px] max-h-[350px] sm:max-w-[400px] sm:max-h-[400px] lg:w-full lg:h-full lg:max-w-none lg:max-h-none 2xl:scale-125">
+              <SoftwareLogo scale={1} />
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     </section>
-  );
+  )
 }

@@ -11,10 +11,10 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-200 py-6 mt-20">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+    <footer className="bg-gray-50 border-t border-gray-200 py-6 2xl:py-12 mt-20 2xl:mt-40">
+      <div className="max-w-7xl 2xl:max-w-6xl mx-auto px-6 2xl:px-12 flex flex-col md:flex-row items-center justify-between text-sm 2xl:text-lg text-gray-500">
         <p>© {year ?? "…"} Zonda. All rights reserved.</p>
-        <div className="flex space-x-4 mt-2 md:mt-0">
+        <div className="flex space-x-4 2xl:space-x-8 mt-2 md:mt-0">
           <Link href="/privacy" className="hover:text-gray-800 transition">Privacy</Link>
           <Link href="/terms" className="hover:text-gray-800 transition">Terms</Link>
           <a href="https://www.linkedin.com/company/zonda-one" target="_blank" rel="noopener noreferrer" className="hover:text-gray-800 transition">LinkedIn</a>
