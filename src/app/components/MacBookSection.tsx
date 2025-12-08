@@ -1,292 +1,338 @@
-'use client';
+'use client'
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, useTexture } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState, memo, useCallback } from "react";
-import * as THREE from "three";
-import { useTranslation } from "react-i18next";
+import { Canvas, useFrame } from '@react-three/fiber'
+import { useGLTF, useTexture } from '@react-three/drei'
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  memo,
+  useCallback
+} from 'react'
+import * as THREE from 'three'
+import { useTranslation } from 'react-i18next'
 
 // --- Data for products ---
 const getProducts = (t: (key: string) => string) => [
- 
   {
-    image: "/bg2.png",
+    image: '/bg2.png',
     title: t('macbook.products.comerzia.title'),
     description: t('macbook.products.comerzia.description'),
     key: 'comerzia'
   },
-   {
-    image: "/bg.png",
+  {
+    image: '/bg.png',
     title: t('macbook.products.pixelperfect.title'),
     description: t('macbook.products.pixelperfect.description'),
     key: 'pixelperfect'
   },
   {
-    image: "/bg3.png",
+    image: '/bg3.png',
     title: t('macbook.products.comchat.title'),
     description: t('macbook.products.comchat.description'),
     key: 'comchat'
   },
   {
-    image: "/bg4.png",
+    image: '/bg4.png',
     title: t('macbook.products.rhivo.title'),
     description: t('macbook.products.rhivo.description'),
     key: 'rhivo'
-  },
-];
+  }
+]
 
 // --- Constants ---
-const FLIP_LERP_FACTOR = 4.5;
-const SWAP_IMAGE_DELAY = 400;
-const TOTAL_FLIP_DURATION = 1000;
+const FLIP_LERP_FACTOR = 4.5
+const SWAP_IMAGE_DELAY = 400
+const TOTAL_FLIP_DURATION = 1000
 
 // Shared geometries for performance
-const SHARED_PLANE_GEOMETRY = new THREE.PlaneGeometry(1, 1);
+const SHARED_PLANE_GEOMETRY = new THREE.PlaneGeometry(1, 1)
 
 // Pre-created materials to avoid recreation
 const BACKGROUND_MATERIALS = {
-  pixelperfect: new THREE.MeshBasicMaterial({ color: "#83a7ea" }),
-  comerzia: new THREE.MeshBasicMaterial({ color: "#fe7b3e" }),
-  comchat: new THREE.MeshBasicMaterial({ color: "#dedede" }),
-  rhivo: new THREE.MeshBasicMaterial({ color: "#14b8a6" }),
-  default: new THREE.MeshBasicMaterial({ color: "black" })
-};
+  pixelperfect: new THREE.MeshBasicMaterial({ color: '#83a7ea' }),
+  comerzia: new THREE.MeshBasicMaterial({ color: '#fe7b3e' }),
+  comchat: new THREE.MeshBasicMaterial({ color: '#dedede' }),
+  rhivo: new THREE.MeshBasicMaterial({ color: '#14b8a6' }),
+  default: new THREE.MeshBasicMaterial({ color: 'black' })
+}
 
 // --- BackgroundPlane ---
-const BackgroundPlane = memo(({ product }: { product: { key: string; image: string; title: string; description: string } }) => {
-  const material = BACKGROUND_MATERIALS[product.key as keyof typeof BACKGROUND_MATERIALS] || BACKGROUND_MATERIALS.default;
+const BackgroundPlane = memo(
+  ({
+    product
+  }: {
+    product: { key: string; image: string; title: string; description: string }
+  }) => {
+    const material =
+      BACKGROUND_MATERIALS[product.key as keyof typeof BACKGROUND_MATERIALS] ||
+      BACKGROUND_MATERIALS.default
 
-  return (
-    <>
-      <mesh position={[0, 0, -50]} scale={[300, 200, 1]}>
-        <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
-        <primitive object={material} attach="material" />
-      </mesh>
-      {/* Logo */}
-      <mesh position={[0, 0, -49]}>
-        <planeGeometry args={[30, 30]} />
-        <meshBasicMaterial transparent opacity={0.2}>
-          <canvasTexture 
-            attach="map" 
-            args={[(() => {
-              const canvas = document.createElement('canvas');
-              canvas.width = 1024;
-              canvas.height = 1024;
-              const ctx = canvas.getContext('2d');
-              
-              if (ctx) {
-                // Set up the canvas with transparent background
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Set the fill style to white
-                ctx.fillStyle = '#000000ff';
-                
-                // Scale and center the logo paths
-                const scale = 1.8;
-                const offsetX = canvas.width / 2;
-                const offsetY = canvas.height / 2;
-                
-                ctx.save();
-                ctx.translate(offsetX, offsetY);
-                ctx.scale(scale, scale);
-                ctx.translate(-250, -220); // Center the 500x500 viewBox
-                
-                // Draw the logo paths
-                ctx.beginPath();
-                // First path
-                ctx.moveTo(88.478, 186.141);
-                ctx.lineTo(147.278, 101.441);
-                ctx.lineTo(257.616, 101.606);
-                ctx.lineTo(316.242, 186.175);
-                ctx.lineTo(88.478, 186.141);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Second path
-                ctx.beginPath();
-                ctx.moveTo(151.162, 214.519);
-                ctx.lineTo(254.816, 214.785);
-                ctx.lineTo(123.855, 401.854);
-                ctx.lineTo(88.385, 304.265);
-                ctx.lineTo(151.162, 214.519);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Third path
-                ctx.beginPath();
-                ctx.moveTo(375.69, 100);
-                ctx.lineTo(412.058, 198.385);
-                ctx.lineTo(348.108, 288.629);
-                ctx.lineTo(243.925, 288.629);
-                ctx.lineTo(375.69, 100);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Fourth path
-                ctx.beginPath();
-                ctx.moveTo(183.137, 316.443);
-                ctx.lineTo(410.625, 316.222);
-                ctx.lineTo(353.087, 400.362);
-                ctx.lineTo(241.446, 400.15);
-                ctx.lineTo(183.137, 316.443);
-                ctx.closePath();
-                ctx.fill();
-                
-                ctx.restore();
-              }
-              
-              return canvas;
-            })()]}
-          />
-        </meshBasicMaterial>
-      </mesh>
-    </>
-  );
-});
-BackgroundPlane.displayName = 'BackgroundPlane';
+    return (
+      <>
+        <mesh position={[0, 0, -50]} scale={[300, 200, 1]}>
+          <primitive object={SHARED_PLANE_GEOMETRY} attach="geometry" />
+          <primitive object={material} attach="material" />
+        </mesh>
+        {/* Logo */}
+        <mesh position={[0, 0, -49]}>
+          <planeGeometry args={[30, 30]} />
+          <meshBasicMaterial transparent opacity={0.2}>
+            <canvasTexture
+              attach="map"
+              args={[
+                (() => {
+                  const canvas = document.createElement('canvas')
+                  canvas.width = 1024
+                  canvas.height = 1024
+                  const ctx = canvas.getContext('2d')
+
+                  if (ctx) {
+                    // Set up the canvas with transparent background
+                    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+                    // Set the fill style to white
+                    ctx.fillStyle = '#000000ff'
+
+                    // Scale and center the logo paths
+                    const scale = 1.8
+                    const offsetX = canvas.width / 2
+                    const offsetY = canvas.height / 2
+
+                    ctx.save()
+                    ctx.translate(offsetX, offsetY)
+                    ctx.scale(scale, scale)
+                    ctx.translate(-250, -220) // Center the 500x500 viewBox
+
+                    // Draw the logo paths
+                    ctx.beginPath()
+                    // First path
+                    ctx.moveTo(88.478, 186.141)
+                    ctx.lineTo(147.278, 101.441)
+                    ctx.lineTo(257.616, 101.606)
+                    ctx.lineTo(316.242, 186.175)
+                    ctx.lineTo(88.478, 186.141)
+                    ctx.closePath()
+                    ctx.fill()
+
+                    // Second path
+                    ctx.beginPath()
+                    ctx.moveTo(151.162, 214.519)
+                    ctx.lineTo(254.816, 214.785)
+                    ctx.lineTo(123.855, 401.854)
+                    ctx.lineTo(88.385, 304.265)
+                    ctx.lineTo(151.162, 214.519)
+                    ctx.closePath()
+                    ctx.fill()
+
+                    // Third path
+                    ctx.beginPath()
+                    ctx.moveTo(375.69, 100)
+                    ctx.lineTo(412.058, 198.385)
+                    ctx.lineTo(348.108, 288.629)
+                    ctx.lineTo(243.925, 288.629)
+                    ctx.lineTo(375.69, 100)
+                    ctx.closePath()
+                    ctx.fill()
+
+                    // Fourth path
+                    ctx.beginPath()
+                    ctx.moveTo(183.137, 316.443)
+                    ctx.lineTo(410.625, 316.222)
+                    ctx.lineTo(353.087, 400.362)
+                    ctx.lineTo(241.446, 400.15)
+                    ctx.lineTo(183.137, 316.443)
+                    ctx.closePath()
+                    ctx.fill()
+
+                    ctx.restore()
+                  }
+
+                  return canvas
+                })()
+              ]}
+            />
+          </meshBasicMaterial>
+        </mesh>
+      </>
+    )
+  }
+)
+BackgroundPlane.displayName = 'BackgroundPlane'
 
 // --- MacContainer ---
-const MacContainer = memo(({
-  currentImage,
-  isFlipping,
-  scrollProgress,
-  flipDirection,
-}: {
-  currentImage: string;
-  isFlipping: boolean;
-  scrollProgress: number;
-  flipDirection: number;
-}) => {
-  const model = useGLTF("./models/mac.glb");
-  const textures = useTexture(["/bg.png", "/bg2.png", "/bg3.png", "/bg4.png"]);
+const MacContainer = memo(
+  ({
+    currentImage,
+    isFlipping,
+    scrollProgress,
+    flipDirection
+  }: {
+    currentImage: string
+    isFlipping: boolean
+    scrollProgress: number
+    flipDirection: number
+  }) => {
+    const model = useGLTF('./models/mac.glb')
+    const textures = useTexture(['/bg.png', '/bg2.png', '/bg3.png', '/bg4.png'])
 
-  const screenRef = useRef<THREE.Mesh>(null);
-  const groupRef = useRef<THREE.Group>(null);
-  const meshesRef = useRef<Record<string, THREE.Object3D>>({});
-  const screenMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null);
+    const screenRef = useRef<THREE.Mesh>(null)
+    const groupRef = useRef<THREE.Group>(null)
+    const meshesRef = useRef<Record<string, THREE.Object3D>>({})
+    const screenMaterialRef = useRef<THREE.MeshBasicMaterial | null>(null)
 
-  const targetRotationY = useRef(0);
-  const currentRotationY = useRef(0);
-  const targetScreenRotation = useRef(0);
-  const currentScreenRotation = useRef(0);
+    const targetRotationY = useRef(0)
+    const currentRotationY = useRef(0)
+    const targetScreenRotation = useRef(0)
+    const currentScreenRotation = useRef(0)
 
-  useEffect(() => {
-    if (isFlipping) targetRotationY.current += Math.PI * 2 * flipDirection;
-  }, [isFlipping, flipDirection]);
+    useEffect(() => {
+      if (isFlipping) targetRotationY.current += Math.PI * 2 * flipDirection
+    }, [isFlipping, flipDirection])
 
-  const meshes = useMemo(() => {
-    const meshMap: Record<string, THREE.Object3D> = {};
-    model.scene.traverse((e: THREE.Object3D) => {
-      meshMap[e.name] = e;
-      if ('material' in e && e.material) {
-        (e as THREE.Mesh).frustumCulled = true; // Enable frustum culling for better performance
-        (e as THREE.Mesh).matrixAutoUpdate = false; // Disable auto matrix updates if not needed
-      }
-    });
-    meshesRef.current = meshMap;
-    return meshMap;
-  }, [model.scene]);
+    const meshes = useMemo(() => {
+      const meshMap: Record<string, THREE.Object3D> = {}
+      model.scene.traverse((e: THREE.Object3D) => {
+        meshMap[e.name] = e
+        if ('material' in e && e.material) {
+          ;(e as THREE.Mesh).frustumCulled = true // Enable frustum culling for better performance
+          ;(e as THREE.Mesh).matrixAutoUpdate = false // Disable auto matrix updates if not needed
+        }
+      })
+      meshesRef.current = meshMap
+      return meshMap
+    }, [model.scene])
 
-  // Pre-configured texture map for faster lookups
-  const imageMap = useMemo(() => ({ "/bg.png": 0, "/bg2.png": 1, "/bg3.png": 2, "/bg4.png": 3 } as Record<string, number>), []);
+    // Pre-configured texture map for faster lookups
+    const imageMap = useMemo(
+      () =>
+        ({
+          '/bg.png': 0,
+          '/bg2.png': 1,
+          '/bg3.png': 2,
+          '/bg4.png': 3
+        } as Record<string, number>),
+      []
+    )
 
-  useEffect(() => {
-    if (!meshes.matte) return;
+    useEffect(() => {
+      if (!meshes.matte) return
 
-    // Create (once) an unlit material so the screen image isn't affected by lights or tone mapping
-    if (!screenMaterialRef.current) {
-      screenMaterialRef.current = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        toneMapped: false,
-        side: THREE.DoubleSide,
-      });
-    }
-
-    const material = screenMaterialRef.current;
-    const index = imageMap[currentImage] ?? 0;
-    const tex = textures[index];
-
-    if (tex && material.map !== tex) { // Only update if texture actually changed
-      // Configure texture properties once
-      if (!tex.userData.configured) {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.flipY = true;
-        tex.generateMipmaps = false; // Disable mipmaps for UI textures
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        tex.userData.configured = true;
+      // Create (once) an unlit material so the screen image isn't affected by lights or tone mapping
+      if (!screenMaterialRef.current) {
+        screenMaterialRef.current = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          toneMapped: false,
+          side: THREE.DoubleSide
+        })
       }
 
-      material.map = tex;
-      material.needsUpdate = true;
-    }
+      const material = screenMaterialRef.current
+      const index = imageMap[currentImage] ?? 0
+      const tex = textures[index]
 
-    // Assign our custom material to the screen mesh
-    if ((meshes.matte as THREE.Mesh).material !== material) {
-      (meshes.matte as THREE.Mesh).material = material;
-    }
-  }, [meshes, textures, currentImage, imageMap]);
+      if (tex && material.map !== tex) {
+        // Only update if texture actually changed
+        // Configure texture properties once
+        if (!tex.userData.configured) {
+          tex.colorSpace = THREE.SRGBColorSpace
+          tex.flipY = true
+          tex.generateMipmaps = false // Disable mipmaps for UI textures
+          tex.minFilter = THREE.LinearFilter
+          tex.magFilter = THREE.LinearFilter
+          tex.userData.configured = true
+        }
 
-  useEffect(() => {
-    if (meshes.screen) {
-      (meshes.screen as THREE.Mesh).rotation.x = THREE.MathUtils.degToRad(180);
-      screenRef.current = meshes.screen as THREE.Mesh;
-    }
-  }, [meshes]);
-
-  useFrame((_, delta) => {
-    const deltaMultiplier = Math.min(delta * 60, 3); // Slightly higher cap for smoother motion
-
-    if (screenRef.current) {
-      const clamped = Math.max(0, Math.min(1, scrollProgress));
-      targetScreenRotation.current = THREE.MathUtils.degToRad(180 - clamped * 90);
-
-      const diff = Math.abs(currentScreenRotation.current - targetScreenRotation.current);
-      if (diff > 0.001) { // Only update if difference is significant
-        currentScreenRotation.current = THREE.MathUtils.lerp(
-          currentScreenRotation.current,
-          targetScreenRotation.current,
-          deltaMultiplier * 0.12 // Slightly faster lerp
-        );
-        screenRef.current.rotation.x = currentScreenRotation.current;
+        material.map = tex
+        material.needsUpdate = true
       }
-    }
 
-    if (groupRef.current) {
-      const diff = Math.abs(currentRotationY.current - targetRotationY.current);
-      if (diff > 0.001) { // Only update if difference is significant
-        const lerpFactor = Math.min(1, deltaMultiplier * (FLIP_LERP_FACTOR / 60));
-        currentRotationY.current = THREE.MathUtils.lerp(
-          currentRotationY.current,
-          targetRotationY.current,
-          lerpFactor
-        );
-        groupRef.current.rotation.y = currentRotationY.current;
+      // Assign our custom material to the screen mesh
+      if ((meshes.matte as THREE.Mesh).material !== material) {
+        ;(meshes.matte as THREE.Mesh).material = material
       }
-    }
-  });
+    }, [meshes, textures, currentImage, imageMap])
 
-  return (
-    <group position={[0, -14, 20]} scale={0.9}>
-      <group ref={groupRef}>
-        <primitive object={model.scene} />
+    useEffect(() => {
+      if (meshes.screen) {
+        ;(meshes.screen as THREE.Mesh).rotation.x =
+          THREE.MathUtils.degToRad(180)
+        screenRef.current = meshes.screen as THREE.Mesh
+      }
+    }, [meshes])
+
+    useFrame((_, delta) => {
+      const deltaMultiplier = Math.min(delta * 60, 3) // Slightly higher cap for smoother motion
+
+      if (screenRef.current) {
+        const clamped = Math.max(0, Math.min(1, scrollProgress))
+        targetScreenRotation.current = THREE.MathUtils.degToRad(
+          180 - clamped * 90
+        )
+
+        const diff = Math.abs(
+          currentScreenRotation.current - targetScreenRotation.current
+        )
+        if (diff > 0.001) {
+          // Only update if difference is significant
+          currentScreenRotation.current = THREE.MathUtils.lerp(
+            currentScreenRotation.current,
+            targetScreenRotation.current,
+            deltaMultiplier * 0.12 // Slightly faster lerp
+          )
+          screenRef.current.rotation.x = currentScreenRotation.current
+        }
+      }
+
+      if (groupRef.current) {
+        const diff = Math.abs(
+          currentRotationY.current - targetRotationY.current
+        )
+        if (diff > 0.001) {
+          // Only update if difference is significant
+          const lerpFactor = Math.min(
+            1,
+            deltaMultiplier * (FLIP_LERP_FACTOR / 60)
+          )
+          currentRotationY.current = THREE.MathUtils.lerp(
+            currentRotationY.current,
+            targetRotationY.current,
+            lerpFactor
+          )
+          groupRef.current.rotation.y = currentRotationY.current
+        }
+      }
+    })
+
+    return (
+      <group position={[0, -14, 20]} scale={0.9}>
+        <group ref={groupRef}>
+          <primitive object={model.scene} />
+        </group>
       </group>
-    </group>
-  );
-});
-MacContainer.displayName = 'MacContainer';
+    )
+  }
+)
+MacContainer.displayName = 'MacContainer'
 
 // --- MacBookCanvas ---
 const MacBookCanvas = ({
   currentProduct,
   isFlipping,
   scrollProgress,
-  flipDirection,
+  flipDirection
 }: {
-  currentProduct: { key: string; image: string; title: string; description: string };
-  isFlipping: boolean;
-  scrollProgress: number;
-  flipDirection: number;
+  currentProduct: {
+    key: string
+    image: string
+    title: string
+    description: string
+  }
+  isFlipping: boolean
+  scrollProgress: number
+  flipDirection: number
 }) => (
   <Canvas
     camera={{ fov: 12, position: [0, -10, 220] }}
@@ -295,8 +341,8 @@ const MacBookCanvas = ({
     gl={{
       antialias: false,
       alpha: false,
-      powerPreference: "high-performance",
-      precision: "highp",
+      powerPreference: 'high-performance',
+      precision: 'highp',
       stencil: false,
       depth: true
     }}
@@ -321,7 +367,7 @@ const MacBookCanvas = ({
       />
     </Suspense>
   </Canvas>
-);
+)
 
 // --- LoadingSpinner ---
 const LoadingSpinner = () => (
@@ -331,7 +377,7 @@ const LoadingSpinner = () => (
       <p className="text-white text-sm mt-4 text-center">Loading ...</p>
     </div>
   </div>
-);
+)
 
 // --- ProductInfo ---
 const ProductInfo = ({
@@ -339,228 +385,281 @@ const ProductInfo = ({
   onNext,
   onPrev,
   isFlipping,
-  isVisible,
+  isVisible
 }: {
-  product: { key: string; image: string; title: string; description: string };
-  onNext: () => void;
-  onPrev: () => void;
-  isFlipping: boolean;
-  isVisible: boolean;
+  product: { key: string; image: string; title: string; description: string }
+  onNext: () => void
+  onPrev: () => void
+  isFlipping: boolean
+  isVisible: boolean
 }) => {
   // Use a custom launch URL for Rhivo; keep existing convention for other products
-  const launchHref = product.key === 'rhivo' ? 'https://rhivo.app' : `https://${product.title.toLowerCase()}.zonda.one`;
+  const launchHref =
+    product.key === 'rhivo'
+      ? 'https://rhivo.app'
+      : `https://${product.title.toLowerCase()}.zonda.one`
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-start p-8 md:p-16 2xl:p-24 relative overflow-hidden">
-    <div
-      className={`transform transition-all duration-700 ease-out ${
-        isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
-      }`}
-      style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
-    >
-      <h1
-        className={`text-4xl md:text-6xl 2xl:text-6xl font-bold mb-4 2xl:mb-8 transform transition-all duration-500 ease-out ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        }`}
-        style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
-      >
-        {product.title}
-      </h1>
-      <p
-        className={`text-md md:text-lg 2xl:text-2xl text-gray-300 max-w-md 2xl:max-w-2xl mb-8 2xl:mb-12 transform transition-all duration-500 ease-out ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        }`}
-        style={{ transitionDelay: isVisible ? "350ms" : "0ms" }}
-      >
-        {product.description}
-      </p>
-
-      {/* Launch Button */}
       <div
-        className={`transform transition-all duration-500 ease-out ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        className={`transform transition-all duration-700 ease-out ${
+          isVisible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
         }`}
-        style={{ transitionDelay: isVisible ? "500ms" : "0ms" }}
+        style={{ transitionDelay: isVisible ? '100ms' : '0ms' }}
       >
-        <a
-          href={launchHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-3 px-8 md:px-8 2xl:px-12 py-4 2xl:py-6 text-black font-medium text-lg 2xl:text-2xl rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
+        <h1
+          className={`text-4xl md:text-6xl 2xl:text-6xl font-bold mb-4 2xl:mb-8 transform transition-all duration-500 ease-out ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}
+          style={{ transitionDelay: isVisible ? '200ms' : '0ms' }}
         >
-          <span className="relative z-10">Launch {product.title}</span>
-          <svg
-            className="relative z-10 w-5 h-5 2xl:w-7 2xl:h-7 transition-transform duration-300 group-hover:translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          {product.title}
+        </h1>
+        <p
+          className={`text-md md:text-lg 2xl:text-2xl text-gray-300 max-w-md 2xl:max-w-2xl mb-8 2xl:mb-12 transform transition-all duration-500 ease-out ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}
+          style={{ transitionDelay: isVisible ? '350ms' : '0ms' }}
+        >
+          {product.description}
+        </p>
+
+        {/* Launch Button */}
+        <div
+          className={`transform transition-all duration-500 ease-out ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}
+          style={{ transitionDelay: isVisible ? '500ms' : '0ms' }}
+        >
+          <a
+            href={launchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-3 px-8 md:px-8 2xl:px-12 py-4 2xl:py-6 text-black font-medium text-lg 2xl:text-2xl rounded-lg transition-all duration-300 ease-out bg-white hover:bg-gray-100 hover:scale-[1.02]"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <span className="relative z-10">Launch {product.title}</span>
+            <svg
+              className="relative z-10 w-5 h-5 2xl:w-7 2xl:h-7 transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div
+        className={`absolute bottom-10 2xl:bottom-16 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4 2xl:gap-8 transform transition-all duration-700 ease-out ${
+          isVisible
+            ? 'translate-y-0 opacity-100 scale-100'
+            : 'translate-y-8 opacity-0 scale-95'
+        }`}
+        style={{ transitionDelay: isVisible ? '800ms' : '0ms' }}
+      >
+        <button
+          onClick={onPrev}
+          disabled={isFlipping}
+          className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
+            isFlipping ? 'scale-90 opacity-60' : 'scale-100 opacity-100'
+          }`}
+          style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))' }}
+        >
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24"
+          >
+            <path
+              d="M15 18L9 12L15 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
-        </a>
+        </button>
+
+        <button
+          onClick={onNext}
+          disabled={isFlipping}
+          className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
+            isFlipping ? 'scale-90 opacity-60' : 'scale-100 opacity-100'
+          }`}
+          style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))' }}
+        >
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24"
+          >
+            <path
+              d="M9 18L15 12L9 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </div>
+  )
+}
 
-    <div
-      className={`absolute bottom-10 2xl:bottom-16 left-1/2 md:left-16 -translate-x-1/2 md:-translate-x-0 flex gap-4 2xl:gap-8 transform transition-all duration-700 ease-out ${
-        isVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95"
-      }`}
-      style={{ transitionDelay: isVisible ? "800ms" : "0ms" }}
-    >
-      <button
-        onClick={onPrev}
-        disabled={isFlipping}
-        className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
-          isFlipping ? "scale-90 opacity-60" : "scale-100 opacity-100"
-        }`}
-        style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))" }}
-      >
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-
-      <button
-        onClick={onNext}
-        disabled={isFlipping}
-        className={`z-10 transition-all duration-500 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transform ${
-          isFlipping ? "scale-90 opacity-60" : "scale-100 opacity-100"
-        }`}
-        style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))" }}
-      >
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-white transition-transform duration-300 2xl:w-24 2xl:h-24">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-    </div>
-  </div>
-  );
-};
-
-useGLTF.preload("./models/mac.glb");
+useGLTF.preload('./models/mac.glb')
 // --- Main Component ---
 const MacBookSection = () => {
-  const { t, ready } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [shouldRender, setShouldRender] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [contentVisible, setContentVisible] = useState(true);
-  const [flipDirection, setFlipDirection] = useState(1);
+  const { t, ready } = useTranslation()
+  const [mounted, setMounted] = useState(false)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const [shouldRender, setShouldRender] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isFlipping, setIsFlipping] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [contentVisible, setContentVisible] = useState(true)
+  const [flipDirection, setFlipDirection] = useState(1)
 
-  const products = useMemo(() => mounted && ready ? getProducts(t) : [], [t, mounted, ready]);
-  const currentProduct = products[currentIndex] || null;
+  const products = useMemo(
+    () => (mounted && ready ? getProducts(t) : []),
+    [t, mounted, ready]
+  )
+  const currentProduct = products[currentIndex] || null
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  const handleChange = useCallback((nextIndex: number, direction: number) => {
-    if (isFlipping || !products.length) return;
-    setFlipDirection(direction);
-    setIsFlipping(true);
-    setContentVisible(false);
-    setTimeout(() => setCurrentIndex(nextIndex), SWAP_IMAGE_DELAY);
-    setTimeout(() => setContentVisible(true), SWAP_IMAGE_DELAY + 100);
-    setTimeout(() => setIsFlipping(false), TOTAL_FLIP_DURATION);
-  }, [isFlipping, products.length]);
+  const handleChange = useCallback(
+    (nextIndex: number, direction: number) => {
+      if (isFlipping || !products.length) return
+      setFlipDirection(direction)
+      setIsFlipping(true)
+      setContentVisible(false)
+      setTimeout(() => setCurrentIndex(nextIndex), SWAP_IMAGE_DELAY)
+      setTimeout(() => setContentVisible(true), SWAP_IMAGE_DELAY + 100)
+      setTimeout(() => setIsFlipping(false), TOTAL_FLIP_DURATION)
+    },
+    [isFlipping, products.length]
+  )
 
-  const next = useCallback(() => products.length && handleChange((currentIndex + 1) % products.length, 1), [products.length, currentIndex, handleChange]);
-  const prev = useCallback(() => products.length && handleChange((currentIndex - 1 + products.length) % products.length, -1), [products.length, currentIndex, handleChange]);
+  const next = useCallback(
+    () =>
+      products.length && handleChange((currentIndex + 1) % products.length, 1),
+    [products.length, currentIndex, handleChange]
+  )
+  const prev = useCallback(
+    () =>
+      products.length &&
+      handleChange((currentIndex - 1 + products.length) % products.length, -1),
+    [products.length, currentIndex, handleChange]
+  )
 
   // Optimized scroll progress with throttling
   useEffect(() => {
-    let ticking = false;
-    let lastProgress = 0;
+    let ticking = false
+    let lastProgress = 0
 
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
           if (!sectionRef.current) {
-            ticking = false;
-            return;
+            ticking = false
+            return
           }
 
-          const rect = sectionRef.current.getBoundingClientRect();
-          const sectionHeight = sectionRef.current.offsetHeight;
-          const windowHeight = window.innerHeight;
-          let progress = 0;
+          const rect = sectionRef.current.getBoundingClientRect()
+          const sectionHeight = sectionRef.current.offsetHeight
+          const windowHeight = window.innerHeight
+          let progress = 0
 
           if (rect.top <= 0 && rect.bottom >= windowHeight) {
-            progress = Math.abs(rect.top) / (sectionHeight - windowHeight);
+            progress = Math.abs(rect.top) / (sectionHeight - windowHeight)
           } else if (rect.top > 0) {
-            progress = 0;
+            progress = 0
           } else if (rect.bottom < windowHeight) {
-            progress = 1;
+            progress = 1
           }
 
-          const newProgress = Math.max(0, Math.min(1, progress));
+          const newProgress = Math.max(0, Math.min(1, progress))
 
           // Only update if change is significant (reduces unnecessary re-renders)
           if (Math.abs(newProgress - lastProgress) > 0.005) {
-            setScrollProgress(newProgress);
-            lastProgress = newProgress;
+            setScrollProgress(newProgress)
+            lastProgress = newProgress
           }
 
-          ticking = false;
-        });
-        ticking = true;
+          ticking = false
+        })
+        ticking = true
       }
-    };
+    }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   // Optimized preloading with priority
   useEffect(() => {
-    if (!products.length) return;
+    if (!products.length) return
 
     // Immediate preload for critical assets
-
 
     // Staggered texture preloading to avoid blocking
     const preloadTextures = async () => {
       for (let i = 0; i < products.length; i++) {
         await new Promise(resolve => {
-          useTexture.preload(products[i].image);
-          setTimeout(resolve, 50); // Small delay between preloads
-        });
+          useTexture.preload(products[i].image)
+          setTimeout(resolve, 50) // Small delay between preloads
+        })
       }
-    };
+    }
 
-    const timer = setTimeout(preloadTextures, 500);
-    return () => clearTimeout(timer);
-  }, [products]);
+    const timer = setTimeout(preloadTextures, 500)
+    return () => clearTimeout(timer)
+  }, [products])
 
   // Intersection observer
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const section = sectionRef.current
+    if (!section) return
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting && !shouldRender) {
-            setShouldRender(true);
-            setTimeout(() => setContentVisible(true), 200);
+            setShouldRender(true)
+            setTimeout(() => setContentVisible(true), 200)
           }
-        });
+        })
       },
-      { threshold: 0.1, rootMargin: "50px 0px 50px 0px" }
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, [shouldRender]);
+      { threshold: 0.1, rootMargin: '50px 0px 50px 0px' }
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [shouldRender])
 
   return (
     <div
       id="macbook-section"
       ref={sectionRef}
       className="hidden md:flex w-full relative bg-black text-white"
-      style={{ height: "180vh", scrollSnapAlign: "start", scrollSnapStop: "always", borderBottom: "12px solid #ffffff" }}
+      style={{
+        height: '180vh',
+        scrollSnapAlign: 'start',
+        scrollSnapStop: 'always',
+        borderBottom: '12px solid #ffffff'
+      }}
     >
       <div className="sticky top-0 w-full h-screen flex">
         <div className="w-full md:w-2/5 h-full">
@@ -588,11 +687,13 @@ const MacBookSection = () => {
                 flipDirection={flipDirection}
               />
             </Suspense>
-          ) : (<LoadingSpinner />)}
+          ) : (
+            <LoadingSpinner />
+          )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MacBookSection;
+export default MacBookSection

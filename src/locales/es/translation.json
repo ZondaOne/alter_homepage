@@ -248,4 +248,13 @@
 , "cloudPostCTAButton": "Iniciar tu Proyecto"
 , "cloudPostShareText": "Comparte este artículo:"
 , "cloudPostBackToBlog": "Volver al Blog"
+
+, "mobileShowcase": {
+    "title": "Experiencia Mobile",
+    "description": "Diseñado para ofrecer la mejor experiencia en dispositivos móviles. Interfaz intuitiva, rendimiento rápido y accesibilidad en todos los tamaños de pantalla.",
+    "imageAlt": "Demostración de aplicación móvil",
+    "feature1": "Optimizado para todas las resoluciones",
+    "feature2": "Carga rápida y fluida",
+    "feature3": "Diseño responsivo y adaptable"
+  }
 }

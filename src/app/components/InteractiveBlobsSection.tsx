@@ -198,17 +198,17 @@ const InteractiveBlobsSection: React.FC = () => {
     <section
       id="about"
       ref={mainRef}
-      className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-cream-base px-8 py-16"
+      className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-gray-50 px-8 py-16"
     >
       <div className="grain-overlay" />
-      <div className="container mx-auto space-y-4 2xl:space-y-2 relative z-10">
+      <div className="container mx-auto space-y-4 2xl:space-y-0 relative z-10">
         {/* Header Text */}
         <div className="max-w-7xl mx-auto text-center">
           <div
             ref={textRef}
-            className="flex flex-col justify-center space-y-4 2xl:space-y-2 text-gray-800"
+            className="flex flex-col justify-center space-y-4 2xl:space-y-0 text-gray-800"
           >
-            <h2 className="hero-h1 m-0 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-2 2xl:mb-0">
+            <h2 className="hero-h1 m-0 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display 2xl:mb-0">
               <span
                 className="hero-gradient-text text-element"
                 style={{
@@ -255,18 +255,19 @@ const InteractiveBlobsSection: React.FC = () => {
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[500px] 2xl:min-h-[700px] relative z-10 gap-16 lg:gap-24 2xl:gap-40">
               {/* Content Side */}
-              <div className="lg:col-span-2 content-side p-8 lg:p-16 2xl:p-24 flex flex-col justify-center space-y-4 2xl:space-y-3 relative">
-                <div className="space-y-3 2xl:space-y-2">
-                  <div className="space-y-2 2xl:space-y-1">
+              <div className="lg:col-span-2 content-side p-8 lg:p-16 2xl:p-20 flex flex-col justify-center gap-2 2xl:gap-1 relative">
+                <div className="gap-0">
+                  <div className="gap-0">
                     <h3
                       ref={typingH3Ref}
-                      className="text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-bold leading-relaxed tracking-tight font-display typing-container"
+                      className="text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-bold leading-tight tracking-tight font-display typing-container"
                       style={{
-                        minHeight: '3em',
+                        minHeight: '1.8em',
                         maxWidth: '100%',
                         width: '100%',
                         wordWrap: 'break-word',
-                        wordBreak: 'break-word'
+                        wordBreak: 'break-word',
+                        marginBottom: '0.5rem'
                       }}
                     >
                       {mounted &&

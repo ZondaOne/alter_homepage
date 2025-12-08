@@ -164,14 +164,14 @@ html, body {
    Global Section Styling
    ======================= */
 
-/* Apply cream background to all sections */
+/* Remove global section background - let individual sections define their colors */
 section {
-  background-color: var(--cream-50);
+  /* background-color removed to allow individual section styling */
 }
 
-/* White padding dividers for all sections */
+/* Remove global border bottom - using h-px dividers instead */
 section:not(:last-child) {
-  border-bottom: 12px solid #ffffff;
+  /* border-bottom removed - using h-px bg-white dividers instead */
 }
 
 

@@ -220,4 +220,13 @@
 , "cloudPostSection1P2": "I principi fondamentali del design cloud-native—scalabilità, resilienza, osservabilità e automazione—lavorano insieme per creare applicazioni che possono gestire carichi imprevedibili mantenendo alti standard di disponibilità e prestazioni."
 , "cloudPostSection2Title": "Pattern Architetturali Essenziali"
 , "cloudPostSection2P1": "Le applicazioni cloud-native di successo si basano su pattern architetturali comprovati che affrontano le sfide comuni nei sistemi distribuiti. Questi pattern forniscono progetti per costruire sistemi robusti e mantenibili."
+
+, "mobileShowcase": {
+    "title": "Esperienza Mobile",
+    "description": "Progettato per offrire la migliore esperienza su dispositivi mobili. Interfaccia intuitiva, prestazioni veloce e accessibilità su tutti i formati di schermo.",
+    "imageAlt": "Dimostrazione dell'app mobile",
+    "feature1": "Ottimizzato per tutte le risoluzioni",
+    "feature2": "Caricamento veloce e fluido",
+    "feature3": "Design reattivo e adattabile"
+  }
 }

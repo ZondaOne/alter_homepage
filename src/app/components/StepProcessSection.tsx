@@ -92,11 +92,11 @@ const StepProcessSection: React.FC = () => {
     <section
       id="consulting"
       ref={sectionRef}
-      className="relative py-20 lg:py-32 2xl:py-48 bg-white overflow-hidden"
+      className="relative py-16 lg:py-28 2xl:py-28 bg-gray-50 overflow-hidden"
     >
       <div className="max-w-7xl 2xl:max-w-6xl mx-auto px-6 2xl:px-12">
         {/* Header principal */}
-        <div className="text-center lg:mb-20 2xl:mb-32">
+        <div className="text-center lg:mb-20 2xl:mb-16">
           <div className="mb-10 2xl:mb-16">
             <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900">
               {mounted ? t('solutions') : ''}

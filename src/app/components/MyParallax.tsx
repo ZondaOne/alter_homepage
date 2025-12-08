@@ -169,7 +169,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
       {/* Desktop */}
       <div
         ref={containerRef}
-        className="hidden md:block relative w-full min-h-screen bg-white lg:p-32"
+        className="hidden md:block relative w-full min-h-[500px] lg:min-h-[600px] bg-gray-50 lg:p-32"
       >
         <div className="relative w-full min-h-screen flex items-center justify-center overflow-visible">
           <div ref={imageRef} className="relative max-w-none">

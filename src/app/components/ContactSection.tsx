@@ -171,8 +171,8 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={contactRef}
-      className="relative min-h-screen flex items-center py-8 sm:py-16 2xl:py-24"
-      style={{ backgroundColor: 'white' }}
+      className="relative flex items-center py-12 sm:py-16 2xl:py-16"
+      style={{ backgroundColor: '#FFFFFF' }}
     >
       <div className="max-w-7xl 2xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 w-full">
         <div className="max-w-5xl 2xl:max-w-6xl mx-auto text-center">

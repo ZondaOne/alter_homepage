@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Hero from "./components/Hero";
 import InteractiveBlobsSection from "./components/InteractiveBlobsSection";
+import MobileShowcaseSection from "./components/MobileShowcaseSection";
 import StepProcessSection from "./components/StepProcessSection";
 import GridGallerySection from './components/GridGallerySection';
 import MacBookSection from './components/MacBookSection';
@@ -85,11 +86,15 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <div className="h-3 bg-white w-full"></div>
       <InteractiveBlobsSection />
+      <div className="h-3 bg-white w-full"></div>
+      <MobileShowcaseSection />
+      <div className="h-3 bg-white w-full"></div>
       <article className="relative z-10">
         
         {/* Parallax Section with Hero-style text */}
-        <section className="w-full" ref={parallaxRef}>
+        <section className="w-full bg-gray-50" ref={parallaxRef}>
           <MyParallax
             scale={1}
             minScale={0.95}
@@ -109,14 +114,22 @@ export default function HomePage() {
           </MyParallax>
         </section>
 
+        <div className="h-3 bg-white w-full"></div>
+
         {/* Gradient Section */}
         <StepProcessSection />
+
+        <div className="h-3 bg-white w-full"></div>
 
         {/* Grid Gallery */}
         <GridGallerySection />
 
+        <div className="h-3 bg-white w-full"></div>
+
         {/* MacBook Section */}
         <MacBookSection />
+
+        <div className="h-3 bg-white w-full"></div>
 
         {/* FAQ Section */}
         <FAQ />

@@ -55,7 +55,7 @@ export default function FAQ() {
     <section
       id="support"
       ref={faqRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-white py-8 sm:py-16 2xl:py-24"
+      className="relative flex items-center overflow-hidden bg-gray-50 py-12 sm:py-16 2xl:py-16"
     >
       <div className="max-w-5xl 2xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 w-full space-y-8 sm:space-y-12 lg:space-y-16 2xl:space-y-20">
         {/* Header */}
