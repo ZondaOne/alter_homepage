@@ -98,7 +98,7 @@ const StepProcessSection: React.FC = () => {
         {/* Header principal */}
         <div className="text-center lg:mb-20 2xl:mb-32">
           <div className="mb-10 2xl:mb-16">
-            <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-gray-900">
+            <h2 className="font-display main-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-semibold leading-[0.9] tracking-tight text-gray-900">
               {mounted ? t('solutions') : ''}
               <br />
               <span
@@ -118,7 +118,7 @@ const StepProcessSection: React.FC = () => {
           </div>
 
           <div className="max-w-3xl 2xl:max-w-5xl mx-auto">
-            <p className="hero-description text-xl lg:text-2xl 2xl:text-3xl text-neutral-700 leading-[1.6] font-light">
+            <p className="hero-description text-xl lg:text-2xl 2xl:text-2xl text-neutral-700 leading-[1.6] font-light">
               {mounted ? t('hero.description') : ''}
             </p>
           </div>

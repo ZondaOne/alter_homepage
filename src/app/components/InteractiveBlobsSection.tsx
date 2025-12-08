@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useTranslation } from 'react-i18next'
@@ -36,8 +36,8 @@ const InteractiveBlobsSection: React.FC = () => {
   const [typingCompleted, setTypingCompleted] = useState(false)
   const [typingTriggered, setTypingTriggered] = useState(false)
 
-  // Typing effect function
-  const startTypingEffect = () => {
+  // Typing effect function wrapped in useCallback
+  const startTypingEffect = useCallback(() => {
     if (!mounted || isTyping || typingCompleted || typingTriggered) return
 
     setTypingTriggered(true)
@@ -107,7 +107,7 @@ const InteractiveBlobsSection: React.FC = () => {
 
     // Start typing immediately when triggered
     typeNextChar()
-  }
+  }, [mounted, isTyping, typingCompleted, typingTriggered, t])
 
   const renderTypingText = (wordsData: WordData[]) => {
     if (!wordsData || wordsData.length === 0) return null
@@ -137,100 +137,23 @@ const InteractiveBlobsSection: React.FC = () => {
     })
   }
 
-  // GSAP animations useEffect - removed 't' from dependencies
+  // GSAP animations useEffect
   useEffect(() => {
     if (!mounted) return
 
     const ctx = gsap.context(() => {
-      const blobs = gsap.utils.toArray<HTMLElement>('.blob')
-      const logoPaths = gsap.utils.toArray<SVGPathElement>('.logo-path')
-      const textElements = gsap.utils.toArray<HTMLElement>('.text-element')
-      const cardElements = gsap.utils.toArray<HTMLElement>('.card-element')
-
-      gsap.set(blobs, { scale: 0.8, autoAlpha: 0.3 })
-      gsap.set(logoRef.current, { scale: 0.6, autoAlpha: 0, y: 30 })
-      gsap.set(logoPaths, {
-        scale: 0.8,
-        autoAlpha: 0,
-        transformOrigin: 'center center'
-      })
-      gsap.set(textElements, { x: 50, autoAlpha: 0 })
-      gsap.set(cardElements, { y: 30, autoAlpha: 0 })
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-          start: 'top 105%',
-          toggleActions: 'play none none none'
-        }
-      })
-
-      tl.to(blobs, {
-        scale: 1,
-        autoAlpha: 0.9,
-        stagger: 0.15,
-        duration: 1.5,
-        ease: 'power2.out'
-      })
-        .to(
-          logoRef.current,
-          {
-            scale: 1,
-            autoAlpha: 1,
-            y: 0,
-            ease: 'back.out(1.2)',
-            duration: 1.2
-          },
-          '-=1'
-        )
-        .to(
-          logoPaths,
-          {
-            scale: 1,
-            autoAlpha: 1,
-            stagger: { each: 0.08, from: 'center' },
-            ease: 'back.out(1.1)',
-            duration: 1
-          },
-          '-=1'
-        )
-        .to(
-          textElements,
-          {
-            x: 0,
-            autoAlpha: 1,
-            stagger: 0.12,
-            ease: 'power2.out',
-            duration: 0.8
-          },
-          '-=0.8'
-        )
-        .to(
-          cardElements,
-          {
-            y: 0,
-            autoAlpha: 1,
-            stagger: 0.1,
-            ease: 'power2.out',
-            duration: 0.8
-          },
-          '-=0.6'
-        )
-
-      // Separate ScrollTrigger specifically for the typing animation
       ScrollTrigger.create({
         trigger: typingH3Ref.current,
-        start: 'top 80%', // Trigger when the h3 element is 80% into the viewport
+        start: 'top 80%',
         toggleActions: 'play none none none',
         onEnter: () => {
-          // Small delay to ensure the element is visible
-          setTimeout(startTypingEffect, 200)
+          startTypingEffect()
         }
       })
     }, mainRef)
 
     return () => ctx.revert()
-  }, [mounted]) // Remove 't' to prevent GSAP animations from re-running
+  }, [mounted, startTypingEffect])
 
   // NO useEffect that resets typing on language change - animation should persist
 
@@ -278,14 +201,14 @@ const InteractiveBlobsSection: React.FC = () => {
       className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-cream-base px-8 py-16"
     >
       <div className="grain-overlay" />
-      <div className="container mx-auto space-y-16 relative z-10">
+      <div className="container mx-auto space-y-4 2xl:space-y-2 relative z-10">
         {/* Header Text */}
         <div className="max-w-7xl mx-auto text-center">
           <div
             ref={textRef}
-            className="flex flex-col justify-center space-y-6 2xl:space-y-10 text-gray-800"
+            className="flex flex-col justify-center space-y-4 2xl:space-y-2 text-gray-800"
           >
-            <h2 className="hero-h1 m-0 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-8 2xl:mb-12">
+            <h2 className="hero-h1 m-0 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-2 2xl:mb-0">
               <span
                 className="hero-gradient-text text-element"
                 style={{
@@ -317,7 +240,7 @@ const InteractiveBlobsSection: React.FC = () => {
                 {mounted ? t('interactiveBlobs.zonda') : ''}
               </span>
             </h2>
-            <p className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl text-element max-w-4xl 2xl:max-w-6xl mx-auto 2xl:leading-relaxed">
+            <p className="text-lg lg:text-xl xl:text-2xl 2xl:text-2xl text-element max-w-4xl 2xl:max-w-6xl mx-auto 2xl:leading-relaxed">
               {mounted ? t('interactiveBlobs.description1') : ''}
             </p>
           </div>
@@ -332,14 +255,14 @@ const InteractiveBlobsSection: React.FC = () => {
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[500px] 2xl:min-h-[700px] relative z-10 gap-16 lg:gap-24 2xl:gap-40">
               {/* Content Side */}
-              <div className="lg:col-span-2 content-side p-8 lg:p-16 2xl:p-24 flex flex-col justify-center space-y-8 2xl:space-y-12 relative">
-                <div className="space-y-8 2xl:space-y-12">
-                  <div className="space-y-6 2xl:space-y-8">
+              <div className="lg:col-span-2 content-side p-8 lg:p-16 2xl:p-24 flex flex-col justify-center space-y-4 2xl:space-y-3 relative">
+                <div className="space-y-3 2xl:space-y-2">
+                  <div className="space-y-2 2xl:space-y-1">
                     <h3
                       ref={typingH3Ref}
-                      className="text-4xl lg:text-5xl xl:text-7xl 2xl:text-9xl font-bold leading-relaxed tracking-tight font-display typing-container"
+                      className="text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-bold leading-relaxed tracking-tight font-display typing-container"
                       style={{
-                        minHeight: '4em',
+                        minHeight: '3em',
                         maxWidth: '100%',
                         width: '100%',
                         wordWrap: 'break-word',
@@ -362,7 +285,7 @@ const InteractiveBlobsSection: React.FC = () => {
                       </span>
                     </h3>
 
-                    <p className="text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-gray-600 leading-relaxed max-w-lg 2xl:max-w-2xl">
+                    <p className="text-lg lg:text-xl xl:text-2xl 2xl:text-2xl text-gray-600 leading-relaxed max-w-lg 2xl:max-w-2xl">
                       {mounted ? t('card.digitalSolutionsDescription') : ''}
                     </p>
                   </div>
@@ -412,7 +335,7 @@ const InteractiveBlobsSection: React.FC = () => {
                     ref={logoRef}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 500 500"
-                    className="w-56 h-56 lg:w-72 lg:h-72 xl:w-96 xl:h-96 2xl:w-[500px] 2xl:h-[500px] glow-effect"
+                    className="w-56 h-56 lg:w-72 lg:h-72 xl:w-96 xl:h-96 2xl:w-[380px] 2xl:h-[380px] glow-effect"
                   >
                     <path
                       className="logo-path"
@@ -489,8 +412,8 @@ const InteractiveBlobsSection: React.FC = () => {
           .blob1,
           .blob2,
           .blob3 {
-            width: 600px;
-            height: 600px;
+            width: 400px;
+            height: 400px;
           }
         }
 

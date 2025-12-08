@@ -176,7 +176,7 @@ export default function ContactSection() {
     >
       <div className="max-w-7xl 2xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 w-full">
         <div className="max-w-5xl 2xl:max-w-6xl mx-auto text-center">
-          <h2 className="contact-title text-5xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-4 sm:mb-6 2xl:mb-8">
+          <h2 className="contact-title text-5xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-6xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display mb-4 sm:mb-6 2xl:mb-8">
             <div className="title-line">
               {mounted && ready ? t('contact.title') : "Let's start"}
             </div>
@@ -199,7 +199,7 @@ export default function ContactSection() {
             </div>
           </h2>
 
-          <p className="contact-subtitle text-base sm:text-lg lg:text-xl 2xl:text-3xl text-gray-600 max-w-3xl 2xl:max-w-5xl mx-auto mb-8 sm:mb-12 2xl:mb-16 font-light leading-relaxed px-4 sm:px-0">
+          <p className="contact-subtitle text-base sm:text-lg lg:text-xl 2xl:text-2xl text-gray-600 max-w-3xl 2xl:max-w-5xl mx-auto mb-8 sm:mb-12 2xl:mb-16 font-light leading-relaxed px-4 sm:px-0">
             {mounted && ready
               ? t('contact.subtitle')
               : "Have a project in mind? We'd love to hear about it. Drop us a message and let's discuss how we can help bring your ideas to life."}

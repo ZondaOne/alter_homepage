@@ -60,7 +60,7 @@ const GridGallerySection = () => {
   <div className="relative z-10 max-w-7xl 2xl:max-w-6xl mx-auto w-full">
     {/* Header */}
     <div className="mb-16 2xl:mb-24 text-center max-w-5xl 2xl:max-w-6xl mx-auto">
-      <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-neutral-900 mb-8 2xl:mb-12">
+      <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl 2xl:text-7xl font-semibold leading-[0.9] tracking-tight text-neutral-900 mb-8 2xl:mb-12">
         {mounted && ready ? t('galleryTitleLine1') : 'OUR LATEST'}
         <br />
         <span
@@ -78,7 +78,7 @@ const GridGallerySection = () => {
         </span>
       </h2>
       <div className="w-16 2xl:w-20 h-px bg-orange-500 mx-auto mb-8 2xl:mb-12"></div>
-      <p className="text-xl 2xl:text-3xl text-neutral-700 max-w-3xl 2xl:max-w-5xl mx-auto font-light leading-relaxed">
+      <p className="text-xl 2xl:text-2xl text-neutral-700 max-w-3xl 2xl:max-w-5xl mx-auto font-light leading-relaxed">
         {mounted && ready
           ? t('gallerySubtitle')
           : "We architect digital solutions that merge precision, design and technology—crafted to inspire, scale, and perform."}
@@ -130,10 +130,10 @@ const GridGallerySection = () => {
               ))}
             </div>
 
-            <h3 className="text-4xl lg:text-5xl 2xl:text-7xl font-bold text-neutral-900 leading-[1.1]">
+            <h3 className="text-4xl lg:text-5xl 2xl:text-5xl font-bold text-neutral-900 leading-[1.1]">
               {project.title}
             </h3>
-            <h4 className="text-xl lg:text-2xl 2xl:text-3xl font-light text-neutral-600">
+            <h4 className="text-xl lg:text-2xl 2xl:text-2xl font-light text-neutral-600">
               {project.subtitle}
             </h4>
 

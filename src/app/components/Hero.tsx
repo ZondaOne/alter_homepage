@@ -268,7 +268,7 @@ export default function Hero() {
     >
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[60%_40%] gap-0 h-full">
         <div className="flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-16">
-          <h1 className="hero-h1 mt-32 text-5xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
+          <h1 className="hero-h1 mt-32 text-5xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display">
             <div className="hero-line">
               {mounted && ready ? t('heroTitleLine1') : 'Your idea'}
             </div>
@@ -292,7 +292,7 @@ export default function Hero() {
             </div>
           </h1>
 
-          <p className="hero-subtitle text-lg sm:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-gray-600 max-w-2xl 2xl:max-w-3xl mt-8 sm:mt-10 lg:mt-12 2xl:mt-10 font-light leading-relaxed">
+          <p className="hero-subtitle text-lg sm:text-xl lg:text-2xl xl:text-2xl 2xl:text-lg text-gray-600 max-w-2xl 2xl:max-w-3xl mt-8 sm:mt-10 lg:mt-12 2xl:mt-10 font-light leading-relaxed">
             {mounted && ready
               ? t('heroSubtitle')
               : 'Small team. Big ideas. We build software that people actually want to use.'}
@@ -301,14 +301,14 @@ export default function Hero() {
           <div className="hero-buttons flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 2xl:gap-6 mt-10 sm:mt-12 lg:mt-14 2xl:mt-12">
             <button
               onClick={scrollToContact}
-              className="bg-gray-900 text-white px-8 2xl:px-12 py-3 2xl:py-4 rounded-sm text-sm 2xl:text-lg font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
+              className="bg-gray-900 text-white px-8 2xl:px-12 py-3 2xl:py-4 rounded-sm text-sm 2xl:text-base font-medium hover:bg-gray-800 transition-colors duration-200 w-full sm:w-auto"
             >
               {mounted && ready ? t('heroButtonWork') : 'Work with us'}
             </button>
 
             <button
               onClick={scrollToProjects}
-              className="text-gray-700 text-sm 2xl:text-lg font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
+              className="text-gray-700 text-sm 2xl:text-base font-medium hover:text-orange-600 transition-colors duration-200 flex items-center gap-2 group"
             >
               {mounted && ready ? t('heroButtonSee') : "See what we've made"}
               <svg
@@ -342,7 +342,7 @@ export default function Hero() {
               perspective: '1000px'
             }}
           >
-            <div className="w-[80vw] h-[80vw] max-w-[350px] max-h-[350px] sm:max-w-[400px] sm:max-h-[400px] lg:w-full lg:h-full lg:max-w-none lg:max-h-none 2xl:scale-125">
+            <div className="w-[80vw] h-[80vw] max-w-[350px] max-h-[350px] sm:max-w-[400px] sm:max-h-[400px] lg:w-full lg:h-full lg:max-w-none lg:max-h-none 2xl:scale-100">
               <SoftwareLogo scale={1} />
             </div>
           </div>

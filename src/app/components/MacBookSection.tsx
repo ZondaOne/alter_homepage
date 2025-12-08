@@ -359,7 +359,7 @@ const ProductInfo = ({
       style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
     >
       <h1
-        className={`text-4xl md:text-6xl 2xl:text-8xl font-bold mb-4 2xl:mb-8 transform transition-all duration-500 ease-out ${
+        className={`text-4xl md:text-6xl 2xl:text-6xl font-bold mb-4 2xl:mb-8 transform transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
         style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}

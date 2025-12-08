@@ -102,7 +102,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
   // === Texto por defecto (sin botones) ===
   const defaultText = (
     <div className="text-gray-900 space-y-6 2xl:space-y-10">
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight font-display">
+      <h1 className="text-4xl sm:text-5xl lg:text-6xl 2xl:text-6xl font-semibold leading-[0.9] tracking-tight font-display">
         <div className="parallax-title-line">
           {mounted && ready ? t('parallax.desktop.line1') : 'Turning complex'}
         </div>
@@ -127,7 +127,7 @@ const MyParallax: React.FC<MyParallaxProps> = ({
           </span>
         </div>
       </h1>
-      <p className="parallax-subtitle text-lg sm:text-xl 2xl:text-3xl text-gray-600 max-w-lg 2xl:max-w-2xl font-light leading-relaxed">
+      <p className="parallax-subtitle text-lg sm:text-xl 2xl:text-2xl text-gray-600 max-w-lg 2xl:max-w-2xl font-light leading-relaxed">
         {mounted && ready
           ? t('parallax.desktop.subtitle')
           : "Every challenge is an opportunity to build something meaningful. We take what's complicated and make it work beautifully."}
