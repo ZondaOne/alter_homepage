@@ -1,5 +1,5 @@
 {
-  "home": "Inicio",
+  "home": "Iniciossssss",
   "products": "Productos",
   "solutions": "Tus ideas",
   "services": "Servicios",
@@ -59,8 +59,7 @@
       "comchat": {
         "title": "ComChat",
         "description": "Tu propio asistente de IA que entiende tu negocio. Aprende de tu contenido y ayuda a tus clientes a obtener respuestas rápidamente."
-      }
-      ,
+      },
       "rhivo": {
         "title": "Rhivo",
         "description": "Gestiona reservas y horarios para negocios de servicios con herramientas sencillas y fiables: calendarios, gestión de personal y citas de clientes en un solo lugar."
@@ -154,102 +153,102 @@
     "fromConcept": "Del Concepto",
     "toCode": "al Código",
     "digitalSolutionsDescription": "Creamos soluciones y experiencias digitales integradas que tu audiencia ama interactuar."
-  }
+  },
 
-  , "blogTitleLine1": "Tecnología e"
-, "blogTitleLine2": "Innovación"
-, "blogSubtitle": "Explora perspectivas vanguardistas sobre transformación digital, arquitectura empresarial y el futuro de la tecnología. Mantente a la vanguardia con insights que impulsan la innovación empresarial."
-, "blogFeatured": "Destacado"
-, "blogReadMore": "Leer más"
-, "blogPost1Title": "El Futuro de la IA Empresarial: Más Allá de la Automatización hacia la Transformación Inteligente"
-, "blogPost1Excerpt": "Descubre cómo las organizaciones líderes están aprovechando la IA no solo para automatización, sino para una completa reinvención del modelo de negocio y ventaja competitiva."
-, "blogPost1Category": "Inteligencia Artificial"
-, "blogPost1ReadTime": "8 min de lectura"
-, "blogPost2Title": "Arquitectura Cloud-Native: Construyendo Sistemas Resilientes a Escala"
-, "blogPost2Excerpt": "Aprende los patrones y prácticas esenciales para diseñar aplicaciones cloud-native que escalan sin esfuerzo y mantienen alta disponibilidad."
-, "blogPost2Category": "Computación en la Nube"
-, "blogPost2ReadTime": "6 min de lectura"
-, "blogPost3Title": "Ciberseguridad en la Era del Trabajo Remoto: Un Enfoque Estratégico"
-, "blogPost3Excerpt": "Explora estrategias avanzadas de ciberseguridad que protegen fuerzas laborales distribuidas mientras permiten colaboración y productividad perfectas."
-, "blogPost3Category": "Ciberseguridad"
-, "blogPost3ReadTime": "7 min de lectura"
-, "blogPost4Title": "Data Mesh: Democratizando la Arquitectura de Datos para el Éxito Empresarial"
-, "blogPost4Excerpt": "Comprende cómo los principios de data mesh están revolucionando la gestión de datos empresariales y habilitando análisis de autoservicio a escala."
-, "blogPost4Category": "Ingeniería de Datos"
-, "blogPost4ReadTime": "9 min de lectura"
-, "blogPost5Title": "Evolución DevOps: Ingeniería de Plataformas y Experiencia del Desarrollador"
-, "blogPost5Excerpt": "Descubre cómo la ingeniería de plataformas está transformando las prácticas DevOps y creando experiencias superiores para desarrolladores en las organizaciones."
-, "blogPost5Category": "DevOps"
-, "blogPost5ReadTime": "5 min de lectura"
-, "blogPost6Title": "Tecnología Sostenible: Computación Verde para Empresas Modernas"
-, "blogPost6Excerpt": "Aprende cómo las organizaciones están reduciendo su huella de carbono a través de prácticas tecnológicas sostenibles e iniciativas de computación verde."
-, "blogPost6Category": "Sostenibilidad"
-, "blogPost6ReadTime": "6 min de lectura"
+  "blogTitleLine1": "Tecnología e",
+  "blogTitleLine2": "Innovación",
+  "blogSubtitle": "Explora perspectivas vanguardistas sobre transformación digital, arquitectura empresarial y el futuro de la tecnología. Mantente a la vanguardia con insights que impulsan la innovación empresarial.",
+  "blogFeatured": "Destacado",
+  "blogReadMore": "Leer más",
+  "blogPost1Title": "El Futuro de la IA Empresarial: Más Allá de la Automatización hacia la Transformación Inteligente",
+  "blogPost1Excerpt": "Descubre cómo las organizaciones líderes están aprovechando la IA no solo para automatización, sino para una completa reinvención del modelo de negocio y ventaja competitiva.",
+  "blogPost1Category": "Inteligencia Artificial",
+  "blogPost1ReadTime": "8 min de lectura",
+  "blogPost2Title": "Arquitectura Cloud-Native: Construyendo Sistemas Resilientes a Escala",
+  "blogPost2Excerpt": "Aprende los patrones y prácticas esenciales para diseñar aplicaciones cloud-native que escalan sin esfuerzo y mantienen alta disponibilidad.",
+  "blogPost2Category": "Computación en la Nube",
+  "blogPost2ReadTime": "6 min de lectura",
+  "blogPost3Title": "Ciberseguridad en la Era del Trabajo Remoto: Un Enfoque Estratégico",
+  "blogPost3Excerpt": "Explora estrategias avanzadas de ciberseguridad que protegen fuerzas laborales distribuidas mientras permiten colaboración y productividad perfectas.",
+  "blogPost3Category": "Ciberseguridad",
+  "blogPost3ReadTime": "7 min de lectura",
+  "blogPost4Title": "Data Mesh: Democratizando la Arquitectura de Datos para el Éxito Empresarial",
+  "blogPost4Excerpt": "Comprende cómo los principios de data mesh están revolucionando la gestión de datos empresariales y habilitando análisis de autoservicio a escala.",
+  "blogPost4Category": "Ingeniería de Datos",
+  "blogPost4ReadTime": "9 min de lectura",
+  "blogPost5Title": "Evolución DevOps: Ingeniería de Plataformas y Experiencia del Desarrollador",
+  "blogPost5Excerpt": "Descubre cómo la ingeniería de plataformas está transformando las prácticas DevOps y creando experiencias superiores para desarrolladores en las organizaciones.",
+  "blogPost5Category": "DevOps",
+  "blogPost5ReadTime": "5 min de lectura",
+  "blogPost6Title": "Tecnología Sostenible: Computación Verde para Empresas Modernas",
+  "blogPost6Excerpt": "Aprende cómo las organizaciones están reduciendo su huella de carbono a través de prácticas tecnológicas sostenibles e iniciativas de computación verde.",
+  "blogPost6Category": "Sostenibilidad",
+  "blogPost6ReadTime": "6 min de lectura",
 
-, "aiPostTitle": "El Futuro de la IA Empresarial: Más Allá de la Automatización hacia la Transformación Inteligente"
-, "aiPostExcerpt": "Descubre cómo las organizaciones líderes están aprovechando la IA no solo para automatización, sino para una completa reinvención del modelo de negocio y ventaja competitiva."
-, "aiPostCategory": "Inteligencia Artificial"
-, "aiPostReadTime": "8 min de lectura"
-, "aiPostSection1Title": "La Revolución de la IA: De la Eficiencia a la Inteligencia"
-, "aiPostSection1P1": "La Inteligencia Artificial ha evolucionado mucho más allá de la simple automatización de tareas. Las empresas líderes de hoy están descubriendo que el verdadero potencial de la IA no radica en reemplazar a los trabajadores humanos, sino en aumentar la inteligencia humana y transformar modelos de negocio completos. Este cambio representa un cambio fundamental en cómo las organizaciones abordan la adopción tecnológica y la planificación estratégica."
-, "aiPostSection1P2": "Las empresas que antes veían la IA como una herramienta para reducir costos ahora la reconocen como un motor de innovación, experiencia del cliente y diferenciación competitiva. La pregunta ya no es '¿Cómo puede la IA hacernos más eficientes?' sino más bien '¿Cómo puede la IA ayudarnos a reimaginar lo que es posible?'"
-, "aiPostSection2Title": "Implementación Estratégica: Más Allá del Bombo"
-, "aiPostSection2P1": "La transformación exitosa con IA requiere más que tecnología de vanguardia. Exige un enfoque holístico que abarque la cultura organizacional, la infraestructura de datos y la alineación estratégica. Las organizaciones líderes están invirtiendo fuertemente en alfabetización en IA en todos los niveles de su fuerza laboral, asegurando que los beneficios de los sistemas inteligentes se realicen en toda la empresa."
-, "aiPostQuote": "Las implementaciones de IA más exitosas son aquellas que amplifican las capacidades humanas en lugar de reemplazarlas por completo."
-, "aiPostSection2P2": "Este enfoque se centra en crear relaciones simbióticas entre la experiencia humana y la inteligencia de máquina, llevando a resultados que ninguna podría lograr independientemente."
-, "aiPostSection3Title": "Aplicaciones del Mundo Real e Impacto"
-, "aiPostSection3P1": "Desde análisis predictivos que anticipan cambios del mercado hasta experiencias personalizadas del cliente que impulsan la lealtad, la IA está reformando cada aspecto de las operaciones comerciales. Las organizaciones de salud están usando IA para acelerar el descubrimiento de medicamentos, las instituciones financieras están aprovechando el aprendizaje automático para evaluación de riesgos, y las empresas manufactureras están implementando sistemas inteligentes para mantenimiento predictivo."
-, "aiPostExample1Title": "Análisis Predictivo"
-, "aiPostExample1Text": "Las organizaciones están usando IA para pronosticar tendencias del mercado, comportamiento del cliente y desafíos operacionales antes de que ocurran."
-, "aiPostExample2Title": "Automatización Inteligente"
-, "aiPostExample2Text": "Sistemas inteligentes que aprenden y se adaptan, manejando procesos complejos de toma de decisiones con mínima intervención humana."
-, "aiPostSection4Title": "El Camino a Seguir: Construyendo Organizaciones Preparadas para IA"
-, "aiPostSection4P1": "Crear una organización preparada para IA requiere planificación cuidadosa, inversión significativa y un compromiso con el aprendizaje continuo. Las organizaciones deben enfocarse en desarrollar marcos robustos de gobernanza de datos, invertir en desarrollo de talento y fomentar una cultura de experimentación e innovación."
-, "aiPostSection4P2": "El futuro pertenece a las organizaciones que pueden integrar exitosamente la inteligencia artificial en su visión estratégica mientras mantienen el enfoque en valores humanos y consideraciones éticas. Este equilibrio definirá la próxima generación de empresas exitosas."
-, "aiPostCTATitle": "¿Listo para Transformar tu Negocio con IA?"
-, "aiPostCTAText": "Nuestro equipo de especialistas en IA puede ayudarte a desarrollar e implementar soluciones inteligentes que generen valor comercial real."
-, "aiPostCTAButton": "Empezar Hoy"
-, "aiPostShareText": "Comparte este artículo:"
-, "aiPostBackToBlog": "Volver al Blog"
+  "aiPostTitle": "El Futuro de la IA Empresarial: Más Allá de la Automatización hacia la Transformación Inteligente",
+  "aiPostExcerpt": "Descubre cómo las organizaciones líderes están aprovechando la IA no solo para automatización, sino para una completa reinvención del modelo de negocio y ventaja competitiva.",
+  "aiPostCategory": "Inteligencia Artificial",
+  "aiPostReadTime": "8 min de lectura",
+  "aiPostSection1Title": "La Revolución de la IA: De la Eficiencia a la Inteligencia",
+  "aiPostSection1P1": "La Inteligencia Artificial ha evolucionado mucho más allá de la simple automatización de tareas. Las empresas líderes de hoy están descubriendo que el verdadero potencial de la IA no radica en reemplazar a los trabajadores humanos, sino en aumentar la inteligencia humana y transformar modelos de negocio completos. Este cambio representa un cambio fundamental en cómo las organizaciones abordan la adopción tecnológica y la planificación estratégica.",
+  "aiPostSection1P2": "Las empresas que antes veían la IA como una herramienta para reducir costos ahora la reconocen como un motor de innovación, experiencia del cliente y diferenciación competitiva. La pregunta ya no es '¿Cómo puede la IA hacernos más eficientes?' sino más bien '¿Cómo puede la IA ayudarnos a reimaginar lo que es posible?'",
+  "aiPostSection2Title": "Implementación Estratégica: Más Allá del Bombo",
+  "aiPostSection2P1": "La transformación exitosa con IA requiere más que tecnología de vanguardia. Exige un enfoque holístico que abarque la cultura organizacional, la infraestructura de datos y la alineación estratégica. Las organizaciones líderes están invirtiendo fuertemente en alfabetización en IA en todos los niveles de su fuerza laboral, asegurando que los beneficios de los sistemas inteligentes se realicen en toda la empresa.",
+  "aiPostQuote": "Las implementaciones de IA más exitosas son aquellas que amplifican las capacidades humanas en lugar de reemplazarlas por completo.",
+  "aiPostSection2P2": "Este enfoque se centra en crear relaciones simbióticas entre la experiencia humana y la inteligencia de máquina, llevando a resultados que ninguna podría lograr independientemente.",
+  "aiPostSection3Title": "Aplicaciones del Mundo Real e Impacto",
+  "aiPostSection3P1": "Desde análisis predictivos que anticipan cambios del mercado hasta experiencias personalizadas del cliente que impulsan la lealtad, la IA está reformando cada aspecto de las operaciones comerciales. Las organizaciones de salud están usando IA para acelerar el descubrimiento de medicamentos, las instituciones financieras están aprovechando el aprendizaje automático para evaluación de riesgos, y las empresas manufactureras están implementando sistemas inteligentes para mantenimiento predictivo.",
+  "aiPostExample1Title": "Análisis Predictivo",
+  "aiPostExample1Text": "Las organizaciones están usando IA para pronosticar tendencias del mercado, comportamiento del cliente y desafíos operacionales antes de que ocurran.",
+  "aiPostExample2Title": "Automatización Inteligente",
+  "aiPostExample2Text": "Sistemas inteligentes que aprenden y se adaptan, manejando procesos complejos de toma de decisiones con mínima intervención humana.",
+  "aiPostSection4Title": "El Camino a Seguir: Construyendo Organizaciones Preparadas para IA",
+  "aiPostSection4P1": "Crear una organización preparada para IA requiere planificación cuidadosa, inversión significativa y un compromiso con el aprendizaje continuo. Las organizaciones deben enfocarse en desarrollar marcos robustos de gobernanza de datos, invertir en desarrollo de talento y fomentar una cultura de experimentación e innovación.",
+  "aiPostSection4P2": "El futuro pertenece a las organizaciones que pueden integrar exitosamente la inteligencia artificial en su visión estratégica mientras mantienen el enfoque en valores humanos y consideraciones éticas. Este equilibrio definirá la próxima generación de empresas exitosas.",
+  "aiPostCTATitle": "¿Listo para Transformar tu Negocio con IA?",
+  "aiPostCTAText": "Nuestro equipo de especialistas en IA puede ayudarte a desarrollar e implementar soluciones inteligentes que generen valor comercial real.",
+  "aiPostCTAButton": "Empezar Hoy",
+  "aiPostShareText": "Comparte este artículo:",
+  "aiPostBackToBlog": "Volver al Blog",
 
-, "cloudPostTitle": "Arquitectura Cloud-Native: Construyendo Sistemas Resilientes a Escala"
-, "cloudPostExcerpt": "Aprende los patrones y prácticas esenciales para diseñar aplicaciones cloud-native que escalan sin esfuerzo y mantienen alta disponibilidad."
-, "cloudPostCategory": "Computación en la Nube"
-, "cloudPostReadTime": "6 min de lectura"
-, "cloudPostSection1Title": "El Cambio de Paradigma Cloud-Native"
-, "cloudPostSection1P1": "La arquitectura cloud-native representa un cambio fundamental en cómo diseñamos, construimos y operamos aplicaciones. A diferencia de los enfoques monolíticos tradicionales, los sistemas cloud-native se construyen desde cero para aprovechar todo el potencial de los entornos de computación en la nube. Este enfoque abraza microservicios, contenedorización y orquestación dinámica para crear sistemas que son inherentemente escalables, resilientes y adaptables."
-, "cloudPostSection1P2": "Los principios fundamentales del diseño cloud-native—escalabilidad, resiliencia, observabilidad y automatización—trabajan juntos para crear aplicaciones que pueden manejar cargas impredecibles mientras mantienen altos estándares de disponibilidad y rendimiento."
-, "cloudPostSection2Title": "Patrones de Arquitectura Esenciales"
-, "cloudPostSection2P1": "Las aplicaciones cloud-native exitosas dependen de patrones arquitectónicos probados que abordan desafíos comunes en sistemas distribuidos. Estos patrones proporcionan planos para construir sistemas robustos y mantenibles que pueden evolucionar con los requisitos comerciales cambiantes."
-, "cloudPostPattern1Title": "Arquitectura de Microservicios"
-, "cloudPostPattern1Text": "Dividir aplicaciones en servicios pequeños e independientemente desplegables que se comunican a través de APIs bien definidas."
-, "cloudPostPattern2Title": "Diseño Basado en Eventos"
-, "cloudPostPattern2Text": "Usar eventos y colas de mensajes para crear sistemas débilmente acoplados que pueden escalar independientemente."
-, "cloudPostPattern3Title": "Patrón Circuit Breaker"
-, "cloudPostPattern3Text": "Implementar mecanismos de tolerancia a fallos que previenen fallas en cascada en servicios distribuidos."
-, "cloudPostPattern4Title": "Base de Datos por Servicio"
-, "cloudPostPattern4Text": "Asegurar independencia de datos dando a cada servicio su propia base de datos, optimizada para sus necesidades específicas."
-, "cloudPostSection3Title": "Contenedorización y Orquestación"
-, "cloudPostSection3P1": "Los contenedores han revolucionado cómo empaquetamos y desplegamos aplicaciones, proporcionando consistencia entre entornos de desarrollo, pruebas y producción. Kubernetes ha emergido como el estándar de facto para orquestación de contenedores, ofreciendo capacidades poderosas para gestionar cargas de trabajo contenedorizadas a escala."
-, "cloudPostQuote": "El verdadero poder de la arquitectura cloud-native radica en su capacidad de convertir la infraestructura en código y las operaciones en automatización."
-, "cloudPostSection3P2": "Las plataformas de orquestación modernas proporcionan escalado automatizado, monitoreo de salud y capacidades de auto-sanación que hacen las aplicaciones más resilientes y reducen la sobrecarga operacional."
-, "cloudPostSection4Title": "Observabilidad y Monitoreo"
-, "cloudPostSection4P1": "En sistemas cloud-native distribuidos, la observabilidad se vuelve crítica para entender el comportamiento del sistema y diagnosticar problemas. Los tres pilares de la observabilidad—métricas, logs y trazas—proporcionan visibilidad completa del rendimiento y salud de las aplicaciones."
-, "cloudPostSection4P2": "Las plataformas de observabilidad modernas usan inteligencia artificial y aprendizaje automático para detectar automáticamente anomalías, predecir problemas potenciales y proporcionar insights accionables para optimización."
-, "cloudPostMetric1": "Latencia de solicitudes y rendimiento"
-, "cloudPostMetric2": "Tasas de error y patrones de falla"
-, "cloudPostMetric3": "Utilización de recursos y capacidad"
-, "cloudPostMetric4": "Métricas de negocio y experiencia del usuario"
-, "cloudPostSection5Title": "Seguridad en Entornos Cloud-Native"
-, "cloudPostSection5P1": "La seguridad en arquitecturas cloud-native requiere un enfoque shift-left, integrando consideraciones de seguridad a lo largo del pipeline de desarrollo y despliegue. Esto incluye implementar redes de confianza cero, asegurar imágenes de contenedores y gestionar secretos y credenciales apropiadamente."
-, "cloudPostSection5P2": "Las prácticas de seguridad modernas enfatizan el escaneo automatizado de vulnerabilidades, políticas como código y monitoreo continuo de cumplimiento para asegurar que la seguridad mantenga el ritmo con los ciclos de desarrollo rápidos."
-, "cloudPostCTATitle": "¿Listo para Construir Aplicaciones Cloud-Native?"
-, "cloudPostCTAText": "Nuestros expertos en arquitectura cloud pueden ayudarte a diseñar e implementar sistemas escalables y resilientes que aprovechan todo el poder de las tecnologías cloud-native."
-, "cloudPostCTAButton": "Iniciar tu Proyecto"
-, "cloudPostShareText": "Comparte este artículo:"
-, "cloudPostBackToBlog": "Volver al Blog"
+  "cloudPostTitle": "Arquitectura Cloud-Native: Construyendo Sistemas Resilientes a Escala",
+  "cloudPostExcerpt": "Aprende los patrones y prácticas esenciales para diseñar aplicaciones cloud-native que escalan sin esfuerzo y mantienen alta disponibilidad.",
+  "cloudPostCategory": "Computación en la Nube",
+  "cloudPostReadTime": "6 min de lectura",
+  "cloudPostSection1Title": "El Cambio de Paradigma Cloud-Native",
+  "cloudPostSection1P1": "La arquitectura cloud-native representa un cambio fundamental en cómo diseñamos, construimos y operamos aplicaciones. A diferencia de los enfoques monolíticos tradicionales, los sistemas cloud-native se construyen desde cero para aprovechar todo el potencial de los entornos de computación en la nube. Este enfoque abraza microservicios, contenedorización y orquestación dinámica para crear sistemas que son inherentemente escalables, resilientes y adaptables.",
+  "cloudPostSection1P2": "Los principios fundamentales del diseño cloud-native—escalabilidad, resiliencia, observabilidad y automatización—trabajan juntos para crear aplicaciones que pueden manejar cargas impredecibles mientras mantienen altos estándares de disponibilidad y rendimiento.",
+  "cloudPostSection2Title": "Patrones de Arquitectura Esenciales",
+  "cloudPostSection2P1": "Las aplicaciones cloud-native exitosas dependen de patrones arquitectónicos probados que abordan desafíos comunes en sistemas distribuidos. Estos patrones proporcionan planos para construir sistemas robustos y mantenibles que pueden evolucionar con los requisitos comerciales cambiantes.",
+  "cloudPostPattern1Title": "Arquitectura de Microservicios",
+  "cloudPostPattern1Text": "Dividir aplicaciones en servicios pequeños e independientemente desplegables que se comunican a través de APIs bien definidas.",
+  "cloudPostPattern2Title": "Diseño Basado en Eventos",
+  "cloudPostPattern2Text": "Usar eventos y colas de mensajes para crear sistemas débilmente acoplados que pueden escalar independientemente.",
+  "cloudPostPattern3Title": "Patrón Circuit Breaker",
+  "cloudPostPattern3Text": "Implementar mecanismos de tolerancia a fallos que previenen fallas en cascada en servicios distribuidos.",
+  "cloudPostPattern4Title": "Base de Datos por Servicio",
+  "cloudPostPattern4Text": "Asegurar independencia de datos dando a cada servicio su propia base de datos, optimizada para sus necesidades específicas.",
+  "cloudPostSection3Title": "Contenedorización y Orquestación",
+  "cloudPostSection3P1": "Los contenedores han revolucionado cómo empaquetamos y desplegamos aplicaciones, proporcionando consistencia entre entornos de desarrollo, pruebas y producción. Kubernetes ha emergido como el estándar de facto para orquestación de contenedores, ofreciendo capacidades poderosas para gestionar cargas de trabajo contenedorizadas a escala.",
+  "cloudPostQuote": "El verdadero poder de la arquitectura cloud-native radica en su capacidad de convertir la infraestructura en código y las operaciones en automatización.",
+  "cloudPostSection3P2": "Las plataformas de orquestación modernas proporcionan escalado automatizado, monitoreo de salud y capacidades de auto-sanación que hacen las aplicaciones más resilientes y reducen la sobrecarga operacional.",
+  "cloudPostSection4Title": "Observabilidad y Monitoreo",
+  "cloudPostSection4P1": "En sistemas cloud-native distribuidos, la observabilidad se vuelve crítica para entender el comportamiento del sistema y diagnosticar problemas. Los tres pilares de la observabilidad—métricas, logs y trazas—proporcionan visibilidad completa del rendimiento y salud de las aplicaciones.",
+  "cloudPostSection4P2": "Las plataformas de observabilidad modernas usan inteligencia artificial y aprendizaje automático para detectar automáticamente anomalías, predecir problemas potenciales y proporcionar insights accionables para optimización.",
+  "cloudPostMetric1": "Latencia de solicitudes y rendimiento",
+  "cloudPostMetric2": "Tasas de error y patrones de falla",
+  "cloudPostMetric3": "Utilización de recursos y capacidad",
+  "cloudPostMetric4": "Métricas de negocio y experiencia del usuario",
+  "cloudPostSection5Title": "Seguridad en Entornos Cloud-Native",
+  "cloudPostSection5P1": "La seguridad en arquitecturas cloud-native requiere un enfoque shift-left, integrando consideraciones de seguridad a lo largo del pipeline de desarrollo y despliegue. Esto incluye implementar redes de confianza cero, asegurar imágenes de contenedores y gestionar secretos y credenciales apropiadamente.",
+  "cloudPostSection5P2": "Las prácticas de seguridad modernas enfatizan el escaneo automatizado de vulnerabilidades, políticas como código y monitoreo continuo de cumplimiento para asegurar que la seguridad mantenga el ritmo con los ciclos de desarrollo rápidos.",
+  "cloudPostCTATitle": "¿Listo para Construir Aplicaciones Cloud-Native?",
+  "cloudPostCTAText": "Nuestros expertos en arquitectura cloud pueden ayudarte a diseñar e implementar sistemas escalables y resilientes que aprovechan todo el poder de las tecnologías cloud-native.",
+  "cloudPostCTAButton": "Iniciar tu Proyecto",
+  "cloudPostShareText": "Comparte este artículo:",
+  "cloudPostBackToBlog": "Volver al Blog",
 
-, "mobileShowcase": {
+  "mobileShowcase": {
     "title": "Experiencia Mobile",
     "description": "Diseñado para ofrecer la mejor experiencia en dispositivos móviles. Interfaz intuitiva, rendimiento rápido y accesibilidad en todos los tamaños de pantalla.",
     "imageAlt": "Demostración de aplicación móvil",
