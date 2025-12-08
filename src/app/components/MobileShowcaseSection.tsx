@@ -50,18 +50,34 @@ export default function MobileShowcaseSection() {
       defaults: { ease: 'power3.out' }
     })
 
-    tl.to(imageRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      transformOrigin: 'center bottom'
-    }, 0)
-    .to(textRef.current, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      transformOrigin: 'center bottom'
-    }, 0.1)
+    tl.to(
+      imageRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        transformOrigin: 'center bottom'
+      },
+      0
+    ).to(
+      textRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        transformOrigin: 'center bottom'
+      },
+      0.1
+    )
+
+    // Gradient animation for title
+    gsap.to('.hero-gradient-text', {
+      backgroundPosition: '200% 50%',
+      repeat: -1,
+      yoyo: true,
+      duration: 8,
+      ease: 'sine.inOut'
+    })
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
@@ -73,7 +89,7 @@ export default function MobileShowcaseSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-gray-50 py-8 lg:py-16 2xl:py-16"
+      className="hidden lg:block w-full bg-gray-50 py-8 lg:py-16 2xl:py-16"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 2xl:px-12">
         <div className="flex items-center justify-between w-full gap-8 lg:gap-12">
@@ -88,25 +104,38 @@ export default function MobileShowcaseSection() {
               className="w-full h-auto"
             />
           </div>
-          
+
           {/* Texto a la derecha */}
           <div ref={textRef} className="w-2/5 lg:w-5/12">
-            <h3 className="text-4xl lg:text-5xl 2xl:text-6xl font-semibold text-gray-900 mb-4 lg:mb-6">
-              {t('mobileShowcase.title')}
+            <h3 className="text-4xl lg:text-5xl 2xl:text-6xl font-semibold text-gray-900 mb-4 lg:mb-6 font-display tracking-tight">
+              {t('mobileShowcase.title').split(' ').slice(0, -1).join(' ')}{' '}
+              <span
+                className="hero-gradient-text"
+                style={{
+                  background:
+                    'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
+                  backgroundSize: '200% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                {t('mobileShowcase.title').split(' ').slice(-1)[0]}
+              </span>
             </h3>
-            <p className="text-lg lg:text-xl 2xl:text-2xl text-gray-600 leading-relaxed mb-6 lg:mb-8">
+            <p className="text-lg lg:text-xl 2xl:text-2xl text-gray-600 leading-relaxed mb-6 lg:mb-8 font-light">
               {t('mobileShowcase.description')}
             </p>
             <ul className="space-y-3 lg:space-y-4">
-              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700">
+              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700 font-light">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                 {t('mobileShowcase.feature1')}
               </li>
-              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700">
+              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700 font-light">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                 {t('mobileShowcase.feature2')}
               </li>
-              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700">
+              <li className="flex items-center gap-3 text-base lg:text-lg 2xl:text-xl text-gray-700 font-light">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                 {t('mobileShowcase.feature3')}
               </li>
