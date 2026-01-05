@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { gsap } from 'gsap';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -15,6 +16,7 @@ function VerifyContent() {
     const [user, setUser] = useState<{ email: string; isPremium: boolean } | null>(null);
     const [errorMessage, setErrorMessage] = useState('');
     const [mounted, setMounted] = useState(false);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -41,8 +43,6 @@ function VerifyContent() {
 
                 const data = await response.json();
 
-                // Send token to extension via postMessage
-                // The auth-bridge.js content script will receive this
                 window.postMessage({
                     type: 'PI_AUTH_TOKEN',
                     token: data.token,
@@ -60,304 +60,116 @@ function VerifyContent() {
         verifyToken();
     }, [token]);
 
+    useEffect(() => {
+        if (!mounted || !contentRef.current || status === 'loading') return;
+
+        gsap.fromTo('.verify-animate',
+            { opacity: 0, y: 30, rotationX: 10 },
+            { opacity: 1, y: 0, rotationX: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
+        );
+    }, [mounted, status]);
+
     if (!mounted) return null;
 
     return (
-        <div
-            style={{
-                background: '#F5F5F7',
-                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                minHeight: '100vh',
-                display: 'flex',
-                flexDirection: 'column'
-            }}
-        >
-            {/* Main Content */}
-            <div
-                style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '24px'
-                }}
-            >
-                <div
-                    style={{
-                        width: '100%',
-                        maxWidth: '400px',
-                        textAlign: 'center',
-                        animation: 'fadeIn 0.5s ease-out'
-                    }}
-                >
-                    {/* Card Container */}
-                    <div
-                        style={{
-                            background: '#FFFFFF',
-                            border: '1px solid rgba(0, 0, 0, 0.06)',
-                            borderRadius: '20px',
-                            padding: '40px 32px',
-                            boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
-                        }}
-                    >
-                        {/* PI Icon */}
-                        <div style={{ marginBottom: '28px' }}>
-                            <Image
-                                src="/pi_icon.png"
-                                alt="Privacy Interceptor"
-                                width={72}
-                                height={72}
-                                style={{
-                                    borderRadius: '18px',
-                                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-                                    margin: '0 auto',
-                                    display: 'block'
-                                }}
-                            />
-                        </div>
-
-                        {status === 'loading' && (
-                            <div style={{ animation: 'pulse 1.5s ease-in-out infinite' }}>
-                                <div
-                                    style={{
-                                        width: '40px',
-                                        height: '40px',
-                                        border: '3px solid rgba(207, 29, 19, 0.15)',
-                                        borderTopColor: '#CF1D13',
-                                        borderRadius: '50%',
-                                        margin: '0 auto 20px',
-                                        animation: 'spin 0.8s linear infinite'
-                                    }}
-                                />
-                                <h1 style={{
-                                    fontSize: '22px',
-                                    fontWeight: 600,
-                                    color: '#1D1D1F',
-                                    marginBottom: '8px',
-                                    letterSpacing: '-0.01em'
-                                }}>
-                                    Verifying your email
-                                </h1>
-                                <p style={{ color: '#6E6E73', fontSize: '15px', lineHeight: 1.5 }}>
-                                    Just a moment...
-                                </p>
-                            </div>
-                        )}
-
-                        {status === 'success' && user && (
-                            <div style={{ animation: 'scaleIn 0.4s ease-out' }}>
-                                <div
-                                    style={{
-                                        width: '64px',
-                                        height: '64px',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 24px',
-                                        background: 'linear-gradient(135deg, #30D158 0%, #34C759 100%)',
-                                        boxShadow: '0 8px 24px rgba(48, 209, 88, 0.35)'
-                                    }}
-                                >
-                                    <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-
-                                <h1 style={{
-                                    fontSize: '26px',
-                                    fontWeight: 600,
-                                    color: '#1D1D1F',
-                                    marginBottom: '8px',
-                                    letterSpacing: '-0.02em'
-                                }}>
-                                    You&apos;re signed in
-                                </h1>
-                                <p style={{ color: '#6E6E73', fontSize: '15px', marginBottom: '24px' }}>
-                                    {user.email}
-                                </p>
-
-                                {/* Status Badge */}
-                                <div
-                                    style={{
-                                        background: user.isPremium
-                                            ? 'linear-gradient(135deg, rgba(207, 29, 19, 0.08) 0%, rgba(209, 107, 0, 0.08) 100%)'
-                                            : 'rgba(0, 0, 0, 0.03)',
-                                        border: user.isPremium
-                                            ? '1px solid rgba(207, 29, 19, 0.15)'
-                                            : '1px solid rgba(0, 0, 0, 0.06)',
-                                        borderRadius: '14px',
-                                        padding: '16px 20px',
-                                        marginBottom: '24px'
-                                    }}
-                                >
-                                    {user.isPremium ? (
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                                            <span
-                                                style={{
-                                                    background: 'linear-gradient(135deg, #CF1D13 0%, #D16B00 100%)',
-                                                    color: 'white',
-                                                    fontSize: '10px',
-                                                    fontWeight: 700,
-                                                    padding: '5px 12px',
-                                                    borderRadius: '20px',
-                                                    textTransform: 'uppercase',
-                                                    letterSpacing: '0.06em'
-                                                }}
-                                            >
-                                                Premium
-                                            </span>
-                                            <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: 500 }}>
-                                                Lifetime access active
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                                            <span
-                                                style={{
-                                                    background: 'rgba(0, 0, 0, 0.08)',
-                                                    color: '#6E6E73',
-                                                    fontSize: '10px',
-                                                    fontWeight: 700,
-                                                    padding: '5px 12px',
-                                                    borderRadius: '20px',
-                                                    textTransform: 'uppercase',
-                                                    letterSpacing: '0.06em'
-                                                }}
-                                            >
-                                                Free
-                                            </span>
-                                            <span style={{ fontSize: '14px', color: '#1D1D1F' }}>
-                                                Return to the extension
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <p style={{ fontSize: '13px', color: '#AEAEB2' }}>
-                                    You can close this tab
-                                </p>
-                            </div>
-                        )}
-
-                        {status === 'error' && (
-                            <div style={{ animation: 'shakeIn 0.5s ease-out' }}>
-                                <div
-                                    style={{
-                                        width: '64px',
-                                        height: '64px',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 24px',
-                                        background: 'rgba(255, 59, 48, 0.1)'
-                                    }}
-                                >
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF3B30" strokeWidth="2">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </div>
-
-                                <h1 style={{
-                                    fontSize: '26px',
-                                    fontWeight: 600,
-                                    color: '#1D1D1F',
-                                    marginBottom: '8px',
-                                    letterSpacing: '-0.02em'
-                                }}>
-                                    Verification failed
-                                </h1>
-                                <p style={{ color: '#6E6E73', fontSize: '15px', marginBottom: '28px', lineHeight: 1.5 }}>
-                                    {errorMessage}
-                                </p>
-
-                                <a
-                                    href="/privacyInterceptor/login"
-                                    style={{
-                                        display: 'inline-block',
-                                        padding: '16px 32px',
-                                        background: 'linear-gradient(135deg, #CF1D13 0%, #D16B00 100%)',
-                                        color: 'white',
-                                        fontWeight: 600,
-                                        fontSize: '15px',
-                                        borderRadius: '12px',
-                                        textDecoration: 'none',
-                                        boxShadow: '0 4px 16px rgba(207, 29, 19, 0.3)',
-                                        transition: 'all 0.2s ease'
-                                    }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 8px 24px rgba(207, 29, 19, 0.4)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 4px 16px rgba(207, 29, 19, 0.3)';
-                                    }}
-                                >
-                                    Try again
-                                </a>
-                            </div>
-                        )}
+        <div className="bg-white min-h-screen flex flex-col font-sans">
+            <div className="flex-1 flex items-center justify-center px-6 py-16">
+                <div ref={contentRef} className="w-full max-w-md text-center">
+                    {/* Icon */}
+                    <div className="mb-8">
+                        <Image
+                            src="/pi_icon.png"
+                            alt="Privacy Interceptor"
+                            width={72}
+                            height={72}
+                            className="mx-auto rounded-2xl shadow-lg"
+                        />
                     </div>
+
+                    {status === 'loading' && (
+                        <div>
+                            <div className="w-12 h-12 border-3 border-gray-200 border-t-orange-500 rounded-full animate-spin mx-auto mb-6"
+                                style={{ borderWidth: '3px' }} />
+                            <h1 className="font-display text-3xl font-semibold text-gray-900 tracking-tight mb-2">
+                                Verifying your email
+                            </h1>
+                            <p className="text-gray-600">Just a moment...</p>
+                        </div>
+                    )}
+
+                    {status === 'success' && user && (
+                        <div>
+                            <div className="verify-animate w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30">
+                                <CheckIcon className="w-8 h-8 text-white" />
+                            </div>
+
+                            <h1 className="verify-animate font-display text-4xl font-semibold text-gray-900 tracking-tight mb-2">
+                                You&apos;re signed in
+                            </h1>
+                            <p className="verify-animate text-gray-600 mb-8">{user.email}</p>
+
+                            {/* Status Badge */}
+                            <div className={`verify-animate rounded-2xl p-5 mb-8 ${user.isPremium
+                                    ? 'bg-orange-50 border border-orange-100'
+                                    : 'bg-gray-50 border border-gray-100'
+                                }`}>
+                                <div className="flex items-center justify-center gap-3">
+                                    <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide ${user.isPremium
+                                            ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
+                                            : 'bg-gray-200 text-gray-600'
+                                        }`}>
+                                        {user.isPremium ? 'Premium' : 'Free'}
+                                    </span>
+                                    <span className="text-sm text-gray-900 font-medium">
+                                        {user.isPremium ? 'Lifetime access active' : 'Return to the extension'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p className="verify-animate text-sm text-gray-400">
+                                You can close this tab
+                            </p>
+                        </div>
+                    )}
+
+                    {status === 'error' && (
+                        <div>
+                            <div className="verify-animate w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-6">
+                                <XIcon className="w-8 h-8 text-red-500" />
+                            </div>
+
+                            <h1 className="verify-animate font-display text-4xl font-semibold text-gray-900 tracking-tight mb-3">
+                                Verification failed
+                            </h1>
+                            <p className="verify-animate text-gray-600 mb-8">{errorMessage}</p>
+
+                            <Link
+                                href="/privacyInterceptor/login"
+                                className="verify-animate inline-block px-8 py-4 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-colors"
+                            >
+                                Try again
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 
             {/* Footer */}
-            <footer
-                style={{
-                    padding: '24px',
-                    textAlign: 'center',
-                    borderTop: '1px solid rgba(0, 0, 0, 0.04)'
-                }}
-            >
+            <footer className="py-6 text-center border-t border-gray-100">
                 <Link
                     href="/privacyInterceptor"
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        textDecoration: 'none',
-                        color: '#6E6E73',
-                        fontSize: '13px',
-                        transition: 'color 0.2s ease'
-                    }}
+                    className="inline-flex items-center gap-2 text-gray-500 text-sm hover:text-gray-700 transition-colors"
                 >
                     <Image
                         src="/pi_icon.png"
                         alt="Privacy Interceptor"
                         width={20}
                         height={20}
-                        style={{ borderRadius: '5px' }}
+                        className="rounded"
                     />
                     Privacy Interceptor
                 </Link>
             </footer>
-
-            <style jsx global>{`
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(-12px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes scaleIn {
-                    from { opacity: 0; transform: scale(0.95); }
-                    to { opacity: 1; transform: scale(1); }
-                }
-                @keyframes shakeIn {
-                    0% { opacity: 0; transform: translateX(-8px); }
-                    25% { transform: translateX(6px); }
-                    50% { transform: translateX(-4px); }
-                    75% { transform: translateX(2px); }
-                    100% { opacity: 1; transform: translateX(0); }
-                }
-                @keyframes pulse {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.7; }
-                }
-                @keyframes spin {
-                    to { transform: rotate(360deg); }
-                }
-            `}</style>
         </div>
     );
 }
@@ -365,30 +177,28 @@ function VerifyContent() {
 export default function VerifyPage() {
     return (
         <Suspense fallback={
-            <div style={{
-                height: '100vh',
-                width: '100vw',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: '#F5F5F7'
-            }}>
-                <div style={{
-                    width: '40px',
-                    height: '40px',
-                    border: '3px solid rgba(207, 29, 19, 0.15)',
-                    borderTopColor: '#CF1D13',
-                    borderRadius: '50%',
-                    animation: 'spin 0.8s linear infinite'
-                }} />
-                <style jsx global>{`
-                    @keyframes spin {
-                        to { transform: rotate(360deg); }
-                    }
-                `}</style>
+            <div className="h-screen w-screen flex items-center justify-center bg-white">
+                <div className="w-10 h-10 border-3 border-gray-200 border-t-orange-500 rounded-full animate-spin"
+                    style={{ borderWidth: '3px' }} />
             </div>
         }>
             <VerifyContent />
         </Suspense>
+    );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+    return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 13l4 4L19 7" />
+        </svg>
+    );
+}
+
+function XIcon({ className }: { className?: string }) {
+    return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 18L18 6M6 6l12 12" />
+        </svg>
     );
 }
