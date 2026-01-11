@@ -4,10 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import { useTranslation } from 'react-i18next';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export default function LoginPage() {
+    const { t, ready } = useTranslation();
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
@@ -43,7 +45,7 @@ export default function LoginPage() {
         e.preventDefault();
 
         if (!email || !email.includes('@')) {
-            setErrorMessage('Enter a valid email address');
+            setErrorMessage(t('privacyInterceptor.login.invalidEmail'));
             setStatus('error');
             return;
         }
@@ -64,12 +66,12 @@ export default function LoginPage() {
 
             setStatus('sent');
         } catch {
-            setErrorMessage('Something went wrong. Try again.');
+            setErrorMessage(t('privacyInterceptor.login.errorGeneric'));
             setStatus('error');
         }
     };
 
-    if (!mounted) return null;
+    if (!mounted || !ready) return null;
 
     return (
         <div className="bg-white min-h-screen flex flex-col font-sans">
@@ -86,23 +88,23 @@ export default function LoginPage() {
                             className="mx-auto rounded-2xl shadow-lg mb-6"
                         />
                         <h1 className="font-display text-4xl sm:text-5xl font-semibold text-gray-900 tracking-tight mb-3">
-                            Sign in
+                            {t('privacyInterceptor.login.title')}
                         </h1>
                         <p className="text-gray-600 text-lg font-light">
-                            Unlock all premium features
+                            {t('privacyInterceptor.login.subtitle')}
                         </p>
                     </div>
 
                     {/* How it works */}
                     <div className="login-animate bg-gray-50 border border-gray-100 rounded-2xl p-6 mb-8">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-5">
-                            How it works
+                            {t('privacyInterceptor.login.howItWorks')}
                         </p>
                         <div className="space-y-4">
-                            <StepItem number="1" text="Enter your email below" />
-                            <StepItem number="2" text="Click the magic link in your inbox" />
-                            <StepItem number="3" text="Complete one-time payment" />
-                            <StepItem number="✓" text="Lifetime access unlocked!" isSuccess />
+                            <StepItem number="1" text={t('privacyInterceptor.login.step1')} />
+                            <StepItem number="2" text={t('privacyInterceptor.login.step2')} />
+                            <StepItem number="3" text={t('privacyInterceptor.login.step3')} />
+                            <StepItem number="✓" text={t('privacyInterceptor.login.step4')} isSuccess />
                         </div>
                     </div>
 
@@ -112,20 +114,20 @@ export default function LoginPage() {
                                 <MailIcon className="w-8 h-8 text-green-500" />
                             </div>
                             <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                                Check your inbox
+                                {t('privacyInterceptor.login.checkInbox')}
                             </h2>
                             <p className="text-gray-600 mb-2">
-                                We sent a sign-in link to
+                                {t('privacyInterceptor.login.weSentLink')}
                             </p>
                             <p className="text-gray-900 font-medium mb-6">{email}</p>
                             <p className="text-sm text-gray-400 mb-6">
-                                Click the link to sign in, then you&apos;ll be prompted to complete your purchase.
+                                {t('privacyInterceptor.login.clickToSignIn')}
                             </p>
                             <button
                                 onClick={() => setStatus('idle')}
                                 className="text-gray-600 text-sm font-medium hover:text-gray-900 transition-colors"
                             >
-                                ← Use a different email
+                                {t('privacyInterceptor.login.useDifferentEmail')}
                             </button>
                         </div>
                     ) : (
@@ -137,7 +139,7 @@ export default function LoginPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="you@example.com"
+                                    placeholder={t('privacyInterceptor.login.emailPlaceholder')}
                                     disabled={status === 'loading'}
                                     className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl text-base text-gray-900 placeholder-gray-400 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:bg-white transition-all disabled:opacity-60"
                                 />
@@ -157,15 +159,15 @@ export default function LoginPage() {
                                 {status === 'loading' ? (
                                     <span className="flex items-center justify-center gap-3">
                                         <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        Sending...
+                                        {t('privacyInterceptor.login.sendingButton')}
                                     </span>
-                                ) : 'Continue'}
+                                ) : t('privacyInterceptor.login.continueButton')}
                             </button>
                         </form>
                     )}
 
                     <p className="login-animate text-center text-sm text-gray-400 mt-6">
-                        No password needed. Secure magic link authentication.
+                        {t('privacyInterceptor.login.securityNote')}
                     </p>
                 </div>
             </div>

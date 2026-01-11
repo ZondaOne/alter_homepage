@@ -4,8 +4,10 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import { useTranslation } from 'react-i18next';
 
 export default function CheckoutSuccessPage() {
+    const { t, ready } = useTranslation();
     const [mounted, setMounted] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -22,7 +24,7 @@ export default function CheckoutSuccessPage() {
         );
     }, [mounted]);
 
-    if (!mounted) return null;
+    if (!mounted || !ready) return null;
 
     return (
         <div className="bg-white min-h-screen flex flex-col font-sans">
@@ -45,17 +47,17 @@ export default function CheckoutSuccessPage() {
                     </div>
 
                     <h1 className="success-animate font-display text-4xl sm:text-5xl font-semibold text-gray-900 tracking-tight mb-3">
-                        You&apos;re all set
+                        {t('privacyInterceptor.checkoutSuccess.title')}
                     </h1>
 
                     <p className="success-animate text-lg text-gray-600 font-light mb-12">
-                        Your premium access is now active—forever.
+                        {t('privacyInterceptor.checkoutSuccess.subtitle')}
                     </p>
 
                     {/* What's next section - minimal cards */}
                     <div className="success-animate">
                         <p className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6">
-                            What&apos;s next
+                            {t('privacyInterceptor.checkoutSuccess.whatsNext')}
                         </p>
 
                         <div className="grid gap-4 text-left">
@@ -64,8 +66,8 @@ export default function CheckoutSuccessPage() {
                                     <ExtensionIcon className="w-5 h-5 text-orange-600" />
                                 </div>
                                 <div>
-                                    <p className="font-medium text-gray-900 mb-1">Return to the extension</p>
-                                    <p className="text-sm text-gray-500">Your account is synced automatically</p>
+                                    <p className="font-medium text-gray-900 mb-1">{t('privacyInterceptor.checkoutSuccess.returnExtension')}</p>
+                                    <p className="text-sm text-gray-500">{t('privacyInterceptor.checkoutSuccess.accountSynced')}</p>
                                 </div>
                             </div>
 
@@ -74,15 +76,15 @@ export default function CheckoutSuccessPage() {
                                     <UnlockIcon className="w-5 h-5 text-green-600" />
                                 </div>
                                 <div>
-                                    <p className="font-medium text-gray-900 mb-1">All features unlocked</p>
-                                    <p className="text-sm text-gray-500">OCR, all formats, unlimited processing</p>
+                                    <p className="font-medium text-gray-900 mb-1">{t('privacyInterceptor.checkoutSuccess.allFeaturesUnlocked')}</p>
+                                    <p className="text-sm text-gray-500">{t('privacyInterceptor.checkoutSuccess.allFeaturesList')}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <p className="success-animate text-sm text-gray-400 mt-10">
-                        You can safely close this tab.
+                        {t('privacyInterceptor.checkoutSuccess.closeTab')}
                     </p>
                 </div>
             </div>

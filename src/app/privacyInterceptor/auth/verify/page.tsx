@@ -5,10 +5,12 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import { useTranslation } from 'react-i18next';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 function VerifyContent() {
+    const { t, ready } = useTranslation();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
 
@@ -25,7 +27,7 @@ function VerifyContent() {
     useEffect(() => {
         if (!token) {
             setStatus('error');
-            setErrorMessage('Invalid verification link');
+            setErrorMessage(t('privacyInterceptor.authVerify.invalidLink'));
             return;
         }
 
@@ -53,12 +55,12 @@ function VerifyContent() {
                 setStatus('success');
             } catch {
                 setStatus('error');
-                setErrorMessage('This link is invalid or has expired');
+                setErrorMessage(t('privacyInterceptor.authVerify.linkExpired'));
             }
         };
 
         verifyToken();
-    }, [token]);
+    }, [token, t]);
 
     useEffect(() => {
         if (!mounted || !contentRef.current || status === 'loading') return;
@@ -69,7 +71,7 @@ function VerifyContent() {
         );
     }, [mounted, status]);
 
-    if (!mounted) return null;
+    if (!mounted || !ready) return null;
 
     return (
         <div className="bg-white min-h-screen flex flex-col font-sans">
@@ -91,9 +93,9 @@ function VerifyContent() {
                             <div className="w-12 h-12 border-3 border-gray-200 border-t-orange-500 rounded-full animate-spin mx-auto mb-6"
                                 style={{ borderWidth: '3px' }} />
                             <h1 className="font-display text-3xl font-semibold text-gray-900 tracking-tight mb-2">
-                                Verifying your email
+                                {t('privacyInterceptor.authVerify.verifyingTitle')}
                             </h1>
-                            <p className="text-gray-600">Just a moment...</p>
+                            <p className="text-gray-600">{t('privacyInterceptor.authVerify.verifyingSubtitle')}</p>
                         </div>
                     )}
 
@@ -104,30 +106,30 @@ function VerifyContent() {
                             </div>
 
                             <h1 className="verify-animate font-display text-4xl font-semibold text-gray-900 tracking-tight mb-2">
-                                You&apos;re signed in
+                                {t('privacyInterceptor.authVerify.successTitle')}
                             </h1>
                             <p className="verify-animate text-gray-600 mb-8">{user.email}</p>
 
                             {/* Status Badge */}
                             <div className={`verify-animate rounded-2xl p-5 mb-8 ${user.isPremium
-                                    ? 'bg-orange-50 border border-orange-100'
-                                    : 'bg-gray-50 border border-gray-100'
+                                ? 'bg-orange-50 border border-orange-100'
+                                : 'bg-gray-50 border border-gray-100'
                                 }`}>
                                 <div className="flex items-center justify-center gap-3">
                                     <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide ${user.isPremium
-                                            ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
-                                            : 'bg-gray-200 text-gray-600'
+                                        ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
+                                        : 'bg-gray-200 text-gray-600'
                                         }`}>
-                                        {user.isPremium ? 'Premium' : 'Free'}
+                                        {user.isPremium ? t('privacyInterceptor.authVerify.premium') : t('privacyInterceptor.authVerify.free')}
                                     </span>
                                     <span className="text-sm text-gray-900 font-medium">
-                                        {user.isPremium ? 'Lifetime access active' : 'Return to the extension'}
+                                        {user.isPremium ? t('privacyInterceptor.authVerify.lifetimeActive') : t('privacyInterceptor.authVerify.returnExtension')}
                                     </span>
                                 </div>
                             </div>
 
                             <p className="verify-animate text-sm text-gray-400">
-                                You can close this tab
+                                {t('privacyInterceptor.authVerify.closeTab')}
                             </p>
                         </div>
                     )}
@@ -139,7 +141,7 @@ function VerifyContent() {
                             </div>
 
                             <h1 className="verify-animate font-display text-4xl font-semibold text-gray-900 tracking-tight mb-3">
-                                Verification failed
+                                {t('privacyInterceptor.authVerify.errorTitle')}
                             </h1>
                             <p className="verify-animate text-gray-600 mb-8">{errorMessage}</p>
 
@@ -147,7 +149,7 @@ function VerifyContent() {
                                 href="/privacyInterceptor/login"
                                 className="verify-animate inline-block px-8 py-4 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-colors"
                             >
-                                Try again
+                                {t('privacyInterceptor.authVerify.tryAgain')}
                             </Link>
                         </div>
                     )}

@@ -5,10 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PrivacyInterceptorPage() {
+    const { t, ready } = useTranslation();
     const [mounted, setMounted] = useState(false);
     const heroRef = useRef<HTMLDivElement>(null);
     const featuresRef = useRef<HTMLDivElement>(null);
@@ -120,7 +122,7 @@ export default function PrivacyInterceptorPage() {
         };
     }, [mounted]);
 
-    if (!mounted) return null;
+    if (!mounted || !ready) return null;
 
     return (
         <div className="bg-white font-sans min-h-screen">
@@ -141,8 +143,8 @@ export default function PrivacyInterceptorPage() {
                     </div>
 
                     <h1 className="hero-title font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[0.95] tracking-tight text-gray-900 mb-8">
-                        <div className="hero-line">Your documents.</div>
-                        <div className="hero-line">Your privacy.</div>
+                        <div className="hero-line">{t('privacyInterceptor.landing.heroLine1')}</div>
+                        <div className="hero-line">{t('privacyInterceptor.landing.heroLine2')}</div>
                         <div className="hero-line">
                             <span
                                 className="gradient-text"
@@ -154,40 +156,50 @@ export default function PrivacyInterceptorPage() {
                                     backgroundClip: 'text'
                                 }}
                             >
-                                Fully protected.
+                                {t('privacyInterceptor.landing.heroLine3')}
                             </span>
                         </div>
                     </h1>
 
                     <p className="hero-subtitle text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-2xl mx-auto font-light leading-relaxed mb-10">
-                        Automatically detect and redact sensitive information before you share.
-                        Everything happens locally—your files never leave your device.
+                        {t('privacyInterceptor.landing.heroSubtitle')}
                     </p>
 
-                    <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                    <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                         <a
                             href="https://chrome.google.com/webstore"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-lg text-base font-medium hover:bg-gray-800 transition-all duration-200 group"
+                            className="inline-flex items-center justify-center gap-3 bg-gray-900 text-white w-full sm:w-60 px-8 py-4 rounded-lg text-base font-medium hover:bg-gray-800 transition-all duration-200 group"
                         >
                             <ChromeIcon className="w-5 h-5" />
-                            Add to Chrome
-                            <span className="text-gray-400 text-sm">— it&apos;s free</span>
+                            {t('privacyInterceptor.landing.addToChrome')}
                         </a>
 
+                        <a
+                            href="https://addons.mozilla.org/en-US/firefox/addon/privacy-interceptor/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-3 bg-orange-500 text-white w-full sm:w-60 px-8 py-4 rounded-lg text-base font-medium hover:bg-orange-600 transition-all duration-200 group"
+                        >
+                            <FirefoxIcon className="w-5 h-5" />
+                            {t('privacyInterceptor.landing.addToFirefox')}
+                        </a>
+                    </div>
+
+                    <div className="mb-12">
                         <Link
                             href="/privacyInterceptor/login"
                             className="text-gray-600 text-sm font-medium hover:text-orange-600 transition-colors"
                         >
-                            Already using it? <span className="text-orange-600">Sign in →</span>
+                            {t('privacyInterceptor.landing.alreadyUsing')} <span className="text-orange-600">{t('privacyInterceptor.landing.signIn')}</span>
                         </Link>
                     </div>
 
                     {/* Browser Support */}
                     <div className="flex items-center justify-center gap-6 text-gray-400">
                         <BrowserBadge icon={<ChromeIcon className="w-5 h-5" />} label="Chrome" available />
-                        <BrowserBadge icon={<FirefoxIcon className="w-5 h-5" />} label="Firefox" />
+                        <BrowserBadge icon={<FirefoxIcon className="w-5 h-5" />} label="Firefox" available />
                         <BrowserBadge icon={<EdgeIcon className="w-5 h-5" />} label="Edge" />
                         <BrowserBadge icon={<SafariIcon className="w-5 h-5" />} label="Safari" />
                     </div>
@@ -198,7 +210,7 @@ export default function PrivacyInterceptorPage() {
             <section className="steps-section py-20 lg:py-28 px-6 lg:px-12 bg-gray-50">
                 <div className="max-w-5xl mx-auto">
                     <h2 className="text-center font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[0.95] tracking-tight text-gray-900 mb-6">
-                        Simple.{' '}
+                        {t('privacyInterceptor.landing.stepsTitle')}{' '}
                         <span
                             className="gradient-text"
                             style={{
@@ -209,29 +221,29 @@ export default function PrivacyInterceptorPage() {
                                 backgroundClip: 'text'
                             }}
                         >
-                            Automatic.
+                            {t('privacyInterceptor.landing.stepsTitleHighlight')}
                         </span>{' '}
-                        Private.
+                        {t('privacyInterceptor.landing.stepsTitleEnd')}
                     </h2>
                     <p className="text-center text-lg lg:text-xl text-gray-600 font-light max-w-2xl mx-auto mb-16">
-                        No setup required. Privacy Interceptor works silently in the background.
+                        {t('privacyInterceptor.landing.stepsSubtitle')}
                     </p>
 
                     <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
                         <StepCard
                             number="01"
-                            title="Upload as usual"
-                            description="Go about your day. When you upload a file to any website, we step in automatically."
+                            title={t('privacyInterceptor.landing.step1Title')}
+                            description={t('privacyInterceptor.landing.step1Description')}
                         />
                         <StepCard
                             number="02"
-                            title="We scan for risks"
-                            description="Our AI detects phone numbers, emails, IDs, addresses, and other sensitive data in seconds."
+                            title={t('privacyInterceptor.landing.step2Title')}
+                            description={t('privacyInterceptor.landing.step2Description')}
                         />
                         <StepCard
                             number="03"
-                            title="You decide"
-                            description="Review what we found, select what to redact, and share your document worry-free."
+                            title={t('privacyInterceptor.landing.step3Title')}
+                            description={t('privacyInterceptor.landing.step3Description')}
                         />
                     </div>
                 </div>
@@ -242,43 +254,43 @@ export default function PrivacyInterceptorPage() {
                 <div className="max-w-5xl mx-auto">
                     <div className="text-center mb-16">
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-4">
-                            Features
+                            {t('privacyInterceptor.landing.featuresLabel')}
                         </p>
                         <h2 className="font-display text-4xl sm:text-5xl font-semibold leading-tight tracking-tight text-gray-900">
-                            Privacy, built right
+                            {t('privacyInterceptor.landing.featuresTitle')}
                         </h2>
                     </div>
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         <FeatureCard
                             icon={<LockIcon />}
-                            title="100% local"
-                            description="Your documents never leave your browser. Zero cloud. Zero tracking."
+                            title={t('privacyInterceptor.landing.feature1Title')}
+                            description={t('privacyInterceptor.landing.feature1Description')}
                         />
                         <FeatureCard
                             icon={<DocumentIcon />}
-                            title="Multi-format"
-                            description="PDFs, Word docs, images, and text files. We handle them all."
+                            title={t('privacyInterceptor.landing.feature2Title')}
+                            description={t('privacyInterceptor.landing.feature2Description')}
                         />
                         <FeatureCard
                             icon={<GlobeIcon />}
-                            title="Regional patterns"
-                            description="Recognizes ID formats from Europe, Americas, Asia, and Africa."
+                            title={t('privacyInterceptor.landing.feature3Title')}
+                            description={t('privacyInterceptor.landing.feature3Description')}
                         />
                         <FeatureCard
                             icon={<ScanIcon />}
-                            title="OCR powered"
-                            description="Reads text from scanned documents and images with precision."
+                            title={t('privacyInterceptor.landing.feature4Title')}
+                            description={t('privacyInterceptor.landing.feature4Description')}
                         />
                         <FeatureCard
                             icon={<BoltIcon />}
-                            title="Instant detection"
-                            description="Finds emails, phones, IDs, addresses, and more in milliseconds."
+                            title={t('privacyInterceptor.landing.feature5Title')}
+                            description={t('privacyInterceptor.landing.feature5Description')}
                         />
                         <FeatureCard
                             icon={<ShieldIcon />}
-                            title="Permanent redaction"
-                            description="Black bars that can't be undone. Your data stays hidden forever."
+                            title={t('privacyInterceptor.landing.feature6Title')}
+                            description={t('privacyInterceptor.landing.feature6Description')}
                         />
                     </div>
                 </div>
@@ -289,41 +301,41 @@ export default function PrivacyInterceptorPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-4">
-                            Pricing
+                            {t('privacyInterceptor.landing.pricingLabel')}
                         </p>
                         <h2 className="font-display text-4xl sm:text-5xl font-semibold leading-tight tracking-tight text-gray-900 mb-4">
-                            Start free. Upgrade when ready.
+                            {t('privacyInterceptor.landing.pricingTitle')}
                         </h2>
                         <p className="text-lg text-gray-600 font-light max-w-xl mx-auto">
-                            No subscriptions. Pay once, own it forever.
+                            {t('privacyInterceptor.landing.pricingSubtitle')}
                         </p>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
                         {/* Free Plan */}
                         <div className="pricing-card bg-white border border-gray-200 rounded-2xl p-8 hover:border-gray-300 transition-colors">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Free</h3>
-                            <p className="text-gray-600 text-sm mb-6">Get started with essential protection</p>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('privacyInterceptor.landing.freePlanTitle')}</h3>
+                            <p className="text-gray-600 text-sm mb-6">{t('privacyInterceptor.landing.freePlanDescription')}</p>
 
                             <div className="mb-8">
-                                <span className="text-4xl font-semibold text-gray-900">€0</span>
-                                <span className="text-gray-500 ml-2">/forever</span>
+                                <span className="text-4xl font-semibold text-gray-900">{t('privacyInterceptor.landing.freePlanPrice')}</span>
+                                <span className="text-gray-500 ml-2">{t('privacyInterceptor.landing.freePlanPeriod')}</span>
                             </div>
 
                             <ul className="space-y-3 mb-8">
-                                <PricingFeature included>PDF documents</PricingFeature>
-                                <PricingFeature included>Email detection</PricingFeature>
-                                <PricingFeature included>Phone number detection</PricingFeature>
-                                <PricingFeature>Images & Word files</PricingFeature>
-                                <PricingFeature>OCR for scanned docs</PricingFeature>
-                                <PricingFeature>All regional patterns</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.freePlanFeature1')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.freePlanFeature2')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.freePlanFeature3')}</PricingFeature>
+                                <PricingFeature>{t('privacyInterceptor.landing.freePlanFeature4')}</PricingFeature>
+                                <PricingFeature>{t('privacyInterceptor.landing.freePlanFeature5')}</PricingFeature>
+                                <PricingFeature>{t('privacyInterceptor.landing.freePlanFeature6')}</PricingFeature>
                             </ul>
 
                             <a
                                 href="https://chrome.google.com/webstore"
                                 className="block w-full text-center py-3 px-6 border-2 border-gray-900 text-gray-900 font-medium rounded-lg hover:bg-gray-900 hover:text-white transition-all"
                             >
-                                Get started free
+                                {t('privacyInterceptor.landing.freePlanButton')}
                             </a>
                         </div>
 
@@ -331,68 +343,60 @@ export default function PrivacyInterceptorPage() {
                         <div className="pricing-card relative bg-white border-2 border-orange-500 rounded-2xl p-8 shadow-lg shadow-orange-500/10">
                             <div className="absolute -top-3 right-6">
                                 <span className="inline-block px-3 py-1 text-xs font-bold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-full uppercase tracking-wide">
-                                    Early Bird
+                                    {t('privacyInterceptor.landing.premiumPlanBadge')}
                                 </span>
                             </div>
 
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Premium</h3>
-                            <p className="text-gray-600 text-sm mb-6">Everything, unlocked forever</p>
+                            {/* Countdown Timer - positioned at bottom border */}
+                            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                                <Countdown targetDate={new Date('2026-02-01T00:00:00')} endsInLabel={t('privacyInterceptor.landing.countdownEndsIn')} />
+                            </div>
+
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('privacyInterceptor.landing.premiumPlanTitle')}</h3>
+                            <p className="text-gray-600 text-sm mb-6">{t('privacyInterceptor.landing.premiumPlanDescription')}</p>
 
                             <div className="mb-8">
-                                <span className="text-gray-400 line-through text-lg mr-2">€2.99</span>
-                                <span className="text-4xl font-semibold text-gray-900">€0.99</span>
-                                <span className="text-gray-500 ml-2">/lifetime</span>
+                                <span className="text-gray-400 line-through text-lg mr-2">{t('privacyInterceptor.landing.premiumPlanOriginalPrice')}</span>
+                                <span className="text-4xl font-semibold text-gray-900">{t('privacyInterceptor.landing.premiumPlanPrice')}</span>
+                                <span className="text-gray-500 ml-2">{t('privacyInterceptor.landing.premiumPlanPeriod')}</span>
                             </div>
 
                             <ul className="space-y-3 mb-8">
-                                <PricingFeature included>Everything in Free</PricingFeature>
-                                <PricingFeature included>Images & Word files</PricingFeature>
-                                <PricingFeature included>OCR for scanned docs</PricingFeature>
-                                <PricingFeature included>All regional patterns</PricingFeature>
-                                <PricingFeature included>Unlimited processing</PricingFeature>
-                                <PricingFeature included>Priority support</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature1')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature2')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature3')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature4')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature5')}</PricingFeature>
+                                <PricingFeature included>{t('privacyInterceptor.landing.premiumPlanFeature6')}</PricingFeature>
                             </ul>
 
                             <Link
                                 href="/privacyInterceptor/login"
                                 className="block w-full text-center py-3 px-6 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-all"
                             >
-                                Upgrade to Premium
+                                {t('privacyInterceptor.landing.premiumPlanButton')}
                             </Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Support */}
+            {/* Collaborate */}
             <section className="py-20 lg:py-24 px-6 lg:px-12">
                 <div className="max-w-2xl mx-auto text-center">
                     <h2 className="font-display text-3xl sm:text-4xl font-semibold text-gray-900 mb-4">
-                        Built by indie developers
+                        {t('privacyInterceptor.landing.collaborateTitle')}
                     </h2>
                     <p className="text-lg text-gray-600 font-light mb-8">
-                        Privacy Interceptor is made by a small team who cares about privacy.
-                        If you find it useful, you can support our work.
+                        {t('privacyInterceptor.landing.collaborateDescription')}
                     </p>
 
-                    <div className="flex items-center justify-center gap-4 flex-wrap">
-                        <a
-                            href="https://buymeacoffee.com/zondaone"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
-                        >
-                            ☕ Buy us a coffee
-                        </a>
-                        <a
-                            href="https://paypal.me/zondaone"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            PayPal
-                        </a>
-                    </div>
+                    <a
+                        href="mailto:team@zonda.one"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                    >
+                        ✉️ {t('privacyInterceptor.landing.collaborateEmail')}
+                    </a>
                 </div>
             </section>
         </div>
@@ -443,6 +447,51 @@ function BrowserBadge({ icon, label, available = false }: { icon: React.ReactNod
             {icon}
             <span className="text-xs font-medium hidden sm:inline">{label}</span>
             {!available && <span className="text-xs text-gray-300 hidden sm:inline">Soon</span>}
+        </div>
+    );
+}
+
+// --- Component: Countdown Timer ---
+function Countdown({ targetDate, endsInLabel }: { targetDate: Date; endsInLabel: string }) {
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    });
+
+    useEffect(() => {
+        const calculateTimeLeft = () => {
+            const difference = targetDate.getTime() - new Date().getTime();
+
+            if (difference > 0) {
+                setTimeLeft({
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                    minutes: Math.floor((difference / 1000 / 60) % 60),
+                    seconds: Math.floor((difference / 1000) % 60)
+                });
+            }
+        };
+
+        calculateTimeLeft();
+        const timer = setInterval(calculateTimeLeft, 1000);
+
+        return () => clearInterval(timer);
+    }, [targetDate]);
+
+    return (
+        <div className="inline-flex items-center gap-2 px-5 py-1.5 bg-white border-2 border-orange-500 rounded-full shadow-md whitespace-nowrap">
+            <span className="text-xs text-orange-600 font-semibold uppercase tracking-wide">{endsInLabel}</span>
+            <div className="flex items-center gap-1 text-sm font-bold text-gray-900">
+                <span>{timeLeft.days}d</span>
+                <span className="text-orange-400">:</span>
+                <span>{String(timeLeft.hours).padStart(2, '0')}h</span>
+                <span className="text-orange-400">:</span>
+                <span>{String(timeLeft.minutes).padStart(2, '0')}m</span>
+                <span className="text-orange-400">:</span>
+                <span>{String(timeLeft.seconds).padStart(2, '0')}s</span>
+            </div>
         </div>
     );
 }

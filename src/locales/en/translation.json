@@ -11,17 +11,14 @@
   "about": "About",
   "workWithUs": "Work with us",
   "allProducts": "All Products",
-
   "heroTitleLine1": "Your idea",
   "heroTitleLine2": "deserves",
   "heroTitleHighlight": "better code",
   "heroSubtitle": "Small team. Big ideas. We build software that people actually want to use.",
   "heroButtonWork": "Work with us",
   "heroButtonSee": "See what we've made",
-
   "gradientText": "We build <1>brands that matter</1>, creating digital experiences tailored to your vision. Every project is a partnership, every solution is crafted with purpose.",
   "gradientCTA": "<0>Contact us</0>",
-
   "galleryTitleLine1": "What we've",
   "galleryTitleHighlight": "built together",
   "gallerySubtitle": "Every project tells a story of collaboration. Here's how we've helped businesses solve their toughest problems with thoughtful, custom solutions.",
@@ -31,7 +28,6 @@
     "description": "Every great project starts with a conversation. What's your next move?",
     "button": "START YOUR PROJECT"
   },
-
   "parallax": {
     "desktop": {
       "line1": "Turning complex",
@@ -45,7 +41,6 @@
       "subtitle": "We take the complicated stuff and make it work beautifully. That's what good software should do."
     }
   },
-
   "macbook": {
     "products": {
       "pixelperfect": {
@@ -59,15 +54,13 @@
       "comchat": {
         "title": "ComChat",
         "description": "Your own AI assistant that understands your business. It learns from your content and helps your customers get answers fast."
-      }
-      ,
+      },
       "rhivo": {
         "title": "Rhivo",
         "description": "Manage bookings and schedules for service businesses with simple, reliable tools — calendars, staff management and client bookings in one place."
       }
     }
   },
-
   "faq": {
     "title": "What You're",
     "titleHighlight": "Wondering",
@@ -90,13 +83,11 @@
       }
     ]
   },
-
   "languages": {
     "en": "English",
     "es": "Spanish",
     "it": "Italian"
   },
-
   "engineered": "our expertise",
   "hero": {
     "description": "You know your business better than anyone. We know how to build software that won't let you down. Together, we create something that actually moves the needle."
@@ -125,14 +116,12 @@
       }
     }
   },
-
   "interactiveBlobs": {
     "hash": "#",
     "weAre": "WeAre",
     "zonda": "Zonda",
     "description1": "Great software isn't born from templates or quick fixes. It comes from understanding what you really need and having the skill to make it happen."
   },
-
   "contact": {
     "title": "Let's start",
     "titleHighlight": "building together",
@@ -149,114 +138,294 @@
       "success": "Thanks for reaching out! We'll get back to you soon.",
       "error": "Something went wrong. Please try again."
     }
-    
-  }
-  ,
-"card": {
+  },
+  "card": {
     "fromConcept": "From Concept",
     "toCode": "to Code",
     "digitalSolutionsDescription": "We create integrated digital solutions and experiences that your audience loves to interact with."
-  }
-  , "blogTitleLine1": "Technology"
-, "blogTitleLine2": "Insights"
-, "blogSubtitle": "Explore cutting-edge perspectives on digital transformation, enterprise architecture, and the future of technology. Stay ahead with insights that drive business innovation."
-, "blogFeatured": "Featured"
-, "blogReadMore": "Read more"
-, "blogPost1Title": "The Future of Enterprise AI: Beyond Automation to Intelligent Transformation"
-, "blogPost1Excerpt": "Discover how leading organizations are leveraging AI not just for automation, but for complete business model reinvention and competitive advantage."
-, "blogPost1Category": "Artificial Intelligence"
-, "blogPost1ReadTime": "8 min read"
-, "blogPost2Title": "Cloud-Native Architecture: Building Resilient Systems for Scale"
-, "blogPost2Excerpt": "Learn the essential patterns and practices for designing cloud-native applications that scale effortlessly and maintain high availability."
-, "blogPost2Category": "Cloud Computing"
-, "blogPost2ReadTime": "6 min read"
-, "blogPost3Title": "Cybersecurity in the Age of Remote Work: A Strategic Approach"
-, "blogPost3Excerpt": "Explore advanced cybersecurity strategies that protect distributed workforces while enabling seamless collaboration and productivity."
-, "blogPost3Category": "Cybersecurity"
-, "blogPost3ReadTime": "7 min read"
-, "blogPost4Title": "Data Mesh: Democratizing Data Architecture for Enterprise Success"
-, "blogPost4Excerpt": "Understand how data mesh principles are revolutionizing enterprise data management and enabling self-serve analytics at scale."
-, "blogPost4Category": "Data Engineering"
-, "blogPost4ReadTime": "9 min read"
-, "blogPost5Title": "DevOps Evolution: Platform Engineering and Developer Experience"
-, "blogPost5Excerpt": "Discover how platform engineering is transforming DevOps practices and creating superior developer experiences across organizations."
-, "blogPost5Category": "DevOps"
-, "blogPost5ReadTime": "5 min read"
-, "blogPost6Title": "Sustainable Technology: Green Computing for Modern Enterprises"
-, "blogPost6Excerpt": "Learn how organizations are reducing their carbon footprint through sustainable technology practices and green computing initiatives."
-, "blogPost6Category": "Sustainability"
-, "blogPost6ReadTime": "6 min read"
-
-, "aiPostTitle": "The Future of Enterprise AI: Beyond Automation to Intelligent Transformation"
-, "aiPostExcerpt": "Discover how leading organizations are leveraging AI not just for automation, but for complete business model reinvention and competitive advantage."
-, "aiPostCategory": "Artificial Intelligence"
-, "aiPostReadTime": "8 min read"
-, "aiPostSection1Title": "The AI Revolution: From Efficiency to Intelligence"
-, "aiPostSection1P1": "Artificial Intelligence has evolved far beyond simple task automation. Today's leading enterprises are discovering that AI's true potential lies not in replacing human workers, but in augmenting human intelligence and transforming entire business models. This shift represents a fundamental change in how organizations approach technology adoption and strategic planning."
-, "aiPostSection1P2": "Companies that once viewed AI as a cost-cutting tool are now recognizing it as a driver of innovation, customer experience, and competitive differentiation. The question is no longer 'How can AI make us more efficient?' but rather 'How can AI help us reimagine what's possible?'"
-, "aiPostSection2Title": "Strategic Implementation: Beyond the Hype"
-, "aiPostSection2P1": "Successful AI transformation requires more than cutting-edge technology. It demands a holistic approach that encompasses organizational culture, data infrastructure, and strategic alignment. Leading organizations are investing heavily in AI literacy across all levels of their workforce, ensuring that the benefits of intelligent systems are realized throughout the enterprise."
-, "aiPostQuote": "The most successful AI implementations are those that amplify human capabilities rather than replace them entirely."
-, "aiPostSection2P2": "This approach focuses on creating symbiotic relationships between human expertise and machine intelligence, leading to outcomes that neither could achieve independently."
-, "aiPostSection3Title": "Real-World Applications and Impact"
-, "aiPostSection3P1": "From predictive analytics that anticipate market shifts to personalized customer experiences that drive loyalty, AI is reshaping every aspect of business operations. Healthcare organizations are using AI to accelerate drug discovery, financial institutions are leveraging machine learning for risk assessment, and manufacturing companies are implementing intelligent systems for predictive maintenance."
-, "aiPostExample1Title": "Predictive Analytics"
-, "aiPostExample1Text": "Organizations are using AI to forecast market trends, customer behavior, and operational challenges before they occur."
-, "aiPostExample2Title": "Intelligent Automation"
-, "aiPostExample2Text": "Smart systems that learn and adapt, handling complex decision-making processes with minimal human intervention."
-, "aiPostSection4Title": "The Path Forward: Building AI-Ready Organizations"
-, "aiPostSection4P1": "Creating an AI-ready organization requires careful planning, significant investment, and a commitment to continuous learning. Organizations must focus on developing robust data governance frameworks, investing in talent development, and fostering a culture of experimentation and innovation."
-, "aiPostSection4P2": "The future belongs to organizations that can successfully integrate artificial intelligence into their strategic vision while maintaining focus on human values and ethical considerations. This balance will define the next generation of successful enterprises."
-, "aiPostCTATitle": "Ready to Transform Your Business with AI?"
-, "aiPostCTAText": "Our team of AI specialists can help you develop and implement intelligent solutions that drive real business value."
-, "aiPostCTAButton": "Get Started Today"
-, "aiPostShareText": "Share this article:"
-, "aiPostBackToBlog": "Back to Blog"
-
-, "cloudPostTitle": "Cloud-Native Architecture: Building Resilient Systems for Scale"
-, "cloudPostExcerpt": "Learn the essential patterns and practices for designing cloud-native applications that scale effortlessly and maintain high availability."
-, "cloudPostCategory": "Cloud Computing"
-, "cloudPostReadTime": "6 min read"
-, "cloudPostSection1Title": "The Cloud-Native Paradigm Shift"
-, "cloudPostSection1P1": "Cloud-native architecture represents a fundamental shift in how we design, build, and operate applications. Unlike traditional monolithic approaches, cloud-native systems are built from the ground up to leverage the full potential of cloud computing environments. This approach embraces microservices, containerization, and dynamic orchestration to create systems that are inherently scalable, resilient, and adaptable."
-, "cloudPostSection1P2": "The core principles of cloud-native design—scalability, resilience, observability, and automation—work together to create applications that can handle unpredictable loads while maintaining high availability and performance standards."
-, "cloudPostSection2Title": "Essential Architecture Patterns"
-, "cloudPostSection2P1": "Successful cloud-native applications rely on proven architectural patterns that address common challenges in distributed systems. These patterns provide blueprints for building robust, maintainable systems that can evolve with changing business requirements."
-, "cloudPostPattern1Title": "Microservices Architecture"
-, "cloudPostPattern1Text": "Breaking applications into small, independently deployable services that communicate through well-defined APIs."
-, "cloudPostPattern2Title": "Event-Driven Design"
-, "cloudPostPattern2Text": "Using events and message queues to create loosely coupled systems that can scale independently."
-, "cloudPostPattern3Title": "Circuit Breaker Pattern"
-, "cloudPostPattern3Text": "Implementing fault tolerance mechanisms that prevent cascading failures across distributed services."
-, "cloudPostPattern4Title": "Database per Service"
-, "cloudPostPattern4Text": "Ensuring data independence by giving each service its own database, optimized for its specific needs."
-, "cloudPostSection3Title": "Containerization and Orchestration"
-, "cloudPostSection3P1": "Containers have revolutionized how we package and deploy applications, providing consistency across development, testing, and production environments. Kubernetes has emerged as the de facto standard for container orchestration, offering powerful capabilities for managing containerized workloads at scale."
-, "cloudPostQuote": "The true power of cloud-native architecture lies in its ability to turn infrastructure into code and operations into automation."
-, "cloudPostSection3P2": "Modern orchestration platforms provide automated scaling, health monitoring, and self-healing capabilities that make applications more resilient and reduce operational overhead."
-, "cloudPostSection4Title": "Observability and Monitoring"
-, "cloudPostSection4P1": "In distributed cloud-native systems, observability becomes critical for understanding system behavior and diagnosing issues. The three pillars of observability—metrics, logs, and traces—provide comprehensive visibility into application performance and health."
-, "cloudPostSection4P2": "Modern observability platforms use artificial intelligence and machine learning to automatically detect anomalies, predict potential issues, and provide actionable insights for optimization."
-, "cloudPostMetric1": "Request latency and throughput"
-, "cloudPostMetric2": "Error rates and failure patterns"
-, "cloudPostMetric3": "Resource utilization and capacity"
-, "cloudPostMetric4": "Business metrics and user experience"
-, "cloudPostSection5Title": "Security in Cloud-Native Environments"
-, "cloudPostSection5P1": "Security in cloud-native architectures requires a shift-left approach, integrating security considerations throughout the development and deployment pipeline. This includes implementing zero-trust networking, securing container images, and managing secrets and credentials properly."
-, "cloudPostSection5P2": "Modern security practices emphasize automated vulnerability scanning, policy-as-code, and continuous compliance monitoring to ensure that security keeps pace with rapid development cycles."
-, "cloudPostCTATitle": "Ready to Build Cloud-Native Applications?"
-, "cloudPostCTAText": "Our cloud architecture experts can help you design and implement scalable, resilient systems that leverage the full power of cloud-native technologies."
-, "cloudPostCTAButton": "Start Your Project"
-, "cloudPostShareText": "Share this article:"
-, "cloudPostBackToBlog": "Back to Blog"
-
-, "mobileShowcase": {
+  },
+  "blogTitleLine1": "Technology",
+  "blogTitleLine2": "Insights",
+  "blogSubtitle": "Explore cutting-edge perspectives on digital transformation, enterprise architecture, and the future of technology. Stay ahead with insights that drive business innovation.",
+  "blogFeatured": "Featured",
+  "blogReadMore": "Read more",
+  "blogPost1Title": "The Future of Enterprise AI: Beyond Automation to Intelligent Transformation",
+  "blogPost1Excerpt": "Discover how leading organizations are leveraging AI not just for automation, but for complete business model reinvention and competitive advantage.",
+  "blogPost1Category": "Artificial Intelligence",
+  "blogPost1ReadTime": "8 min read",
+  "blogPost2Title": "Cloud-Native Architecture: Building Resilient Systems for Scale",
+  "blogPost2Excerpt": "Learn the essential patterns and practices for designing cloud-native applications that scale effortlessly and maintain high availability.",
+  "blogPost2Category": "Cloud Computing",
+  "blogPost2ReadTime": "6 min read",
+  "blogPost3Title": "Cybersecurity in the Age of Remote Work: A Strategic Approach",
+  "blogPost3Excerpt": "Explore advanced cybersecurity strategies that protect distributed workforces while enabling seamless collaboration and productivity.",
+  "blogPost3Category": "Cybersecurity",
+  "blogPost3ReadTime": "7 min read",
+  "blogPost4Title": "Data Mesh: Democratizing Data Architecture for Enterprise Success",
+  "blogPost4Excerpt": "Understand how data mesh principles are revolutionizing enterprise data management and enabling self-serve analytics at scale.",
+  "blogPost4Category": "Data Engineering",
+  "blogPost4ReadTime": "9 min read",
+  "blogPost5Title": "DevOps Evolution: Platform Engineering and Developer Experience",
+  "blogPost5Excerpt": "Discover how platform engineering is transforming DevOps practices and creating superior developer experiences across organizations.",
+  "blogPost5Category": "DevOps",
+  "blogPost5ReadTime": "5 min read",
+  "blogPost6Title": "Sustainable Technology: Green Computing for Modern Enterprises",
+  "blogPost6Excerpt": "Learn how organizations are reducing their carbon footprint through sustainable technology practices and green computing initiatives.",
+  "blogPost6Category": "Sustainability",
+  "blogPost6ReadTime": "6 min read",
+  "aiPostTitle": "The Future of Enterprise AI: Beyond Automation to Intelligent Transformation",
+  "aiPostExcerpt": "Discover how leading organizations are leveraging AI not just for automation, but for complete business model reinvention and competitive advantage.",
+  "aiPostCategory": "Artificial Intelligence",
+  "aiPostReadTime": "8 min read",
+  "aiPostSection1Title": "The AI Revolution: From Efficiency to Intelligence",
+  "aiPostSection1P1": "Artificial Intelligence has evolved far beyond simple task automation. Today's leading enterprises are discovering that AI's true potential lies not in replacing human workers, but in augmenting human intelligence and transforming entire business models. This shift represents a fundamental change in how organizations approach technology adoption and strategic planning.",
+  "aiPostSection1P2": "Companies that once viewed AI as a cost-cutting tool are now recognizing it as a driver of innovation, customer experience, and competitive differentiation. The question is no longer 'How can AI make us more efficient?' but rather 'How can AI help us reimagine what's possible?'",
+  "aiPostSection2Title": "Strategic Implementation: Beyond the Hype",
+  "aiPostSection2P1": "Successful AI transformation requires more than cutting-edge technology. It demands a holistic approach that encompasses organizational culture, data infrastructure, and strategic alignment. Leading organizations are investing heavily in AI literacy across all levels of their workforce, ensuring that the benefits of intelligent systems are realized throughout the enterprise.",
+  "aiPostQuote": "The most successful AI implementations are those that amplify human capabilities rather than replace them entirely.",
+  "aiPostSection2P2": "This approach focuses on creating symbiotic relationships between human expertise and machine intelligence, leading to outcomes that neither could achieve independently.",
+  "aiPostSection3Title": "Real-World Applications and Impact",
+  "aiPostSection3P1": "From predictive analytics that anticipate market shifts to personalized customer experiences that drive loyalty, AI is reshaping every aspect of business operations. Healthcare organizations are using AI to accelerate drug discovery, financial institutions are leveraging machine learning for risk assessment, and manufacturing companies are implementing intelligent systems for predictive maintenance.",
+  "aiPostExample1Title": "Predictive Analytics",
+  "aiPostExample1Text": "Organizations are using AI to forecast market trends, customer behavior, and operational challenges before they occur.",
+  "aiPostExample2Title": "Intelligent Automation",
+  "aiPostExample2Text": "Smart systems that learn and adapt, handling complex decision-making processes with minimal human intervention.",
+  "aiPostSection4Title": "The Path Forward: Building AI-Ready Organizations",
+  "aiPostSection4P1": "Creating an AI-ready organization requires careful planning, significant investment, and a commitment to continuous learning. Organizations must focus on developing robust data governance frameworks, investing in talent development, and fostering a culture of experimentation and innovation.",
+  "aiPostSection4P2": "The future belongs to organizations that can successfully integrate artificial intelligence into their strategic vision while maintaining focus on human values and ethical considerations. This balance will define the next generation of successful enterprises.",
+  "aiPostCTATitle": "Ready to Transform Your Business with AI?",
+  "aiPostCTAText": "Our team of AI specialists can help you develop and implement intelligent solutions that drive real business value.",
+  "aiPostCTAButton": "Get Started Today",
+  "aiPostShareText": "Share this article:",
+  "aiPostBackToBlog": "Back to Blog",
+  "cloudPostTitle": "Cloud-Native Architecture: Building Resilient Systems for Scale",
+  "cloudPostExcerpt": "Learn the essential patterns and practices for designing cloud-native applications that scale effortlessly and maintain high availability.",
+  "cloudPostCategory": "Cloud Computing",
+  "cloudPostReadTime": "6 min read",
+  "cloudPostSection1Title": "The Cloud-Native Paradigm Shift",
+  "cloudPostSection1P1": "Cloud-native architecture represents a fundamental shift in how we design, build, and operate applications. Unlike traditional monolithic approaches, cloud-native systems are built from the ground up to leverage the full potential of cloud computing environments. This approach embraces microservices, containerization, and dynamic orchestration to create systems that are inherently scalable, resilient, and adaptable.",
+  "cloudPostSection1P2": "The core principles of cloud-native design—scalability, resilience, observability, and automation—work together to create applications that can handle unpredictable loads while maintaining high availability and performance standards.",
+  "cloudPostSection2Title": "Essential Architecture Patterns",
+  "cloudPostSection2P1": "Successful cloud-native applications rely on proven architectural patterns that address common challenges in distributed systems. These patterns provide blueprints for building robust, maintainable systems that can evolve with changing business requirements.",
+  "cloudPostPattern1Title": "Microservices Architecture",
+  "cloudPostPattern1Text": "Breaking applications into small, independently deployable services that communicate through well-defined APIs.",
+  "cloudPostPattern2Title": "Event-Driven Design",
+  "cloudPostPattern2Text": "Using events and message queues to create loosely coupled systems that can scale independently.",
+  "cloudPostPattern3Title": "Circuit Breaker Pattern",
+  "cloudPostPattern3Text": "Implementing fault tolerance mechanisms that prevent cascading failures across distributed services.",
+  "cloudPostPattern4Title": "Database per Service",
+  "cloudPostPattern4Text": "Ensuring data independence by giving each service its own database, optimized for its specific needs.",
+  "cloudPostSection3Title": "Containerization and Orchestration",
+  "cloudPostSection3P1": "Containers have revolutionized how we package and deploy applications, providing consistency across development, testing, and production environments. Kubernetes has emerged as the de facto standard for container orchestration, offering powerful capabilities for managing containerized workloads at scale.",
+  "cloudPostQuote": "The true power of cloud-native architecture lies in its ability to turn infrastructure into code and operations into automation.",
+  "cloudPostSection3P2": "Modern orchestration platforms provide automated scaling, health monitoring, and self-healing capabilities that make applications more resilient and reduce operational overhead.",
+  "cloudPostSection4Title": "Observability and Monitoring",
+  "cloudPostSection4P1": "In distributed cloud-native systems, observability becomes critical for understanding system behavior and diagnosing issues. The three pillars of observability—metrics, logs, and traces—provide comprehensive visibility into application performance and health.",
+  "cloudPostSection4P2": "Modern observability platforms use artificial intelligence and machine learning to automatically detect anomalies, predict potential issues, and provide actionable insights for optimization.",
+  "cloudPostMetric1": "Request latency and throughput",
+  "cloudPostMetric2": "Error rates and failure patterns",
+  "cloudPostMetric3": "Resource utilization and capacity",
+  "cloudPostMetric4": "Business metrics and user experience",
+  "cloudPostSection5Title": "Security in Cloud-Native Environments",
+  "cloudPostSection5P1": "Security in cloud-native architectures requires a shift-left approach, integrating security considerations throughout the development and deployment pipeline. This includes implementing zero-trust networking, securing container images, and managing secrets and credentials properly.",
+  "cloudPostSection5P2": "Modern security practices emphasize automated vulnerability scanning, policy-as-code, and continuous compliance monitoring to ensure that security keeps pace with rapid development cycles.",
+  "cloudPostCTATitle": "Ready to Build Cloud-Native Applications?",
+  "cloudPostCTAText": "Our cloud architecture experts can help you design and implement scalable, resilient systems that leverage the full power of cloud-native technologies.",
+  "cloudPostCTAButton": "Start Your Project",
+  "cloudPostShareText": "Share this article:",
+  "cloudPostBackToBlog": "Back to Blog",
+  "mobileShowcase": {
     "title": "Mobile Experience",
     "description": "Designed to deliver the best experience on mobile devices. Intuitive interface, fast performance, and accessibility across all screen sizes.",
     "imageAlt": "Mobile app showcase",
     "feature1": "Optimized for all resolutions",
     "feature2": "Fast and smooth loading",
     "feature3": "Responsive and adaptable design"
+  },
+  "privacyInterceptor": {
+    "landing": {
+      "heroLine1": "Your documents.",
+      "heroLine2": "Your privacy.",
+      "heroLine3": "Fully protected.",
+      "heroSubtitle": "Automatically detect and redact sensitive information before you share. Everything happens locally, your files never leave your device.",
+      "addToChrome": "Add to Chrome",
+      "addToFirefox": "Add to Firefox",
+      "alreadyUsing": "Already using it?",
+      "signIn": "Sign in →",
+      "soon": "Soon",
+      "stepsTitle": "Simple.",
+      "stepsTitleHighlight": "Automatic.",
+      "stepsTitleEnd": "Private.",
+      "stepsSubtitle": "No setup required. Privacy Interceptor works silently in the background.",
+      "step1Title": "Upload as usual",
+      "step1Description": "Go about your day. When you upload a file to any website, we step in automatically.",
+      "step2Title": "We scan for risks",
+      "step2Description": "Our AI detects phone numbers, emails, IDs, addresses, and other sensitive data in seconds.",
+      "step3Title": "You decide",
+      "step3Description": "Review what we found, select what to redact, and share your document worry-free.",
+      "featuresLabel": "Features",
+      "featuresTitle": "Privacy, built right",
+      "feature1Title": "100% local",
+      "feature1Description": "Your documents never leave your browser. Zero cloud. Zero tracking.",
+      "feature2Title": "Multi-format",
+      "feature2Description": "PDFs, Word docs, images, and text files. We handle them all.",
+      "feature3Title": "Regional patterns",
+      "feature3Description": "Recognizes ID formats from Europe, Americas, Asia, and Africa.",
+      "feature4Title": "OCR powered",
+      "feature4Description": "Reads text from scanned documents and images with precision.",
+      "feature5Title": "Instant detection",
+      "feature5Description": "Finds emails, phones, IDs, addresses, and more in milliseconds.",
+      "feature6Title": "Permanent redaction",
+      "feature6Description": "Black bars that can't be undone. Your data stays hidden forever.",
+      "pricingLabel": "Pricing",
+      "pricingTitle": "Start free. Upgrade when ready.",
+      "pricingSubtitle": "No subscriptions. Pay once, own it forever.",
+      "freePlanTitle": "Free",
+      "freePlanDescription": "Get started with essential protection",
+      "freePlanPrice": "€0",
+      "freePlanPeriod": "/forever",
+      "freePlanFeature1": "PDF documents",
+      "freePlanFeature2": "Email detection",
+      "freePlanFeature3": "Phone number detection",
+      "freePlanFeature4": "Images & Word files",
+      "freePlanFeature5": "OCR for scanned docs",
+      "freePlanFeature6": "All regional patterns",
+      "freePlanButton": "Get started free",
+      "premiumPlanTitle": "Premium",
+      "premiumPlanDescription": "Everything, unlocked forever",
+      "premiumPlanOriginalPrice": "€2.99",
+      "premiumPlanPrice": "€0.99",
+      "premiumPlanPeriod": "/lifetime",
+      "premiumPlanBadge": "Early Bird",
+      "premiumPlanFeature1": "Everything in Free",
+      "premiumPlanFeature2": "Images & Word files",
+      "premiumPlanFeature3": "OCR for scanned docs",
+      "premiumPlanFeature4": "All regional patterns",
+      "premiumPlanFeature5": "No watermark",
+      "premiumPlanFeature6": "Priority support",
+      "premiumPlanButton": "Upgrade to Premium",
+      "countdownEndsIn": "Ends in",
+      "collaborateTitle": "Collaborate",
+      "collaborateDescription": "Privacy Interceptor is made by a small team who cares about privacy. Want to collaborate or have questions? Get in touch.",
+      "collaborateEmail": "team@zonda.one"
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Unlock all premium features",
+      "howItWorks": "How it works",
+      "step1": "Enter your email below",
+      "step2": "Click the magic link in your inbox",
+      "step3": "Complete one-time payment",
+      "step4": "Lifetime access unlocked!",
+      "emailPlaceholder": "you@example.com",
+      "continueButton": "Continue",
+      "sendingButton": "Sending...",
+      "securityNote": "No password needed. Secure magic link authentication.",
+      "invalidEmail": "Enter a valid email address",
+      "errorGeneric": "Something went wrong. Try again.",
+      "checkInbox": "Check your inbox",
+      "weSentLink": "We sent a sign-in link to",
+      "clickToSignIn": "Click the link to sign in, then you'll be prompted to complete your purchase.",
+      "useDifferentEmail": "← Use a different email"
+    },
+    "checkoutSuccess": {
+      "title": "You're all set",
+      "subtitle": "Your premium access is now active—forever.",
+      "whatsNext": "What's next",
+      "returnExtension": "Return to the extension",
+      "accountSynced": "Your account is synced automatically",
+      "allFeaturesUnlocked": "All features unlocked",
+      "allFeaturesList": "OCR, all formats, unlimited processing",
+      "closeTab": "You can safely close this tab."
+    },
+    "authVerify": {
+      "verifyingTitle": "Verifying your email",
+      "verifyingSubtitle": "Just a moment...",
+      "successTitle": "You're signed in",
+      "premium": "Premium",
+      "free": "Free",
+      "lifetimeActive": "Lifetime access active",
+      "returnExtension": "Return to the extension",
+      "closeTab": "You can close this tab",
+      "errorTitle": "Verification failed",
+      "invalidLink": "Invalid verification link",
+      "linkExpired": "This link is invalid or has expired",
+      "tryAgain": "Try again"
+    },
+    "privacyPolicy": {
+      "backToZonda": "← Back to Zonda",
+      "title": "Privacy Interceptor",
+      "subtitle": "Privacy Policy",
+      "lastUpdated": "Last updated: January 3, 2026",
+      "shortVersionTitle": "The Short Version",
+      "shortVersionText": "We don't collect, store, or transmit any of your data. Period.",
+      "shortVersionSubtext": "All document processing happens entirely on your device. Your files never leave your browser.",
+      "dataCollectionTitle": "Data Collection",
+      "whatWeDontCollect": "What We DON'T Collect",
+      "dontCollect1": "Your documents or files",
+      "dontCollect2": "The content of your documents",
+      "dontCollect3": "Your browsing history",
+      "dontCollect4": "Personal information",
+      "dontCollect5": "Usage analytics or telemetry",
+      "dontCollect6": "IP addresses or device identifiers",
+      "whatWeStoreLocally": "What We Store Locally",
+      "localStorageIntro": "The extension stores the following data locally on your device using Chrome's storage API:",
+      "tableData": "Data",
+      "tablePurpose": "Purpose",
+      "togglePreferences": "Toggle preferences",
+      "togglePreferencesPurpose": "Remember your detection settings",
+      "regionSelection": "Region selection",
+      "regionSelectionPurpose": "Apply appropriate ID patterns",
+      "languagePreference": "Language preference",
+      "languagePreferencePurpose": "OCR language for scanned documents",
+      "licenseKey": "License key",
+      "licenseKeyPurpose": "Validate lifetime access (if purchased)",
+      "localStorageNote": "This data never leaves your device, is not transmitted to any server, is not shared with anyone, and can be deleted by uninstalling the extension.",
+      "documentProcessingTitle": "Document Processing",
+      "howItWorks": "How It Works",
+      "process1": "When you select a file for upload, Privacy Interceptor intercepts it",
+      "process2": "The file is scanned locally using pattern matching and OCR",
+      "process3": "Sensitive data is detected and shown to you",
+      "process4": "You choose what to redact",
+      "process5": "Redaction happens locally on your device",
+      "process6": "The redacted file replaces the original for upload",
+      "noCloudProcessing": "No Cloud Processing",
+      "weDoNot": "We Do NOT:",
+      "doNot1": "Upload files to any server",
+      "doNot2": "Use cloud AI or ML services",
+      "doNot3": "Have access to your documents",
+      "weDo": "We DO:",
+      "do1": "Process using your device's CPU",
+      "do2": "Run OCR locally via Tesseract.js",
+      "do3": "Use local regex for detection",
+      "permissionsTitle": "Permissions Explained",
+      "permission": "Permission",
+      "whyNeeded": "Why We Need It",
+      "storagePermission": "storage",
+      "storagePermissionPurpose": "Save your preferences locally",
+      "allUrlsPermission": "<all_urls>",
+      "allUrlsPermissionPurpose": "Intercept file uploads on any website",
+      "offscreenPermission": "offscreen",
+      "offscreenPermissionPurpose": "Process files in the background",
+      "allUrlsNote": "We request <all_urls> because file uploads can happen on any website. We cannot predict which sites you'll use, so we need broad permission to protect you everywhere.",
+      "thirdPartyTitle": "Third-Party Services",
+      "thirdPartyIntro": "Privacy Interceptor does not use any third-party services for:",
+      "thirdParty1": "Analytics",
+      "thirdParty2": "Advertising",
+      "thirdParty3": "Cloud processing",
+      "thirdParty4": "Data storage",
+      "thirdPartyNote": "The only external resource loaded is the Inter font from Google Fonts for UI styling, which does not transmit any personal data.",
+      "yourRightsTitle": "Your Rights",
+      "yourRightsIntro": "Since we don't collect any personal data, there's nothing to:",
+      "right1": "Request access to",
+      "right2": "Request deletion of",
+      "right3": "Export",
+      "yourRightsConclusion": "Your privacy is protected by design, not by policy.",
+      "contactTitle": "Contact Us",
+      "contactIntro": "If you have questions about this privacy policy, contact us at:",
+      "email": "Email:",
+      "website": "Website:",
+      "footerText": "Privacy Interceptor is developed by ZondaOne."
+    }
   }
-
 }
