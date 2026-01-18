@@ -47,7 +47,7 @@ export default function PrivacyInterceptorPrivacy() {
                             <p className="text-lg text-gray-500">Privacy Policy</p>
                         </div>
                     </div>
-                    <p className="text-gray-600">Last updated: January 3, 2026</p>
+                    <p className="text-gray-600">Last updated: January 18, 2026</p>
                 </div>
 
                 {/* TL;DR */}
@@ -138,6 +138,48 @@ export default function PrivacyInterceptorPrivacy() {
                         </p>
                     </section>
 
+                    {/* Data Controller */}
+                    <section className="mb-10">
+                        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                            Data Controller
+                        </h2>
+                        <div className="bg-gray-50 rounded-xl p-4">
+                            <p className="text-gray-700 mb-2">
+                                <strong>Operated by:</strong> ZondaOne (individual developer)
+                            </p>
+                            <p className="text-gray-700 mb-2">
+                                <strong>Location:</strong> European Union
+                            </p>
+                            <p className="text-gray-700">
+                                <strong>Contact:</strong>{" "}
+                                <a href="mailto:team@zonda.one" className="text-blue-600 hover:underline">
+                                    team@zonda.one
+                                </a>
+                            </p>
+                        </div>
+                        <p className="text-gray-500 text-sm mt-4">
+                            As Privacy Interceptor does not collect or process any personal data, we act as a software provider rather than a data controller in the traditional sense. All data processing occurs locally on your device under your control.
+                        </p>
+                    </section>
+
+                    {/* Legal Basis */}
+                    <section className="mb-10">
+                        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                            Legal Basis (GDPR)
+                        </h2>
+                        <p className="text-gray-600 mb-4">
+                            Under the General Data Protection Regulation (GDPR), processing personal data requires a legal basis. Privacy Interceptor is designed to <strong>not process any personal data</strong> on our end:
+                        </p>
+                        <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                            <li><strong>No data transmission:</strong> Your documents are never sent to our servers</li>
+                            <li><strong>No data storage:</strong> We do not store any information about you or your files</li>
+                            <li><strong>Local processing only:</strong> All detection and redaction happens in your browser</li>
+                        </ul>
+                        <p className="text-gray-600">
+                            The only data stored (your preferences) is kept locally on your device via Chrome&apos;s storage API and is never transmitted to us. This local storage is based on your <strong>consent</strong> when you install and configure the extension.
+                        </p>
+                    </section>
+
                     {/* Document Processing */}
                     <section className="mb-10">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-4">
@@ -198,12 +240,12 @@ export default function PrivacyInterceptorPrivacy() {
                                         <td className="py-2">Save your preferences locally</td>
                                     </tr>
                                     <tr className="border-b border-gray-100">
-                                        <td className="py-2 font-mono text-sm">&lt;all_urls&gt;</td>
-                                        <td className="py-2">Intercept file uploads on any website</td>
+                                        <td className="py-2 font-mono text-sm">unlimitedStorage</td>
+                                        <td className="py-2">Store OCR models locally for offline use</td>
                                     </tr>
                                     <tr>
-                                        <td className="py-2 font-mono text-sm">offscreen</td>
-                                        <td className="py-2">Process files in the background</td>
+                                        <td className="py-2 font-mono text-sm">&lt;all_urls&gt;</td>
+                                        <td className="py-2">Intercept file uploads on any website</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -245,8 +287,33 @@ export default function PrivacyInterceptorPrivacy() {
                             <li>Request deletion of</li>
                             <li>Export</li>
                         </ul>
-                        <p className="text-gray-700 font-medium">
+                        <p className="text-gray-700 font-medium mb-6">
                             Your privacy is protected by design, not by policy.
+                        </p>
+                        <h3 className="text-xl font-medium text-gray-800 mb-3">
+                            GDPR Rights (for reference)
+                        </h3>
+                        <p className="text-gray-600 mb-4">
+                            While we don&apos;t hold your data, EU residents maintain these rights under GDPR:
+                        </p>
+                        <ul className="list-disc list-inside text-gray-600 space-y-2">
+                            <li>Right to access any personal data we hold (we hold none)</li>
+                            <li>Right to rectification (not applicable)</li>
+                            <li>Right to erasure (&quot;right to be forgotten&quot;)</li>
+                            <li>Right to restrict processing</li>
+                            <li>Right to data portability</li>
+                            <li>Right to object to processing</li>
+                            <li>Right to lodge a complaint with a supervisory authority</li>
+                        </ul>
+                    </section>
+
+                    {/* Data Transfers */}
+                    <section className="mb-10">
+                        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                            International Data Transfers
+                        </h2>
+                        <p className="text-gray-600">
+                            Privacy Interceptor does <strong>not transfer any data</strong> outside of your device. All processing occurs locally in your browser. There are no international data transfers because there are no data transfers at all.
                         </p>
                     </section>
 

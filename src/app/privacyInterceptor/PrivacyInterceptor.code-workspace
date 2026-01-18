@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../../../../PrivacyInterceptor"
+		},
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "PI_Backend",
+			"path": "../../../../PI_Backend"
+		}
+	],
+	"settings": {}
+}
