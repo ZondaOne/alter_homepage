@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useTranslation } from 'react-i18next'
@@ -8,510 +8,198 @@ import { useTranslation } from 'react-i18next'
 gsap.registerPlugin(ScrollTrigger)
 
 const InteractiveBlobsSection: React.FC = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const mainRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<SVGSVGElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
-  const blobContainerRef = useRef<HTMLDivElement>(null)
-  const cardInnerRef = useRef<HTMLDivElement>(null)
-  const typingH3Ref = useRef<HTMLHeadingElement>(null)
-  const [mounted, setMounted] = React.useState(false)
-  const [displayedText, setDisplayedText] = useState<WordData[]>([])
-  const [isTyping, setIsTyping] = useState(false)
-
-  // Define the type for word data
-  interface WordData {
-    word: string
-    isLast: boolean
-    shouldBreak: boolean
-    style: React.CSSProperties
-  }
+  const linesRef = useRef<SVGSVGElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Track if typing animation has been completed to prevent re-triggering
-  const [typingCompleted, setTypingCompleted] = useState(false)
-  const [typingTriggered, setTypingTriggered] = useState(false)
-
-  // Typing effect function wrapped in useCallback
-  const startTypingEffect = useCallback(() => {
-    if (!mounted || isTyping || typingCompleted || typingTriggered) return
-
-    setTypingTriggered(true)
-    const fullText = `${t('card.fromConcept')} ${t('card.toCode')}`
-    const words = fullText.split(' ')
-    const isEnglish = fullText.includes('Code')
-
-    // Pre-determine styles for each word based on complete text
-    const wordsWithStyles: WordData[] = words.map((word, idx) => {
-      const isLast = idx === words.length - 1
-      const shouldBreak = isEnglish && word.toLowerCase() === 'to'
-
-      return {
-        word,
-        isLast,
-        shouldBreak,
-        style: isLast
-          ? {
-              color: 'transparent',
-              backgroundImage:
-                'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
-              backgroundSize: '200% 100%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              animation: 'gradient-flow 3s ease-in-out infinite',
-              backgroundClip: 'text'
-            }
-          : {}
-      }
-    })
-
-    setIsTyping(true)
-    let currentWordIndex = 0
-    let currentCharIndex = 0
-    const revealedWords: WordData[] = []
-
-    const typeNextChar = () => {
-      if (currentWordIndex < wordsWithStyles.length) {
-        const currentWordData = wordsWithStyles[currentWordIndex]
-        const currentWord = currentWordData.word
-
-        if (currentCharIndex < currentWord.length) {
-          // Type character by character for current word
-          const partialWord = currentWord.substring(0, currentCharIndex + 1)
-          const tempWords: WordData[] = [...revealedWords]
-          tempWords[currentWordIndex] = {
-            ...currentWordData,
-            word: partialWord
-          }
-          setDisplayedText(tempWords)
-          currentCharIndex++
-          setTimeout(typeNextChar, 100)
-        } else {
-          // Finished current word
-          revealedWords[currentWordIndex] = currentWordData
-          setDisplayedText([...revealedWords])
-          currentWordIndex++
-          currentCharIndex = 0
-          setTimeout(typeNextChar, 100) // Shorter pause between words: 100ms
-        }
-      } else {
-        // Finished typing
-        setIsTyping(false)
-        setTypingCompleted(true)
-      }
-    }
-
-    // Start typing immediately when triggered
-    typeNextChar()
-  }, [mounted, isTyping, typingCompleted, typingTriggered, t])
-
-  const renderTypingText = (wordsData: WordData[]) => {
-    if (!wordsData || wordsData.length === 0) return null
-
-    return wordsData.map((wordData, idx) => {
-      if (!wordData) return null
-
-      const { word, isLast, shouldBreak, style } = wordData
-
-      return (
-        <React.Fragment key={idx}>
-          {shouldBreak && <br />}
-          <span
-            className={`inline-block px-2 mx-1 bg-orange-100 my-1 ${
-              isLast ? '' : 'text-gray-800'
-            }`}
-            style={{
-              ...style,
-              transition: 'all 0.2s ease-out',
-              animation: 'fadeIn 0.3s ease-out'
-            }}
-          >
-            {word}
-          </span>
-        </React.Fragment>
-      )
-    })
-  }
-
-  // GSAP animations useEffect
   useEffect(() => {
     if (!mounted) return
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: typingH3Ref.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-        onEnter: () => {
-          startTypingEffect()
+      // 1. Initial State: Logo starts as a clear black contour
+      gsap.set(logoRef.current, {
+        scale: 1.2,
+        opacity: 0.5,
+        transformOrigin: 'center center'
+      })
+
+      // 2. Initial State: Architectural Lines (more subtle at start)
+      gsap.set(linesRef.current, {
+        opacity: 0.15,
+        scale: 1.05,
+        transformOrigin: 'center center'
+      })
+
+      // 3. Initial State: Content 
+      gsap.set(contentRef.current, {
+        scale: 0.85,
+        opacity: 0,
+        y: 60
+      })
+
+      // 4. Scroll Timeline: "Recession / Reveal" Effect
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: mainRef.current,
+          start: 'top top',
+          end: '+=150%',
+          scrub: 1.2,
+          pin: true,
+          anticipatePin: 1
         }
       })
+
+      // Logo recedes into the distance
+      tl.to(logoRef.current, {
+        scale: 0.3,
+        opacity: 0,
+        filter: 'blur(12px)',
+        duration: 2,
+        ease: 'power2.inOut'
+      })
+      // Lines become more visible to match section below
+      .to(linesRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 2,
+        ease: 'power2.inOut'
+      }, 0)
+      // The content emerges as the logo moves back
+      .to(contentRef.current, {
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        duration: 1.8,
+        ease: 'power3.out'
+      }, '-=1.2')
+
     }, mainRef)
 
     return () => ctx.revert()
-  }, [mounted, startTypingEffect])
+  }, [mounted])
 
-  // NO useEffect that resets typing on language change - animation should persist
+  if (!mounted) return null
 
-  const renderGrayBackgroundText = (text: string) => {
-    const words = text.split(' ')
-    const isEnglish = text.includes('Code')
+  // Refined Multi-language Title logic
+  const renderTitle = () => {
+    const lang = i18n.language || 'es'
+    
+    let fromText = 'Del '
+    let conceptText = 'Concepto'
+    let toText = ' al '
+    let codeText = 'Código'
 
-    return words.map((word, idx) => {
-      const isLast = idx === words.length - 1
-      const shouldBreak = isEnglish && word.toLowerCase() === 'to'
+    if (lang === 'en') {
+      fromText = 'From '
+      conceptText = 'Concept'
+      toText = ' to '
+      codeText = 'Code'
+    } else if (lang === 'it') {
+      fromText = 'Dal '
+      conceptText = 'Concetto'
+      toText = ' al '
+      codeText = 'Codice'
+    }
 
-      return (
-        <React.Fragment key={idx}>
-          {shouldBreak && <br />}
-          <span
-            className={`inline-block px-2 mx-1 bg-orange-100 my-1 ${
-              isLast ? '' : 'text-gray-800'
-            }`}
-            style={
-              isLast
-                ? {
-                    color: 'transparent',
-                    backgroundImage:
-                      'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
-                    backgroundSize: '200% 100%',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    animation: 'gradient-flow 3s ease-in-out infinite',
-                    backgroundClip: 'text'
-                  }
-                : {}
-            }
-          >
-            {word}
-          </span>
-        </React.Fragment>
-      )
-    })
+    return (
+      <h2 className="font-display text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter text-gray-900 leading-[1.05]">
+        {fromText}
+        <span className="blobs-gradient-text">
+          {conceptText}
+        </span>
+        {toText}
+        <span className="blobs-gradient-text">
+          {codeText}
+        </span>
+      </h2>
+    )
   }
+
+  const logoPaths = (
+    <>
+      <path d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z" />
+      <path d="M 151.162 214.519 L 254.816 214.785 L 123.855 401.854 L 88.385 304.265 L 151.162 214.519 Z" />
+      <path d="M 375.69 100 L 412.058 198.385 L 348.108 288.629 L 243.925 288.629 L 375.69 100 Z" />
+      <path d="M 183.137 316.443 L 410.625 316.222 L 353.087 400.362 L 241.446 400.15 L 183.137 316.443 Z" />
+    </>
+  )
 
   return (
     <section
-      id="about"
       ref={mainRef}
-      className="hidden md:flex relative min-h-screen items-center justify-center overflow-hidden bg-gray-50 px-8 py-16"
+      className="relative min-h-screen flex items-center justify-center bg-white px-6 overflow-hidden py-32"
     >
-      <div className="grain-overlay" />
-      <div className="container mx-auto space-y-4 2xl:space-y-0 relative z-10">
-        {/* Header Text */}
-        <div className="max-w-7xl mx-auto text-center">
-          <div
-            ref={textRef}
-            className="flex flex-col justify-center space-y-4 2xl:space-y-0 text-gray-800"
-          >
-            <h2 className="hero-h1 m-0 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl font-semibold leading-[0.9] tracking-tight text-gray-900 font-display 2xl:mb-0">
-              <span
-                className="hero-gradient-text text-element"
-                style={{
-                  background:
-                    'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
-                  backgroundSize: '200% 100%',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  animation: 'gradient-flow 3s ease-in-out infinite'
-                }}
-              >
-                {mounted ? t('interactiveBlobs.hash') : ''}
-              </span>
-              <span className="hero-line text-element">
-                {mounted ? t('interactiveBlobs.weAre') : ''}
-              </span>
-              <span
-                className="hero-gradient-text text-element"
-                style={{
-                  background:
-                    'linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316)',
-                  backgroundSize: '200% 100%',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  animation: 'gradient-flow 3s ease-in-out infinite',
-                  animationDelay: '0.5s'
-                }}
-              >
-                {mounted ? t('interactiveBlobs.zonda') : ''}
-              </span>
-            </h2>
-            <p className="text-lg lg:text-xl xl:text-2xl 2xl:text-2xl text-element max-w-4xl 2xl:max-w-6xl mx-auto 2xl:leading-relaxed">
-              {mounted ? t('interactiveBlobs.description1') : ''}
-            </p>
-          </div>
-        </div>
-
-        {/* Enhanced Card Section  */}
-        <div ref={cardRef} className="w-full">
-          <div
-            ref={cardInnerRef}
-            className="relative overflow-visible card-element w-full"
-            style={{ boxShadow: 'none' }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[500px] 2xl:min-h-[700px] relative z-10 gap-16 lg:gap-24 2xl:gap-40">
-              {/* Content Side */}
-              <div className="lg:col-span-2 content-side p-8 lg:p-16 2xl:p-20 flex flex-col justify-center gap-2 2xl:gap-1 relative">
-                <div className="gap-0">
-                  <div className="gap-0">
-                    <h3
-                      ref={typingH3Ref}
-                      className="text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-bold leading-tight tracking-tight font-display typing-container"
-                      style={{
-                        minHeight: '1.8em',
-                        maxWidth: '100%',
-                        width: '100%',
-                        wordWrap: 'break-word',
-                        wordBreak: 'break-word',
-                        marginBottom: '0.5rem'
-                      }}
-                    >
-                      {mounted &&
-                        (typingCompleted
-                          ? renderGrayBackgroundText(
-                              `${t('card.fromConcept')} ${t('card.toCode')}`
-                            )
-                          : displayedText.length > 0 &&
-                            renderTypingText(displayedText))}
-                      <span
-                        className={`typing-cursor ${
-                          typingCompleted ? 'blink' : ''
-                        }`}
-                      >
-                        |
-                      </span>
-                    </h3>
-
-                    <p className="text-lg lg:text-xl xl:text-2xl 2xl:text-2xl text-gray-600 leading-relaxed max-w-lg 2xl:max-w-2xl">
-                      {mounted ? t('card.digitalSolutionsDescription') : ''}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Blob & Logo Side - Sin recuadros ni sombras */}
-              <div
-                ref={blobContainerRef}
-                className="lg:col-span-1 relative overflow-visible flex items-center justify-center min-h-[500px] 2xl:min-h-[700px]"
-              >
-                <div className="absolute inset-0 z-0">
-                  <div
-                    className="blob blob1"
-                    style={
-                      {
-                        '--color1': 'rgba(249,115,22,0.8)',
-                        '--color2': 'rgba(251,146,60,0.5)',
-                        '--color3': 'rgba(234,88,12,0.6)'
-                      } as React.CSSProperties
-                    }
-                  />
-                  <div
-                    className="blob blob2"
-                    style={
-                      {
-                        '--color1': 'rgba(234,88,12,0.7)',
-                        '--color2': 'rgba(249,115,22,0.4)',
-                        '--color3': 'rgba(194,65,12,0.5)'
-                      } as React.CSSProperties
-                    }
-                  />
-                  <div
-                    className="blob blob3"
-                    style={
-                      {
-                        '--color1': 'rgba(251,146,60,0.6)',
-                        '--color2': 'rgba(249,115,22,0.5)',
-                        '--color3': 'rgba(234,88,12,0.4)'
-                      } as React.CSSProperties
-                    }
-                  />
-                </div>
-
-                <div className="relative z-10">
-                  <svg
-                    ref={logoRef}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 500 500"
-                    className="w-56 h-56 lg:w-72 lg:h-72 xl:w-96 xl:h-96 2xl:w-[380px] 2xl:h-[380px] glow-effect"
-                  >
-                    <path
-                      className="logo-path"
-                      d="M 88.478 186.141 L 147.278 101.441 L 257.616 101.606 L 316.242 186.175 L 88.478 186.141 Z"
-                      fill="#fff"
-                    />
-                    <path
-                      className="logo-path"
-                      d="M 151.162 214.519 L 254.816 214.785 L 123.855 401.854 L 88.385 304.265 L 151.162 214.519 Z"
-                      fill="#fff"
-                    />
-                    <path
-                      className="logo-path"
-                      d="M 375.69 100 L 412.058 198.385 L 348.108 288.629 L 243.925 288.629 L 375.69 100 Z"
-                      fill="#fff"
-                    />
-                    <path
-                      className="logo-path"
-                      d="M 183.137 316.443 L 410.625 316.222 L 353.087 400.362 L 241.446 400.15 L 183.137 316.443 Z"
-                      fill="#fff"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Subtle Grain Background */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}>
       </div>
 
-      {/* Clean Styles  */}
+      {/* Architectural Lines - Sweeping pattern */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <svg
+          ref={linesRef}
+          width="100%"
+          height="100%"
+          viewBox="0 0 1200 800"
+          preserveAspectRatio="none"
+          className="absolute top-0 left-0"
+        >
+          <path d="M-200 150 Q 400 600, 1400 100" fill="none" stroke="#f97316" strokeWidth="1.5" strokeOpacity="0.4" />
+          <path d="M-300 450 Q 500 -100, 1500 550" fill="none" stroke="#f97316" strokeWidth="2" strokeOpacity="0.3" />
+          <path d="M-100 700 Q 600 200, 1300 800" fill="none" stroke="#f97316" strokeWidth="1.2" strokeOpacity="0.25" />
+        </svg>
+      </div>
+
+      {/* Background Logo — Starts as black border/contour */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <svg 
+          ref={logoRef}
+          viewBox="0 0 500 500" 
+          className="w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
+          fill="none"
+          stroke="#000000"
+          strokeWidth="1"
+        >
+          {logoPaths}
+        </svg>
+      </div>
+
+      {/* Content Section */}
+      <div ref={contentRef} className="relative z-10 max-w-7xl w-full flex flex-col items-center text-center gap-16">
+        <div className="flex flex-col items-center gap-6">
+          <span className="text-orange-500 font-bold tracking-[0.4em] text-xs uppercase opacity-90">
+            {t('interactiveBlobs.weAre')} ZONDA
+          </span>
+          <div className="h-px w-16 bg-orange-200"></div>
+        </div>
+
+        {renderTitle()}
+
+        <p className="font-light text-xl md:text-2xl lg:text-3xl text-gray-400 max-w-4xl leading-relaxed">
+          {t('card.digitalSolutionsDescription')}
+        </p>
+      </div>
+
       <style jsx global>{`
-        .blob-side {
-          position: relative;
+        .blobs-gradient-text {
+          background-image: linear-gradient(90deg, #f97316, #fb923c, #ea580c, #fb923c, #f97316);
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: blobs-gradient-flow 4s ease-in-out infinite;
         }
-
-        .blob {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          mix-blend-mode: multiply;
-          background: radial-gradient(
-            ellipse at 30% 20%,
-            var(--color1) 0%,
-            var(--color2) 35%,
-            var(--color3) 60%,
-            transparent 85%
-          );
-          will-change: transform, border-radius;
-          opacity: 0.8;
-        }
-
-        .blob1 {
-          width: 370px;
-          height: 370px;
-          animation: morph-gentle 14s ease-in-out infinite;
-        }
-
-        .blob2 {
-          width: 370px;
-          height: 370px;
-          animation: morph-gentle 11s ease-in-out infinite reverse;
-          animation-delay: -3s;
-        }
-
-        .blob3 {
-          width: 370px;
-          height: 370px;
-          animation: morph-gentle 18s ease-in-out infinite;
-          animation-delay: -7s;
-        }
-
-        @media (min-width: 1536px) {
-          .blob1,
-          .blob2,
-          .blob3 {
-            width: 400px;
-            height: 400px;
-          }
-        }
-
-        @keyframes morph-gentle {
-          0% {
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
-            transform: translate(-50%, -50%) rotate(0deg);
-          }
-          25% {
-            border-radius: 45% 55% 45% 35% / 65% 45% 55% 35%;
-            transform: translate(-50%, -50%) rotate(90deg) scale(1.02);
-          }
-          50% {
-            border-radius: 35% 55% 65% 45% / 45% 55% 35% 55%;
-            transform: translate(-50%, -50%) rotate(180deg) scale(0.98);
-          }
-          75% {
-            border-radius: 65% 35% 45% 55% / 35% 65% 45% 55%;
-            transform: translate(-50%, -50%) rotate(270deg) scale(1.01);
-          }
-          100% {
-            border-radius: 55% 45% 35% 65% / 55% 35% 65% 45%;
-            transform: translate(-50%, -50%) rotate(360deg) scale(1);
-          }
-        }
-
-        .glow-effect {
-          filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.55));
-        }
-
-        .logo-path,
-        .text-element,
-        .card-element {
-          will-change: transform, opacity;
-        }
-
-        /* Typing effect styles */
-        .typing-container {
-          min-height: 2.4em;
-          position: relative;
-          display: block;
-          white-space: normal;
-          word-wrap: break-word;
-          transition: all 0.3s ease-out;
-        }
-
-        .typing-container span {
-          transition: all 0.2s ease-out;
-        }
-
-        .typing-cursor {
-          display: inline-block;
-          margin-left: 2px;
-          color: #b4b4b462;
-          font-weight: normal;
-          font-size: 1em;
-        }
-
-        .typing-cursor.blink {
-          animation: cursor-blink 1.5s infinite;
-        }
-
-        .typing-cursor.hidden {
-          opacity: 0;
-        }
-
-        @keyframes cursor-blink {
-          0%,
-          60% {
-            opacity: 1;
-          }
-          61%,
-          100% {
-            opacity: 0;
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-2px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        /* Eliminar cualquier sombra por defecto */
-        .card-element {
-          box-shadow: none !important;
-        }
-
-        @media (max-width: 1024px) {
-          .content-side {
-            clip-path: none;
-          }
+        @keyframes blobs-gradient-flow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
       `}</style>
     </section>

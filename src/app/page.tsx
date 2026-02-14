@@ -88,7 +88,6 @@ export default function HomePage() {
       <Hero />
       <div className="h-3 bg-white w-full"></div>
       <InteractiveBlobsSection />
-      <div className="h-3 bg-white w-full"></div>
       <MobileShowcaseSection />
       <div className="h-3 bg-white w-full"></div>
       <article className="relative z-10">

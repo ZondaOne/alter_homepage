@@ -249,8 +249,8 @@
   "cloudPostBackToBlog": "Volver al Blog",
 
   "mobileShowcase": {
-    "title": "Experiencia Mobile",
-    "description": "Diseñado para ofrecer la mejor experiencia en dispositivos móviles. Interfaz intuitiva, rendimiento rápido y accesibilidad en todos los tamaños de pantalla.",
+    "title": "Mobile First Bien Hecho",
+    "description": "Si no funciona en un teléfono, no funciona. Construimos interfaces que se sienten naturales en tu mano, con tiempos de carga rápidos y transiciones que no estorban.",
     "imageAlt": "Demostración de aplicación móvil",
     "feature1": "Optimizado para todas las resoluciones",
     "feature2": "Carga rápida y fluida",

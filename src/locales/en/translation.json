@@ -250,9 +250,9 @@
 , "cloudPostShareText": "Share this article:"
 , "cloudPostBackToBlog": "Back to Blog"
 
-, "mobileShowcase": {
-    "title": "Mobile Experience",
-    "description": "Designed to deliver the best experience on mobile devices. Intuitive interface, fast performance, and accessibility across all screen sizes.",
+,  "mobileShowcase": {
+    "title": "Mobile First Done Right",
+    "description": "If it doesn't work on a phone, it doesn't work. We build interfaces that feel natural in your hand, with fast load times and transitions that stay out of the way.",
     "imageAlt": "Mobile app showcase",
     "feature1": "Optimized for all resolutions",
     "feature2": "Fast and smooth loading",

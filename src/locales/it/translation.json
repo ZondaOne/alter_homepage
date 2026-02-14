@@ -222,8 +222,8 @@
 , "cloudPostSection2P1": "Le applicazioni cloud-native di successo si basano su pattern architetturali comprovati che affrontano le sfide comuni nei sistemi distribuiti. Questi pattern forniscono progetti per costruire sistemi robusti e mantenibili."
 
 , "mobileShowcase": {
-    "title": "Esperienza Mobile",
-    "description": "Progettato per offrire la migliore esperienza su dispositivi mobili. Interfaccia intuitiva, prestazioni veloce e accessibilità su tutti i formati di schermo.",
+    "title": "Mobile First Fatto Bene",
+    "description": "Se non funziona su un telefono, non funziona. Costruiamo interfacce che si sentono naturali nella tua mano, con tempi di caricamento rapidi e transizioni che non intralciano.",
     "imageAlt": "Dimostrazione dell'app mobile",
     "feature1": "Ottimizzato per tutte le risoluzioni",
     "feature2": "Caricamento veloce e fluido",
