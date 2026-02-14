@@ -11,17 +11,14 @@
   "about": "Chi siamo",
   "workWithUs": "Lavora con noi",
   "allProducts": "Tutti i prodotti",
-
   "heroTitleLine1": "La tua idea",
   "heroTitleLine2": "merita",
   "heroTitleHighlight": "codice migliore",
   "heroSubtitle": "Piccolo team. Grandi idee. Creiamo software che le persone vogliono davvero usare.",
   "heroButtonWork": "Lavora con noi",
   "heroButtonSee": "Guarda cosa abbiamo fatto",
-
   "gradientText": "Costruiamo <1>marchi che contano</1>, creando esperienze digitali su misura per la tua visione. Ogni progetto è una partnership, ogni soluzione è realizzata con uno scopo.",
   "gradientCTA": "<0>Contattaci</0>",
-
   "galleryTitleLine1": "Quello che abbiamo",
   "galleryTitleHighlight": "costruito insieme",
   "gallerySubtitle": "Ogni progetto racconta una storia di collaborazione. Ecco come abbiamo aiutato le aziende a risolvere i loro problemi più complessi con soluzioni ponderate e personalizzate.",
@@ -31,7 +28,6 @@
     "description": "Ogni grande progetto inizia con una conversazione. Qual è la tua prossima mossa?",
     "button": "INIZIA IL TUO PROGETTO"
   },
-
   "parallax": {
     "desktop": {
       "line1": "Trasformiamo problemi",
@@ -45,7 +41,6 @@
       "subtitle": "Prendiamo le cose complicate e le facciamo funzionare magnificamente. È quello che il buon software dovrebbe fare."
     }
   },
-
   "macbook": {
     "products": {
       "pixelperfect": {
@@ -59,15 +54,13 @@
       "comchat": {
         "title": "ComChat",
         "description": "Il tuo assistente AI personale che capisce il tuo business. Impara dai tuoi contenuti e aiuta i tuoi clienti a ottenere risposte velocemente."
-      }
-      ,
+      },
       "rhivo": {
         "title": "Rhivo",
         "description": "Gestisci prenotazioni e orari per attività di servizi con strumenti semplici e affidabili: calendari, gestione del personale e appuntamenti clienti in un unico posto."
       }
     }
   },
-
   "faq": {
     "title": "Cosa Ti Stai",
     "titleHighlight": "Chiedendo",
@@ -90,13 +83,11 @@
       }
     ]
   },
-
   "languages": {
     "en": "Inglese",
     "es": "Spagnolo",
     "it": "Italiano"
   },
-
   "engineered": "la nostra esperienza",
   "hero": {
     "description": "Tu conosci il tuo business meglio di chiunque altro. Noi sappiamo come costruire software che non ti deluderà. Insieme, creiamo qualcosa che fa davvero la differenza."
@@ -125,14 +116,12 @@
       }
     }
   },
-
   "interactiveBlobs": {
     "hash": "#",
     "weAre": "Siamo",
     "zonda": "Zonda",
     "description1": "Il grande software non nasce da template o soluzioni rapide. Nasce dal capire cosa ti serve davvero e avere le competenze per realizzarlo."
   },
-
   "contact": {
     "title": "Iniziamo a",
     "titleHighlight": "costruire insieme",
@@ -223,10 +212,193 @@
 
 , "mobileShowcase": {
     "title": "Mobile First Fatto Bene",
-    "description": "Se non funziona su un telefono, non funziona. Costruiamo interfacce che si sentono naturali nella tua mano, con tempi di caricamento rapidi e transizioni che non intralciano.",
-    "imageAlt": "Dimostrazione dell'app mobile",
-    "feature1": "Ottimizzato per tutte le risoluzioni",
-    "feature2": "Caricamento veloce e fluido",
-    "feature3": "Design reattivo e adattabile"
+    "description": "Se non funziona su un telefono, non funziona. Costruiamo interfacce che si sentono naturali nella tua mano, con tempi di caricamento rapidi e transizioni che non intralciano."
+
+  },
+  "privacyInterceptor": {
+    "landing": {
+      "heroLine1": "I tuoi documenti.",
+      "heroLine2": "La tua privacy.",
+      "heroLine3": "Completamente protetti.",
+      "heroSubtitle": "Rileva e oscura automaticamente le informazioni sensibili prima di condividere. Tutto avviene localmente, i tuoi file non lasciano mai il tuo dispositivo.",
+      "addToChrome": "Aggiungi a Chrome",
+      "addToFirefox": "Aggiungi a Firefox",
+      "alreadyUsing": "Lo usi già?",
+      "signIn": "Accedi →",
+      "soon": "Presto",
+      "stepsTitle": "Semplice.",
+      "stepsTitleHighlight": "Automatico.",
+      "stepsTitleEnd": "Privato.",
+      "stepsSubtitle": "Nessuna configurazione. Privacy Interceptor lavora silenziosamente in background.",
+      "step1Title": "Carica come sempre",
+      "step1Description": "Continua la tua giornata. Quando carichi un file su qualsiasi sito web, interveniamo automaticamente.",
+      "step2Title": "Scansioniamo i rischi",
+      "step2Description": "La nostra IA rileva numeri di telefono, email, documenti d'identità e altri dati sensibili in pochi secondi.",
+      "step3Title": "Tu decidi",
+      "step3Description": "Rivedi cosa abbiamo trovato, seleziona cosa oscurare e condividi il tuo documento senza preoccupazioni.",
+      "featuresLabel": "Caratteristiche",
+      "featuresTitle": "Privacy, fatta bene",
+      "feature1Title": "100% locale",
+      "feature1Description": "I tuoi documenti non lasciano mai il browser. Zero cloud. Zero tracciamento.",
+      "feature2Title": "Multi-formato",
+      "feature2Description": "PDF, documenti Word, immagini e file di testo. Li gestiamo tutti.",
+      "feature3Title": "Pattern regionali",
+      "feature3Description": "Riconosce formati di ID da Europa, Americhe, Asia e Africa.",
+      "feature4Title": "Con OCR",
+      "feature4Description": "Legge il testo da documenti scansionati e immagini con precisione.",
+      "feature5Title": "Rilevamento istantaneo",
+      "feature5Description": "Trova email, telefoni, documenti d'identità e altro in millisecondi.",
+      "feature6Title": "Oscuramento permanente",
+      "feature6Description": "Barre nere che non possono essere annullate. I tuoi dati rimangono nascosti per sempre.",
+      "pricingLabel": "Prezzi",
+      "pricingTitle": "Inizia gratis. Aggiorna quando vuoi.",
+      "pricingSubtitle": "Nessun abbonamento. Paga una volta, tuo per sempre.",
+      "freePlanTitle": "Gratis",
+      "freePlanDescription": "Inizia con la protezione essenziale",
+      "freePlanPrice": "€0",
+      "freePlanPeriod": "/per sempre",
+      "freePlanFeature1": "Documenti PDF",
+      "freePlanFeature2": "Rilevamento email",
+      "freePlanFeature3": "Rilevamento numeri di telefono",
+      "freePlanFeature4": "Immagini e file Word",
+      "freePlanFeature5": "OCR per documenti scansionati",
+      "freePlanFeature6": "Tutti i pattern regionali",
+      "freePlanButton": "Inizia gratis",
+      "premiumPlanTitle": "Premium",
+      "premiumPlanDescription": "Tutto, sbloccato per sempre",
+      "premiumPlanOriginalPrice": "€2.99",
+      "premiumPlanPrice": "€0.99",
+      "premiumPlanPeriod": "/a vita",
+      "premiumPlanBadge": "Offerta Speciale",
+      "premiumPlanFeature1": "Tutto del piano Gratis",
+      "premiumPlanFeature2": "Immagini e file Word",
+      "premiumPlanFeature3": "OCR per documenti scansionati",
+      "premiumPlanFeature4": "Tutti i pattern regionali",
+      "premiumPlanFeature5": "Senza watermark",
+      "premiumPlanFeature6": "Supporto prioritario",
+      "premiumPlanButton": "Passa a Premium",
+      "countdownEndsIn": "Termina tra",
+      "collaborateTitle": "Collabora",
+      "collaborateDescription": "Privacy Interceptor è realizzato da un piccolo team che si preoccupa della privacy. Vuoi collaborare o hai domande? Contattaci.",
+      "collaborateEmail": "team@zonda.one"
+    },
+    "login": {
+      "title": "Accedi",
+      "subtitle": "Sblocca tutte le funzioni premium",
+      "howItWorks": "Come funziona",
+      "step1": "Inserisci la tua email qui sotto",
+      "step2": "Clicca sul link magico nella tua casella di posta",
+      "step3": "Completa il pagamento unico",
+      "step4": "Accesso a vita sbloccato!",
+      "emailPlaceholder": "tu@esempio.com",
+      "continueButton": "Continua",
+      "sendingButton": "Invio in corso...",
+      "securityNote": "Nessuna password. Autenticazione sicura con link magico.",
+      "invalidEmail": "Inserisci un indirizzo email valido",
+      "errorGeneric": "Qualcosa è andato storto. Riprova.",
+      "checkInbox": "Controlla la tua casella di posta",
+      "weSentLink": "Abbiamo inviato un link di accesso a",
+      "clickToSignIn": "Clicca sul link per accedere, poi ti verrà chiesto di completare l'acquisto.",
+      "useDifferentEmail": "← Usa un'altra email"
+    },
+    "checkoutSuccess": {
+      "title": "Tutto pronto!",
+      "subtitle": "Il tuo accesso premium è ora attivo—per sempre.",
+      "whatsNext": "Prossimo passo",
+      "returnExtension": "Torna all'estensione",
+      "accountSynced": "Il tuo account è sincronizzato automaticamente",
+      "allFeaturesUnlocked": "Tutte le funzioni sbloccate",
+      "allFeaturesList": "OCR, tutti i formati, elaborazione illimitata",
+      "closeTab": "Puoi chiudere questa scheda."
+    },
+    "authVerify": {
+      "verifyingTitle": "Verifica della tua email",
+      "verifyingSubtitle": "Un momento...",
+      "successTitle": "Hai effettuato l'accesso",
+      "premium": "Premium",
+      "free": "Gratis",
+      "lifetimeActive": "Accesso a vita attivo",
+      "returnExtension": "Torna all'estensione",
+      "closeTab": "Puoi chiudere questa scheda",
+      "errorTitle": "Verifica fallita",
+      "invalidLink": "Link di verifica non valido",
+      "linkExpired": "Questo link non è valido o è scaduto",
+      "tryAgain": "Riprova"
+    },
+    "privacyPolicy": {
+      "backToZonda": "← Torna a Zonda",
+      "title": "Privacy Interceptor",
+      "subtitle": "Informativa sulla Privacy",
+      "lastUpdated": "Ultimo aggiornamento: 3 gennaio 2026",
+      "shortVersionTitle": "La Versione Breve",
+      "shortVersionText": "Non raccogliamo, memorizziamo o trasmettiamo nessuno dei tuoi dati. Punto.",
+      "shortVersionSubtext": "Tutta l'elaborazione dei documenti avviene interamente sul tuo dispositivo. I tuoi file non lasciano mai il tuo browser.",
+      "dataCollectionTitle": "Raccolta Dati",
+      "whatWeDontCollect": "Cosa NON Raccogliamo",
+      "dontCollect1": "I tuoi documenti o file",
+      "dontCollect2": "Il contenuto dei tuoi documenti",
+      "dontCollect3": "La tua cronologia di navigazione",
+      "dontCollect4": "Informazioni personali",
+      "dontCollect5": "Analisi di utilizzo o telemetria",
+      "dontCollect6": "Indirizzi IP o identificatori del dispositivo",
+      "whatWeStoreLocally": "Cosa Memorizziamo Localmente",
+      "localStorageIntro": "L'estensione memorizza i seguenti dati localmente sul tuo dispositivo usando l'API di storage di Chrome:",
+      "tableData": "Dati",
+      "tablePurpose": "Scopo",
+      "togglePreferences": "Preferenze di rilevamento",
+      "togglePreferencesPurpose": "Ricordare le tue impostazioni di rilevamento",
+      "regionSelection": "Selezione regione",
+      "regionSelectionPurpose": "Applicare i pattern ID appropriati",
+      "languagePreference": "Preferenza lingua",
+      "languagePreferencePurpose": "Lingua OCR per documenti scansionati",
+      "licenseKey": "Chiave di licenza",
+      "licenseKeyPurpose": "Validare l'accesso a vita (se acquistato)",
+      "localStorageNote": "Questi dati non lasciano mai il tuo dispositivo, non vengono trasmessi a nessun server, non vengono condivisi con nessuno, e possono essere eliminati disinstallando l'estensione.",
+      "documentProcessingTitle": "Elaborazione Documenti",
+      "howItWorks": "Come Funziona",
+      "process1": "Quando selezioni un file da caricare, Privacy Interceptor lo intercetta",
+      "process2": "Il file viene scansionato localmente usando pattern matching e OCR",
+      "process3": "I dati sensibili vengono rilevati e mostrati a te",
+      "process4": "Tu scegli cosa oscurare",
+      "process5": "L'oscuramento avviene localmente sul tuo dispositivo",
+      "process6": "Il file oscurato sostituisce l'originale per il caricamento",
+      "noCloudProcessing": "Nessuna Elaborazione Cloud",
+      "weDoNot": "NON facciamo:",
+      "doNot1": "Caricare file su qualsiasi server",
+      "doNot2": "Usare servizi AI o ML cloud",
+      "doNot3": "Avere accesso ai tuoi documenti",
+      "weDo": "Facciamo:",
+      "do1": "Elaborare usando la CPU del tuo dispositivo",
+      "do2": "Eseguire OCR localmente via Tesseract.js",
+      "do3": "Usare regex locali per il rilevamento",
+      "permissionsTitle": "Permessi Spiegati",
+      "permission": "Permesso",
+      "whyNeeded": "Perché Ne Abbiamo Bisogno",
+      "storagePermission": "storage",
+      "storagePermissionPurpose": "Salvare le tue preferenze localmente",
+      "allUrlsPermission": "<all_urls>",
+      "allUrlsPermissionPurpose": "Intercettare i caricamenti di file su qualsiasi sito web",
+      "offscreenPermission": "offscreen",
+      "offscreenPermissionPurpose": "Elaborare file in background",
+      "allUrlsNote": "Richiediamo <all_urls> perché i caricamenti di file possono avvenire su qualsiasi sito web. Non possiamo prevedere quali siti userai, quindi abbiamo bisogno di permessi ampi per proteggerti ovunque.",
+      "thirdPartyTitle": "Servizi di Terze Parti",
+      "thirdPartyIntro": "Privacy Interceptor non utilizza servizi di terze parti per:",
+      "thirdParty1": "Analytics",
+      "thirdParty2": "Pubblicità",
+      "thirdParty3": "Elaborazione cloud",
+      "thirdParty4": "Archiviazione dati",
+      "thirdPartyNote": "L'unica risorsa esterna caricata è il font Inter da Google Fonts per lo stile dell'UI, che non trasmette alcun dato personale.",
+      "yourRightsTitle": "I Tuoi Diritti",
+      "yourRightsIntro": "Poiché non raccogliamo dati personali, non c'è nulla da:",
+      "right1": "Richiedere accesso a",
+      "right2": "Richiedere cancellazione di",
+      "right3": "Esportare",
+      "yourRightsConclusion": "La tua privacy è protetta dal design, non dalla policy.",
+      "contactTitle": "Contattaci",
+      "contactIntro": "Se hai domande su questa informativa sulla privacy, contattaci a:",
+      "email": "Email:",
+      "website": "Sito web:",
+      "footerText": "Privacy Interceptor è sviluppato da ZondaOne."
+    }
   }
 }
