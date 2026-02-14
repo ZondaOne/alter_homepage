@@ -130,8 +130,7 @@ export default function MobileShowcaseSection() {
               width={6144}
               height={2688}
               priority
-              className="w-full h-auto !shadow-none !filter-none"
-              style={{ boxShadow: 'none', filter: 'none', appearance: 'none' }}
+              className="w-full h-auto shadow-none drop-shadow-none !filter-none border-none outline-none ring-0"
             />
           </div>
 
